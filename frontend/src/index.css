@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root{
+  background-color: var(--bg);
+  font-family: "Roboto Condensed", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+
+  --headings-font: "Bungee", sans-serif;
+  --text-color : #19183b;
+  --lower-text-color : #708993;
+  --bg : #e7f2ef;
+}
+body{
+  margin: 0;
+  width: 100%;
+}
