@@ -1,11 +1,14 @@
 import React from "react";
 import { DottedGlowBackground } from "../../components/ui/dotted-glow-background";
+import Nav from "../../components/Nav";
+import Hero from "./Hero";
+import Aims from "./Aims";
 
 export default function Home() {
   return (
     <>
       <DottedGlowBackground
-        className="pointer-events-none mask-radial-to-90% mask-radial-at-center opacity-80"
+        className="pointer-events-none mask-radial-to-90% mask-radial-at-center"
         opacity={1}
         gap={10}
         radius={1.6}
@@ -17,8 +20,12 @@ export default function Home() {
         speedMax={1.6}
         speedScale={0.8}
       />
-      <div className="">
-
+      <div className="flex flex-col gap-y-28 w-full">
+        <Nav />
+        <main className="flex flex-col gap-y-36 items-center mt-24">
+          {/* <Hero /> */}
+          {/* <Aims /> */}
+        </main>
       </div>
     </>
   );
