@@ -20,7 +20,7 @@ export default function Home() {
         speedMax={1.6}
         speedScale={0.8}
       />
-      <div className="flex flex-col gap-y-28 w-full">
+      <div className="flex flex-col gap-y-28 w-full px-10">
         <Nav />
         <main className="flex flex-col gap-y-36 items-center mt-24">
           {/* <Hero /> */}
