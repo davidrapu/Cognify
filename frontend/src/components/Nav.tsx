@@ -77,7 +77,7 @@ export default function Nav() {
             <NavigationMenuItem>
               <NavigationMenuLink>
                 <NavLink
-                  to="/games"
+                  to="/about"
                   className={({ isActive }) =>
                     isActive ? activePageStyle : inactivePageStyle
                   }
