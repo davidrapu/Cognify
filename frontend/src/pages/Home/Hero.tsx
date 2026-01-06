@@ -28,7 +28,6 @@ export default function Hero() {
           cursor-pointer
           bg-primary text-primary-foreground
           transition-shadow duration-200 ease-out
-          hover:bg-primary/90 hover:shadow-sm
           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60
         "
       >
