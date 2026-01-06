@@ -5,12 +5,12 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "./ui/navigation-menu";
-import logo from "../assets/icons8-brain-pastel-color-32.png";
 import { NavigationMenuItem } from "@radix-ui/react-navigation-menu";
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext/AuthContext";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { AvatarFallback } from "@radix-ui/react-avatar";
+import Logo from "./Logo";
 
 const activePageStyle: string =
   "bg-primary text-primary-foreground text-[1.05em] px-3 py-1 rounded-[0.3em] m-0 font-semibold";
@@ -25,12 +25,7 @@ export default function Nav() {
         <div id="pages-and-logo" className="flex gap-x-5">
           <NavigationMenuItem className="">
             <NavigationMenuLink>
-              <Link to="/" className="flex flex-row items-center gap-x-1">
-                <img src={logo} alt="Logo" />
-                <span className="m-0 text-[1.8em] font-(family-name:--headings) tracking-[0.3em] ">
-                  COGNIFY
-                </span>
-              </Link>
+              <Logo />
             </NavigationMenuLink>
           </NavigationMenuItem>
 
