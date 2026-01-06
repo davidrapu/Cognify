@@ -24,7 +24,7 @@ export default function Home() {
         <Nav />
         <main className="flex flex-col gap-y-36 items-center mt-24">
           <Hero />
-          {/* <Aims /> */}
+          <Aims />
         </main>
       </div>
     </div>
