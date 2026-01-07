@@ -1,0 +1,101 @@
+{
+  "testName": "Cognitive Screening Test",
+  "description": "MMSE-inspired, non-clinical assessment",
+  "totalQuestions": 11,
+  "totalPoints": 30,
+  "questions": [
+    {
+      "id": 1,
+      "category": "orientation",
+      "question": "Answer the following questions about time: year, month, day of the week, date, and season.",
+      "type": "multi_part",
+      "points": 5,
+      "subQuestions": [
+        "What year is it?",
+        "What month is it?",
+        "What day of the week is it?",
+        "What is today’s date?",
+        "What season is it?"
+      ]
+    },
+    {
+      "id": 2,
+      "category": "orientation",
+      "question": "Answer the following questions about place.",
+      "type": "multi_part",
+      "points": 5,
+      "subQuestions": [
+        "What country are you in?",
+        "What city or town are you in?",
+        "What building are you in?",
+        "What room or space are you in?",
+        "Is this place your home, work, or school?"
+      ]
+    },
+    {
+      "id": 3,
+      "category": "registration",
+      "instruction": "Remember the following three words: Apple, Chair, River.",
+      "question": "Immediately repeat the three words.",
+      "type": "memory",
+      "points": 3
+    },
+    {
+      "id": 4,
+      "category": "attention_calculation",
+      "question": "Starting from 100, subtract 7 five times.",
+      "type": "calculation",
+      "points": 5
+    },
+    {
+      "id": 5,
+      "category": "recall",
+      "question": "Recall the three words you were asked to remember earlier.",
+      "type": "memory",
+      "points": 3
+    },
+    {
+      "id": 6,
+      "category": "language",
+      "question": "Name the object shown on the screen (pen).",
+      "type": "text",
+      "points": 1
+    },
+    {
+      "id": 7,
+      "category": "language",
+      "question": "Name the object shown on the screen (watch).",
+      "type": "text",
+      "points": 1
+    },
+    {
+      "id": 8,
+      "category": "language",
+      "question": "Repeat the sentence exactly: \"The dog ran quickly across the park.\"",
+      "type": "text",
+      "points": 1
+    },
+    {
+      "id": 9,
+      "category": "language",
+      "question": "Follow this instruction: Click the button, wait two seconds, then click it again.",
+      "type": "action",
+      "points": 3
+    },
+    {
+      "id": 10,
+      "category": "language",
+      "question": "Write a complete sentence of your choice.",
+      "type": "text",
+      "points": 1
+    },
+    {
+      "id": 11,
+      "category": "language",
+      "question": "Which of the following is a fruit?",
+      "type": "multiple_choice",
+      "options": ["Car", "Apple", "Chair"],
+      "points": 2
+    }
+  ]
+}
