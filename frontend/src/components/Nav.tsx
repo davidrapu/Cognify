@@ -13,9 +13,9 @@ import { AvatarFallback } from "@radix-ui/react-avatar";
 import Logo from "./Logo";
 
 const activePageStyle: string =
-  "bg-primary text-primary-foreground text-[1.05em] px-3 py-1 rounded-[0.3em] m-0 font-semibold";
+  "bg-primary text-primary-foreground text-[1.25em] px-3 py-1 rounded-[0.3em] m-0 font-semibold";
 const inactivePageStyle: string =
-  "text-[1em] text-foreground transition-colors duration-150 ease-out hover:text-primary hover:underline underline-offset-4";
+  "text-[1.2em] text-foreground transition-colors duration-150 ease-out hover:text-primary hover:underline underline-offset-4";
 
 export default function Nav() {
   const { loggedIn } = useAuth();
@@ -93,7 +93,7 @@ export default function Nav() {
             </NavigationMenuTrigger>
           ) : (
             <NavigationMenuLink>
-              <Link to="/login" className="flex items-center text-foreground">
+              <Link to="/login" className="flex items-center text-foreground text-[1.2em] ">
                 Login
               </Link>
               {/* Include signup and logged-in user state later */}
