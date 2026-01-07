@@ -3,15 +3,21 @@ import logo from "../assets/icons8-brain-pastel-color-32.png";
 import { Link } from 'react-router-dom';
 
 type LogoProps = {
-    textSize?: string;
-    tracking?: string;
+    textSize?: number;
+    tracking?: number;
 }
 
-export default function Logo({textSize = "1.8em", tracking = "0.3em"}: LogoProps) {
+export default function Logo({ textSize = 1.8, tracking = 0.3 }: LogoProps) {
   return (
     <Link to="/" className="flex flex-row items-center gap-x-1">
       <img src={logo} alt="Logo" />
-      <span className={`m-0 text-[${textSize}] font-(family-name:--headings) tracking-[${tracking}] `}>
+      <span
+        style={{
+          fontSize: `${textSize}em`,
+          letterSpacing: `${tracking}em`,
+        }}
+        className="m-0 font-(family-name:--headings)"
+      >
         COGNIFY
       </span>
     </Link>
