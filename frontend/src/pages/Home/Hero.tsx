@@ -18,7 +18,7 @@ export default function Hero() {
       </div>
 
       <button
-        onClick={() => navigate(loggedIn ? "/dashboard" : "/login")}
+        onClick={() => navigate(loggedIn ? "/dashboard" : "/quiz")}
         className="
           self-center
           text-xl font-semibold
