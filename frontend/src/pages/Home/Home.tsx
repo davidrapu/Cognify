@@ -21,7 +21,9 @@ export default function Home() {
         speedScale={0.8}
       />
       <div className="relative z-10 flex flex-col gap-y-10 w-full px-10">
-        <Nav />
+        <header>
+          <Nav />
+        </header>
         <main className="flex flex-col gap-y-36 items-center mt-24">
           <Hero />
           <Aims />
