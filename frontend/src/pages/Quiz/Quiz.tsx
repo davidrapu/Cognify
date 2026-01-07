@@ -6,7 +6,7 @@ export default function Quiz() {
   return (
     <>
     <Header />
-    <main className='mt-20 flex justify-center'>
+    <main className=' mt-20 flex justify-center min-h-fit '>
         <QuizCard />
     </main>
     </>
