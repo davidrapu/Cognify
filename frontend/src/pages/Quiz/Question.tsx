@@ -1,14 +1,18 @@
 import React, { useState } from 'react'
 
-const question = {
-  id: 1,
-  category: "orientation",
-  question: "What year is it?",
-  type: "system_time",
-  points: 1,
-};
+type QuestionData = {
+  id: number,
+  category: string,
+  question: string,
+  type: string,
+  points: number,
+  options?: string[]
+}
+type QuestionProps = {
+    questionObj: QuestionData
+}
 
-export default function Question() {
+export default function Question({questionObj} : QuestionProps) {
     const [userInput, setUserInput] = useState("")
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,7 +22,7 @@ export default function Question() {
   return (
     <div className='w-full h-full flex flex-col gap-y-3 '>
       <h1 className='text-2xl'>
-        {question.question}
+        {questionObj.question}
       </h1>
       <input value={userInput} onChange={handleInputChange} placeholder='Answer...' className=' bg-input p-1 rounded-[10px] text-foreground font-normal bg-linear-to- ' />
     </div>
