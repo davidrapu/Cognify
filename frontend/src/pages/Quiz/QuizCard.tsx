@@ -9,8 +9,14 @@ type QuizCardProps = {
   dispatch: React.Dispatch<QuizAction>
 }
 
-export default function QuizCard(props: QuizCardProps) {
-  const questionObj = quizInfo.questions.find((question) => question.id === props.state.currentQuestion)
+export default function QuizCard({state, dispatch}: QuizCardProps) {
+  const questionObj = quizInfo.questions.find((question) => question.id === state.currentQuestion)
+  const [userInput, setUserInput] = useState("")
+
+  const handleClick = () => {
+    dispatch({type: "next"})
+    setUserInput("")
+  }
 
   if (!questionObj) return null
 
@@ -23,10 +29,15 @@ export default function QuizCard(props: QuizCardProps) {
         <p className="text-secondary font-medium">{quizInfo.description}</p>
       </div>
       <div className="flex flex-col gap-y-2">
-        <Progress value={props.state.currentQuestion} max={quizInfo.totalQuestions} />
+        <Progress
+          value={state.currentQuestion}
+          max={quizInfo.totalQuestions}
+        />
         <div className="flex justify-between font-normal">
           <span>
-            Question <span className="text-primary">{props.state.currentQuestion}</span> of <span className="text-primary">{quizInfo.totalQuestions}</span>
+            Question{" "}
+            <span className="text-primary">{state.currentQuestion}</span>{" "}
+            of <span className="text-primary">{quizInfo.totalQuestions}</span>
           </span>
           <span>
             <span className="text-primary">X</span> /
@@ -35,7 +46,14 @@ export default function QuizCard(props: QuizCardProps) {
           </span>
         </div>
       </div>
-      <Question questionObj={questionObj} />
+      <Question questionObj={questionObj} userInput={userInput} onChange={(v) => setUserInput(v)} />
+      <button
+      disabled={userInput.trim() === ""}
+        className={"bg-primary text-primary-foreground tracking-wide w-fit py-1 px-3 rounded-[5px] self-end cursor-pointer disabled:cursor-not-allowed disabled:bg-secondary "}
+        onClick={handleClick}
+      >
+        Next
+      </button>
     </div>
   );
 }
