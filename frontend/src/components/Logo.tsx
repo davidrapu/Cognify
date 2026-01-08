@@ -1,4 +1,3 @@
-import React from 'react'
 import logo from "../assets/icons8-brain-pastel-color-32.png";
 import { Link } from 'react-router-dom';
 

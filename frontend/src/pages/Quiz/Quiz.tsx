@@ -1,4 +1,3 @@
-import React from 'react'
 import Nav from '../../components/Nav'
 import QuizCard from './QuizCard'
 import { useQuizReducer } from '../../components/hooks/useQuizReducer'

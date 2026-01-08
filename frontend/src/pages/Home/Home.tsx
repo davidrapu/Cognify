@@ -1,4 +1,3 @@
-import React from "react";
 import { DottedGlowBackground } from "../../components/ui/dotted-glow-background";
 import Nav from "../../components/Nav";
 import Hero from "./Hero";
