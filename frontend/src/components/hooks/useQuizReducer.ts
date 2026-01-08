@@ -6,12 +6,12 @@ const initialState = {
 export type QuizState = {
   currentQuestion: number;
 };
-export type QuizAction = { type: "setCurrentQuestion"; payload: number };
+export type QuizAction = { type: "next"};
 
 function reducer(state: QuizState, action: QuizAction) {
   switch (action.type) {
-    case "setCurrentQuestion":
-      return { ...state, currentQuestion: action.payload };
+    case "next":
+      return { ...state, currentQuestion: state.currentQuestion + 1 };
     default:
       return state;
   }
