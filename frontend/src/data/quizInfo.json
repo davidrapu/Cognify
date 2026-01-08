@@ -2,7 +2,7 @@
   "testName": "Cognitive Screening Test",
   "description": "MMSE-inspired, non-clinical assessment",
   "totalPoints": 30,
-  "totalQuestions": 11,
+  "totalQuestions": 16,
   "questions": [
     {
       "id": 1,
