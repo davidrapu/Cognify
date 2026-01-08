@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 type QuestionData = {
   id: number,
@@ -9,22 +9,23 @@ type QuestionData = {
   options?: string[]
 }
 type QuestionProps = {
-    questionObj: QuestionData
+  questionObj: QuestionData,
+  userInput: string,
+  onChange: (value: string) => void
 }
 
-export default function Question({questionObj} : QuestionProps) {
-    const [userInput, setUserInput] = useState("")
+export default function Question({questionObj, userInput, onChange} : QuestionProps) {
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUserInput(e.target.value)
-    }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(e.target.value)
+  }
 
   return (
     <div className='w-full h-full flex flex-col gap-y-3 '>
       <h1 className='text-2xl'>
         {questionObj.question}
       </h1>
-      <input value={userInput} onChange={handleInputChange} placeholder='Answer...' className=' bg-input p-1 rounded-[10px] text-foreground font-normal bg-linear-to- ' />
+      <input value={userInput} onChange={handleChange} placeholder='Answer...' className=' bg-input p-1 rounded-[10px] text-foreground font-normal bg-linear-to- ' />
     </div>
   )
 }
