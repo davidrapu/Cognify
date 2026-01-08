@@ -21,11 +21,14 @@ export default function Question({questionObj, userInput, onChange} : QuestionPr
   }
 
   return (
-    <div className='w-full h-full flex flex-col gap-y-3 '>
-      <h1 className='text-2xl'>
-        {questionObj.question}
-      </h1>
-      <input value={userInput} onChange={handleChange} placeholder='Answer...' className=' bg-input p-1 rounded-[10px] text-foreground font-normal bg-linear-to- ' />
+    <div className="w-full h-full flex flex-col gap-y-3 ">
+      <h1 className="text-2xl">{questionObj.question}</h1>
+      <input
+        value={userInput}
+        onChange={handleChange}
+        placeholder="Answer..."
+        className=" bg-input p-1 rounded-[10px] text-foreground font-normal focus:outline-none focus:ring-2 focus:ring-primary "
+      />
     </div>
-  )
+  );
 }

@@ -29,27 +29,30 @@ export default function QuizCard({state, dispatch}: QuizCardProps) {
         <p className="text-secondary font-medium">{quizInfo.description}</p>
       </div>
       <div className="flex flex-col gap-y-2">
-        <Progress
-          value={state.currentQuestion}
-          max={quizInfo.totalQuestions}
-        />
+        <Progress value={state.currentQuestion} max={quizInfo.totalQuestions} />
         <div className="flex justify-between font-normal">
           <span>
             Question{" "}
-            <span className="text-primary">{state.currentQuestion}</span>{" "}
-            of <span className="text-primary">{quizInfo.totalQuestions}</span>
+            <span className="text-primary">{state.currentQuestion}</span> of{" "}
+            <span className="">{quizInfo.totalQuestions}</span>
           </span>
           <span>
             <span className="text-primary">X</span> /
-            <span className="text-primary">{quizInfo.totalPoints}</span> points
+            <span className="">{quizInfo.totalPoints}</span> points
             earned
           </span>
         </div>
       </div>
-      <Question questionObj={questionObj} userInput={userInput} onChange={(v) => setUserInput(v)} />
+      <Question
+        questionObj={questionObj}
+        userInput={userInput}
+        onChange={(v) => setUserInput(v)}
+      />
       <button
-      disabled={userInput.trim() === ""}
-        className={"bg-primary text-primary-foreground tracking-wide w-fit py-1 px-3 rounded-[5px] self-end cursor-pointer disabled:cursor-not-allowed disabled:bg-secondary "}
+        disabled={userInput.trim() === ""}
+        className={
+          "bg-primary text-primary-foreground tracking-wide w-fit py-1 px-3 rounded-[5px] self-end cursor-pointer disabled:cursor-not-allowed disabled:bg-secondary "
+        }
         onClick={handleClick}
       >
         Next
