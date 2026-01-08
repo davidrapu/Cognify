@@ -8,18 +8,12 @@ export default function Quiz() {
   const [state, dispatch] = useQuizReducer()
   return (
     <>
-    <Header />
+    <header>
+      <Nav />
+    </header>
     <main className=' mt-30 flex justify-center min-h-fit '>
         <QuizCard state={state} dispatch={dispatch} />
     </main>
     </>
   )
-}
-
-function Header() {
-    return (
-        <header>
-            <Nav />
-        </header>
-    )
 }
