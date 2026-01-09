@@ -2,23 +2,26 @@ import React, { useState } from "react";
 import Progress from "../../components/ui/progress";
 import quizInfo from "../../data/quizInfo.json";
 import Question from "./Question";
-import type { QuizState, QuizAction } from "../../components/hooks/useQuizReducer";
+import type { QuizState, QuizAction } from "../../hooks/useQuizReducer";
 
 type QuizCardProps = {
-  state: QuizState,
-  dispatch: React.Dispatch<QuizAction>
-}
+  state: QuizState;
+  dispatch: React.Dispatch<QuizAction>;
+};
 
-export default function QuizCard({state, dispatch}: QuizCardProps) {
-  const questionObj = quizInfo.questions.find((question) => question.id === state.currentQuestion)
-  const [userInput, setUserInput] = useState("")
+export default function QuizCard({ state, dispatch }: QuizCardProps) {
+  const questionObj = quizInfo.questions.find(
+    (question) => question.id === state.currentQuestion
+  );
+  const [userInput, setUserInput] = useState("");
 
   const handleClick = () => {
+    dispatch({ type: "increaseTotalPoints", payload: questionObj?.points || 0 });
     dispatch({type: "next"})
-    setUserInput("")
-  }
+    setUserInput("");
+  };
 
-  if (!questionObj) return null
+  if (!questionObj) return null;
 
   return (
     <div className="container bg-card text-card-foreground w-210 p-5 rounded-[20px] font-black flex flex-col gap-y-7 border border-white/10 ">
@@ -37,9 +40,8 @@ export default function QuizCard({state, dispatch}: QuizCardProps) {
             <span className="">{quizInfo.totalQuestions}</span>
           </span>
           <span>
-            <span className="text-primary">X</span> /
-            <span className="">{quizInfo.totalPoints}</span> points
-            earned
+            <span className="text-primary"> {state.totalPoints} </span> /{" "}
+            <span className="">{quizInfo.totalPoints}</span> points earned
           </span>
         </div>
       </div>
