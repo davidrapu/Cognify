@@ -8,42 +8,42 @@
       "id": 1,
       "category": "orientation",
       "question": "What year is it?",
-      "type": "system_time",
+      "type": "system_time year",
       "points": 1
     },
     {
       "id": 2,
       "category": "orientation",
       "question": "What month is it?",
-      "type": "system_time",
+      "type": "system_time month",
       "points": 1
     },
     {
       "id": 3,
       "category": "orientation",
       "question": "What day of the week is it?",
-      "type": "system_time",
+      "type": "system_time day",
       "points": 1
     },
     {
       "id": 4,
       "category": "orientation",
       "question": "What is today’s date?",
-      "type": "system_time",
+      "type": "system_time date",
       "points": 1
     },
     {
       "id": 5,
       "category": "orientation",
       "question": "What season is it?",
-      "type": "system_time",
+      "type": "system_time season",
       "points": 1
     },
     {
       "id": 6,
       "category": "orientation",
       "question": "What country are you in?",
-      "type": "rule_based",
+      "type": "rule_based country",
       "points": 1
     },
     {
