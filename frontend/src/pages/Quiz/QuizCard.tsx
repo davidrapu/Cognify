@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Progress from "../../components/ui/progress";
 import quizInfo from "../../data/quizInfo.json";
 import Question from "./Question";
@@ -14,6 +14,13 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
     (question) => question.id === state.currentQuestion
   );
   const [userInput, setUserInput] = useState("");
+  const [isPresenting, setIsPresenting] = useState(
+    questionObj?.category === "presentation"
+  );
+
+  useEffect(() =>{
+    setIsPresenting(questionObj?.category === 'presentation')
+  }, [questionObj?.id, questionObj?.category])
 
   const handleClick = () => {
     dispatch({ type: "increaseTotalPoints", payload: questionObj?.points || 0 });
@@ -49,17 +56,20 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
         questionObj={questionObj}
         userInput={userInput}
         onChange={(v) => setUserInput(v)}
+        isPresenting={isPresenting}
+        setIsPresenting={(value:boolean) => setIsPresenting(value)}
       />
-      <button
-        disabled={userInput.trim() === ""}
-        className={
-          "bg-primary text-primary-foreground tracking-wide w-fit py-1 px-3 rounded-[5px] self-end cursor-pointer disabled:cursor-not-allowed disabled:bg-secondary "
-        }
-        onClick={handleClick}
-        
-      >
-        Next
-      </button>
+      {!isPresenting && (
+        <button
+          disabled={userInput.trim() === ""}
+          className={
+            "bg-primary text-primary-foreground tracking-wide w-fit py-1 px-3 rounded-[5px] self-end cursor-pointer disabled:cursor-not-allowed disabled:bg-secondary "
+          }
+          onClick={handleClick}
+        >
+          Next
+        </button>
+      )}
     </div>
   );
 }
