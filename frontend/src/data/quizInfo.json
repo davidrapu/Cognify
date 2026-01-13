@@ -55,62 +55,67 @@
     },
     {
       "id": 8,
+      "category": "presentation",
+      "question": "Remember these three words: Apple, Chair, River"
+    },
+    {
+      "id" : 9,
       "category": "registration",
-      "question": "Repeat the following three words: Apple, Chair, River.",
-      "type": "memory",
+      "question": "Repeat those words",
+      "type": "memory recall",
       "points": 3
     },
     {
-      "id": 9,
+      "id": 10,
       "category": "attention_calculation",
       "question": "Starting from 100, subtract 7 five times.",
       "type": "text",
       "points": 5
     },
     {
-      "id": 10,
+      "id": 11,
       "category": "recall",
       "question": "Recall the three words you were asked to remember earlier.",
       "type": "memory",
       "points": 3
     },
     {
-      "id": 11,
+      "id": 12,
       "category": "language",
       "question": "Name the object shown on the screen (pen).",
       "type": "text",
       "points": 1
     },
     {
-      "id": 12,
+      "id": 13,
       "category": "language",
       "question": "Name the object shown on the screen (watch).",
       "type": "text",
       "points": 1
     },
     {
-      "id": 13,
+      "id": 14,
       "category": "language",
       "question": "Repeat the sentence exactly: \"The dog ran quickly across the park.\"",
       "type": "text",
       "points": 1
     },
     {
-      "id": 14,
+      "id": 15,
       "category": "language",
       "question": "Follow this instruction: Click the button, wait two seconds, then click it again.",
       "type": "action",
       "points": 3
     },
     {
-      "id": 15,
+      "id": 16,
       "category": "language",
       "question": "Write a complete sentence of your choice.",
       "type": "rule_based",
       "points": 1
     },
     {
-      "id": 16,
+      "id": 17,
       "category": "language",
       "question": "Which of the following is a fruit?",
       "type": "multiple_choice",
