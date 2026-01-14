@@ -8,117 +8,143 @@
       "id": 1,
       "category": "orientation",
       "question": "What year is it?",
+      "comment": "Enter the current year in YYYY format.",
       "type": "system_time year",
+      "inputType": "number",
       "points": 1
     },
     {
       "id": 2,
       "category": "orientation",
       "question": "What month is it?",
+      "comment": "Enter the full month name.",
       "type": "system_time month",
+      "inputType": "text",
       "points": 1
     },
     {
       "id": 3,
       "category": "orientation",
       "question": "What day of the week is it?",
+      "comment": "Enter the full day name.",
       "type": "system_time day",
+      "inputType": "text",
       "points": 1
     },
     {
       "id": 4,
       "category": "orientation",
       "question": "What is today’s date?",
+      "comment": "Enter the current date in DD/MM/YYYY format.",
       "type": "system_time date",
+      "inputType": "date",
       "points": 1
     },
     {
       "id": 5,
       "category": "orientation",
       "question": "What season is it?",
+      "comment": "Enter one of: Spring, Summer, Autumn, or Winter.",
       "type": "system_time season",
-      "points": 1
+      "inputType": "text",
+      "points": 2
     },
     {
       "id": 6,
       "category": "orientation",
       "question": "What country are you in?",
+      "comment": "Enter the name of the country you are currently in.",
       "type": "rule_based country",
-      "points": 1
+      "inputType": "text",
+      "points": 2
     },
     {
       "id": 7,
       "category": "orientation",
       "question": "What city or town are you in?",
+      "comment": "Enter the name of the city or town you are currently in.",
       "type": "rule_based",
-      "points": 1
+      "inputType": "text",
+      "points": 2
     },
     {
       "id": 8,
-      "category": "presentation",
-      "question": "Remember these three words: Apple, Chair, River"
-    },
-    {
-      "id" : 9,
       "category": "registration",
-      "question": "Repeat those words",
+      "statement": "Remember these three words: Apple, Chair, River.",
+      "question": "Repeat those words.",
+      "comment": "Type the three words exactly as presented, separated by commas.",
       "type": "memory recall",
+      "inputType": "text",
       "points": 3
     },
     {
-      "id": 10,
+      "id": 9,
       "category": "attention_calculation",
       "question": "Starting from 100, subtract 7 five times.",
+      "comment": "Enter the sequence of numbers resulting from each subtraction, in order.",
       "type": "text",
+      "inputType": "text",
       "points": 5
     },
     {
-      "id": 11,
+      "id": 10,
       "category": "recall",
       "question": "Recall the three words you were asked to remember earlier.",
+      "comment": "Type the three remembered words in any order.",
       "type": "memory",
+      "inputType": "text",
       "points": 3
+    },
+    {
+      "id": 11,
+      "category": "language",
+      "question": "Name the object shown on the screen (pen).",
+      "comment": "Enter the name of the object shown.",
+      "type": "text",
+      "inputType": "text",
+      "points": 1
     },
     {
       "id": 12,
       "category": "language",
-      "question": "Name the object shown on the screen (pen).",
+      "question": "Name the object shown on the screen (watch).",
+      "comment": "Enter the name of the object shown.",
       "type": "text",
+      "inputType": "text",
       "points": 1
     },
     {
       "id": 13,
       "category": "language",
-      "question": "Name the object shown on the screen (watch).",
+      "question": "Repeat the sentence exactly: \"The dog ran quickly across the park.\"",
+      "comment": "Type the sentence exactly as shown, including word order.",
       "type": "text",
+      "inputType": "text",
       "points": 1
     },
     {
       "id": 14,
       "category": "language",
-      "question": "Repeat the sentence exactly: \"The dog ran quickly across the park.\"",
-      "type": "text",
-      "points": 1
+      "question": "Follow this instruction: Click the button, wait two seconds, then click it again.",
+      "type": "action",
+      "inputType": "action",
+      "points": 3
     },
     {
       "id": 15,
       "category": "language",
-      "question": "Follow this instruction: Click the button, wait two seconds, then click it again.",
-      "type": "action",
-      "points": 3
+      "question": "Write a complete sentence of your choice.",
+      "type": "rule_based",
+      "inputType": "textarea",
+      "points": 1
     },
     {
       "id": 16,
       "category": "language",
-      "question": "Write a complete sentence of your choice.",
-      "type": "rule_based",
-      "points": 1
-    },
-    {
-      "id": 17,
-      "category": "language",
       "question": "Which of the following is a fruit?",
+      "comment": "Select the correct option from the choices provided.",
       "type": "multiple_choice",
+      "inputType": "radio",
       "options": ["Car", "Apple", "Chair"],
       "points": 2
     }
