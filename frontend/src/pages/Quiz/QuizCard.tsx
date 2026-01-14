@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Progress from "../../components/ui/progress";
 import quizInfo from "../../data/quizInfo.json";
 import Question from "./Question";
