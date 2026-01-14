@@ -14,17 +14,15 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
     (question) => question.id === state.currentQuestion
   );
   const [userInput, setUserInput] = useState("");
-  const [isPresenting, setIsPresenting] = useState(
-    questionObj?.category === "presentation"
-  );
-
-  useEffect(() =>{
-    setIsPresenting(questionObj?.category === 'presentation')
-  }, [questionObj?.id, questionObj?.category])
+  const [isAknowledged, setIsAknowledged] = useState(false);
 
   const handleClick = () => {
-    dispatch({ type: "increaseTotalPoints", payload: questionObj?.points || 0 });
-    dispatch({type: "next"})
+    console.log(userInput)
+    dispatch({
+      type: "increaseTotalPoints",
+      payload: questionObj?.points || 0,
+    });
+    dispatch({ type: "next" });
     setUserInput("");
   };
 
@@ -56,10 +54,10 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
         questionObj={questionObj}
         userInput={userInput}
         onChange={(v) => setUserInput(v)}
-        isPresenting={isPresenting}
-        setIsPresenting={(value:boolean) => setIsPresenting(value)}
+        isAknowledged={isAknowledged}
+        setIsAknowledged={setIsAknowledged}
       />
-      {!isPresenting && (
+      {(questionObj?.category === "registration" && !isAknowledged) || (
         <button
           disabled={userInput.trim() === ""}
           className={
