@@ -98,8 +98,8 @@
     {
       "id": 11,
       "category": "language",
-      "question": "Name the object shown on the screen (pen).",
-      "comment": "Enter the name of the object shown.",
+      "question": "Name an object",
+      "comment": "Any object",
       "type": "text",
       "inputType": "text",
       "points": 1
@@ -107,8 +107,8 @@
     {
       "id": 12,
       "category": "language",
-      "question": "Name the object shown on the screen (watch).",
-      "comment": "Enter the name of the object shown.",
+      "question": "Name another object",
+      "comment": "Any object except the last one",
       "type": "text",
       "inputType": "text",
       "points": 1
