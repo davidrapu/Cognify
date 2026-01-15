@@ -1,34 +1,40 @@
-import { useEffect, useRef, type Dispatch, type SetStateAction } from "react"
+import { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
 
 type QuestionData = {
-  id?: number,
-  category: string,
-  statement? : string,
-  question: string,
-  comment? : string,
-  type?: string,
-  inputType: string,
-  points?: number,
-  options?: string[]
-}
+  id?: number;
+  category: string;
+  statement?: string;
+  question: string;
+  comment?: string;
+  type?: string;
+  inputType: string;
+  points?: number;
+  options?: string[];
+};
 type QuestionProps = {
-  questionObj: QuestionData,
-  userInput: string,
-  onChange: (value: string) => void
-  isAknowledged: boolean
-  setIsAknowledged : Dispatch<SetStateAction<boolean>>
-}
+  questionObj: QuestionData;
+  userInput: string;
+  onChange: (value: string) => void;
+  isAknowledged: boolean;
+  setIsAknowledged: Dispatch<SetStateAction<boolean>>;
+};
 
-export default function Question({questionObj, userInput, onChange, isAknowledged, setIsAknowledged} : QuestionProps) {
-  const inputRef = useRef<HTMLInputElement>(null)
+export default function Question({
+  questionObj,
+  userInput,
+  onChange,
+  isAknowledged,
+  setIsAknowledged,
+}: QuestionProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
-    inputRef.current?.focus()
-  }, [questionObj.id])
+    inputRef.current?.focus();
+  }, [questionObj.id]);
   const handleOkClick = () => {
-    setIsAknowledged(prev => !prev)
-  }
+    setIsAknowledged((prev) => !prev);
+  };
 
-  if (questionObj.category === 'registration' && !isAknowledged) {
+  if (questionObj.category === "registration" && !isAknowledged) {
     return (
       <div className="w-full h-full flex flex-col items-center gap-y-3 ">
         <h1 className="text-2xl">{questionObj.statement}</h1>
@@ -42,7 +48,42 @@ export default function Question({questionObj, userInput, onChange, isAknowledge
         </button>
       </div>
     );
-  }else{
+  } else if (questionObj.type === "multiple_choice") {
+    return (
+      <div className="w-full h-full flex flex-col gap-y-3 ">
+        <div>
+          <h1 className="text-2xl">{questionObj.question}</h1>
+          <p className="font-medium text-secondary"> {questionObj.comment} </p>
+        </div>
+        <div className="grid grid-rows-2 grid-flow-col gap-2.5">
+          {questionObj.options?.map((choice) => (
+            <label
+              key={choice}
+              htmlFor={choice}
+              className={`flex items-center justify-center gap-x-2 py-2 px-3 
+        border-2 rounded-[10px] cursor-pointer
+        ${
+          userInput === choice
+            ? "border-primary bg-primary/10"
+            : "bg-secondary border-border"
+        }`}
+            >
+              <input
+                id={choice}
+                type="radio"
+                name={`question-${questionObj.id}`}
+                value={choice}
+                checked={userInput === choice}
+                onChange={(e) => onChange(e.target.value)}
+                className="w-4 h-4"
+              />
+              <span>{choice}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+    );
+  } else {
     return (
       <div className="w-full h-full flex flex-col gap-y-3 ">
         <div>
@@ -61,5 +102,4 @@ export default function Question({questionObj, userInput, onChange, isAknowledge
       </div>
     );
   }
-
 }
