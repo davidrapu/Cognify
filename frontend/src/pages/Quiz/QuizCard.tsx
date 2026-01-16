@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState } from "react";
 import Progress from "../../components/ui/progress";
 import quizInfo from "../../data/quizInfo.json";
 import Question from "./Question";
@@ -10,6 +10,7 @@ type QuizCardProps = {
 };
 
 export default function QuizCard({ state, dispatch }: QuizCardProps) {
+
   const questionObj = quizInfo.questions.find(
     (question) => question.id === state.currentQuestion
   );
@@ -25,6 +26,14 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
     dispatch({ type: "next" });
     setUserInput("");
   };
+
+  const handleSubmit = () => {
+    dispatch({
+      type: "increaseTotalPoints",
+      payload: questionObj?.points || 0,
+    });
+    dispatch({type: 'end'})
+  }
 
   if (!questionObj) return null;
 
@@ -57,17 +66,28 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
         isAknowledged={isAknowledged}
         setIsAknowledged={setIsAknowledged}
       />
-      {(questionObj?.category === "registration" && !isAknowledged) || (
-        <button
-          disabled={userInput.trim() === ""}
-          className={
-            "bg-primary text-primary-foreground tracking-wide w-fit py-1 px-3 rounded-[5px] self-end cursor-pointer disabled:cursor-not-allowed disabled:bg-secondary "
-          }
-          onClick={handleClick}
-        >
-          Next
-        </button>
-      )}
+      {(questionObj?.category === "registration" && !isAknowledged) ||
+        (questionObj?.id < 16 ? (
+          <button
+            disabled={userInput.trim() === ""}
+            className={
+              "bg-primary text-primary-foreground tracking-wide w-fit py-1 px-3 rounded-[5px] self-end cursor-pointer disabled:cursor-not-allowed disabled:bg-secondary "
+            }
+            onClick={handleClick}
+          >
+            Next
+          </button>
+        ) : (
+          <button
+            disabled={userInput.trim() === ""}
+            className={
+              "bg-primary text-primary-foreground tracking-wide w-fit py-1 px-3 rounded-[5px] self-end cursor-pointer disabled:cursor-not-allowed disabled:bg-secondary "
+            }
+            onClick={handleSubmit}
+          >
+            Submit
+          </button>
+        ))}
     </div>
   );
 }
