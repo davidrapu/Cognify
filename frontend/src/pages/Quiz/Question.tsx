@@ -1,6 +1,6 @@
 import { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
 
-type QuestionData = {
+interface QuestionData {
   id?: number;
   category: string;
   statement?: string;
@@ -11,7 +11,7 @@ type QuestionData = {
   points?: number;
   options?: string[];
 };
-type QuestionProps = {
+interface QuestionProps extends QuestionData {
   questionObj: QuestionData;
   userInput: string;
   onChange: (value: string) => void;
@@ -83,7 +83,20 @@ export default function Question({
         </div>
       </div>
     );
-  } else {
+  } else if (questionObj.type === 'action') {
+    return (
+      <div className="w-full h-full flex flex-col gap-y-3 ">
+        <div>
+          <h1 className="text-2xl">{questionObj.question}</h1>
+          <p className="font-medium text-secondary"> {questionObj.comment} </p>
+        </div>
+        <button>
+          Click me
+        </button>
+      </div>
+    );
+  }
+  else {
     return (
       <div className="w-full h-full flex flex-col gap-y-3 ">
         <div>
