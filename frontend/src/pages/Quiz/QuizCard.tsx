@@ -4,7 +4,7 @@ import quizInfo from "../../data/quizInfo.json";
 import Question from "./Question";
 import type { QuizState, QuizAction } from "../../hooks/useQuizReducer";
 
-type QuizCardProps = {
+interface QuizCardProps {
   state: QuizState;
   dispatch: React.Dispatch<QuizAction>;
 };
