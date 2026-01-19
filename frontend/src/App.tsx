@@ -5,6 +5,7 @@ import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Quiz from "./pages/Quiz/Quiz";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import { Analytics } from "@vercel/analytics/react";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         </Routes>
       </BrowserRouter>
       <SpeedInsights />
+      <Analytics />
     </>
   );
 }
