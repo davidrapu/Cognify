@@ -1,3 +1,4 @@
+import Button from "@/components/Button";
 import { useAuth } from "../../contexts/AuthContext/AuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -16,7 +17,7 @@ export default function Hero() {
         </p>
       </div>
 
-      <button
+      <Button
         onClick={() => navigate(loggedIn ? "/dashboard" : "/quiz")}
         className="
           self-center
@@ -24,14 +25,12 @@ export default function Hero() {
           py-[0.3em] px-[1em]
           rounded-[0.5em]
           border-2
-          cursor-pointer
-          bg-primary text-primary-foreground
           transition-shadow duration-200 ease-out
           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60
         "
       >
         Get Started
-      </button>
+      </Button>
     </section>
   );
 }

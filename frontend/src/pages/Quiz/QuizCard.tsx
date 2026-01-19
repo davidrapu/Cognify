@@ -3,6 +3,7 @@ import Progress from "../../components/ui/progress";
 import quizInfo from "../../data/quizInfo.json";
 import Question from "./Question";
 import type { QuizState, QuizAction } from "../../hooks/useQuizReducer";
+import Button from "@/components/Button";
 
 interface QuizCardProps {
   state: QuizState;
@@ -68,25 +69,25 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
       />
       {(questionObj?.category === "registration" && !isAknowledged) ||
         (questionObj?.id < 16 ? (
-          <button
+          <Button
             disabled={userInput.trim() === ""}
             className={
-              "bg-primary text-primary-foreground tracking-wide w-fit py-1 px-3 rounded-[5px] self-end cursor-pointer disabled:cursor-not-allowed disabled:bg-secondary "
+              "self-end"
             }
             onClick={handleClick}
           >
             Next
-          </button>
+          </Button>
         ) : (
-          <button
+          <Button
             disabled={userInput.trim() === ""}
             className={
-              "bg-primary text-primary-foreground tracking-wide w-fit py-1 px-3 rounded-[5px] self-end cursor-pointer disabled:cursor-not-allowed disabled:bg-secondary "
+              "self-end"
             }
             onClick={handleSubmit}
           >
             Submit
-          </button>
+          </Button>
         ))}
     </div>
   );

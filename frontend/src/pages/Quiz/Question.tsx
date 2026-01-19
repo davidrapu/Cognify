@@ -1,3 +1,4 @@
+import Button from "@/components/Button";
 import { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
 
 type QuestionData = {
@@ -90,9 +91,9 @@ export default function Question({
           <h1 className="text-2xl">{questionObj.question}</h1>
           <p className="font-medium text-secondary"> {questionObj.comment} </p>
         </div>
-        <button>
+        <Button className="self-center">
           Click me
-        </button>
+        </Button>
       </div>
     );
   }
