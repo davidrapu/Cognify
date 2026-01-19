@@ -1,6 +1,6 @@
 import { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
 
-interface QuestionData {
+type QuestionData = {
   id?: number;
   category: string;
   statement?: string;
@@ -11,7 +11,7 @@ interface QuestionData {
   points?: number;
   options?: string[];
 };
-interface QuestionProps extends QuestionData {
+interface QuestionProps {
   questionObj: QuestionData;
   userInput: string;
   onChange: (value: string) => void;
