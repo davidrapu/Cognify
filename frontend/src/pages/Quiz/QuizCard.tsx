@@ -1,7 +1,7 @@
 import React, {useState } from "react";
 import Progress from "../../components/ui/progress";
 import quizInfo from "../../data/quizInfo.json";
-import Question from "./Question";
+import { Question } from "./Question/Question";
 import type { QuizState, QuizAction } from "../../hooks/useQuizReducer";
 import Button from "@/components/Button";
 
