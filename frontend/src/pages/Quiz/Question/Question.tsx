@@ -1,5 +1,5 @@
 import Button from "@/components/Button";
-import { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useRef } from "react";
 import ActionQuestion from "./ActionQuestion";
 import MultipleChoiceQuestion from "./MultipleChoiceQuestion";
 
@@ -17,15 +17,15 @@ type QuestionData = {
 interface QuestionProps {
   questionObj: QuestionData;
   userInput: string;
-  onChange: (value: string) => void;
+  setUserInput: React.Dispatch<React.SetStateAction<string>>
   isAknowledged: boolean;
-  setIsAknowledged: Dispatch<SetStateAction<boolean>>;
+  setIsAknowledged: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function Question({
   questionObj,
   userInput,
-  onChange,
+  setUserInput,
   isAknowledged,
   setIsAknowledged,
 }: QuestionProps) {
@@ -47,9 +47,9 @@ export function Question({
       </div>
     );
   } else if (questionObj.type === "multiple_choice") {
-    return <MultipleChoiceQuestion id={questionObj.id} question={questionObj.question} comment={questionObj.comment} options={questionObj.options || []} userInput={userInput} onChange={onChange} />
+    return <MultipleChoiceQuestion id={questionObj.id} question={questionObj.question} comment={questionObj.comment} options={questionObj.options || []} userInput={userInput} setUserInput={setUserInput}  />
   } else if (questionObj.type === "action") {
-    return <ActionQuestion comment={questionObj.comment} question={questionObj.question} />
+    return <ActionQuestion comment={questionObj.comment} question={questionObj.question} setUserInput={setUserInput} userInput={userInput}  />
   } else {
     return (
       <div className="w-full h-full flex flex-col gap-y-3 ">
@@ -61,7 +61,7 @@ export function Question({
         <input
           value={userInput}
           ref={inputRef}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => setUserInput(e.target.value)}
           placeholder="Answer..."
           type={questionObj.inputType}
           className=" bg-input p-1 rounded-[10px] text-foreground font-normal focus:outline-none focus:ring-2 focus:ring-primary "

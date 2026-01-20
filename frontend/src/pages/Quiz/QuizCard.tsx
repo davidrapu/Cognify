@@ -63,7 +63,7 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
       <Question
         questionObj={questionObj}
         userInput={userInput}
-        onChange={(v) => setUserInput(v)}
+        setUserInput={setUserInput}
         isAknowledged={isAknowledged}
         setIsAknowledged={setIsAknowledged}
       />

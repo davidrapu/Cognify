@@ -5,10 +5,10 @@ interface Props {
     comment?: string
     options: string[]
     userInput: string
-    onChange: (value: string) => void
+    setUserInput: React.Dispatch<React.SetStateAction<string>>
 }
 
-export default function MultipleChoiceQuestion({id, question, comment, options, userInput, onChange} : Props) {
+export default function MultipleChoiceQuestion({id, question, comment, options, userInput, setUserInput} : Props) {
     return (
       <div className="w-full h-full flex flex-col gap-y-3 ">
         <div>
@@ -34,7 +34,7 @@ export default function MultipleChoiceQuestion({id, question, comment, options, 
                 name={`question-${id}`}
                 value={choice}
                 checked={userInput === choice}
-                onChange={(e) => onChange(e.target.value)}
+                onChange={(e) => setUserInput(e.target.value)}
                 className="w-4 h-4"
               />
               <span>{choice}</span>
