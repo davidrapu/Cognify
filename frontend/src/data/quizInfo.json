@@ -37,7 +37,7 @@
       "question": "What is today’s date?",
       "comment": "Enter the current date in DD/MM/YYYY format.",
       "type": "system_time date",
-      "inputType": "date",
+      "inputType": "text",
       "points": 1
     },
     {
