@@ -5,6 +5,8 @@ import { Question } from "./Question/Question";
 import type { QuizState, QuizAction } from "../../hooks/useQuizReducer";
 import Button from "@/components/Button";
 import ScoreMeter from "@/components/ScoreMeter";
+import { useNavigate } from "react-router-dom";
+import { verifyAnswer } from "./VerifyAnswer";
 
 interface QuizCardProps {
   state: QuizState;
@@ -12,24 +14,21 @@ interface QuizCardProps {
 }
 
 export default function QuizCard({ state, dispatch }: QuizCardProps) {
+  const navigate = useNavigate()
+
   const questionObj = quizInfo.questions.find(
     (question) => question.id === state.currentQuestion,
   );
-  const [userInput, setUserInput] = useState("");
-  const [isAknowledged, setIsAknowledged] = useState(false);
+  const [userInput, setUserInput] = useState<string>('');
+  const [isAknowledged, setIsAknowledged] = useState<boolean>(false);
 
-  const handleClick = () => {
-    console.log(userInput);
+  const handleNext = () => {
     dispatch({
       type: "increaseTotalPoints",
-      payload: questionObj?.points || 0,
+      payload: verifyAnswer(questionObj?.type, questionObj?.points, userInput) || 0,
     });
     dispatch({ type: "next" });
     setUserInput("");
-  };
-
-  const startQuiz = () => {
-    dispatch({ type: "start" });
   };
 
   const endQuiz = () => {
@@ -46,6 +45,11 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
     // End the quiz
     dispatch({ type: "end" });
   };
+
+  const resetQuiz = () => {
+    setUserInput('')
+    dispatch({type: 'reset'})
+  }
 
   if (!questionObj) return null;
 
@@ -79,7 +83,7 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
             <li>Estimated time: 5–10 minutes</li>
           </ul>
 
-          <Button className="text-xl w-60 tracking-wider" onClick={startQuiz}>
+          <Button className="text-xl w-60 tracking-wider" onClick={() => dispatch({type:'start'})}>
             Start Test
           </Button>
         </div>
@@ -104,10 +108,6 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
                 <span className="text-primary">{state.currentQuestion}</span> of{" "}
                 <span className="">{quizInfo.totalQuestions}</span>
               </span>
-              <span>
-                <span className="text-primary"> {state.totalPoints} </span> /{" "}
-                <span className="">{quizInfo.totalPoints}</span> points earned
-              </span>
             </div>
           </div>
           <Question
@@ -122,7 +122,7 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
               <Button
                 disabled={userInput.trim() === ""}
                 className={"self-end"}
-                onClick={handleClick}
+                onClick={handleNext}
               >
                 Next
               </Button>
@@ -148,15 +148,19 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
               Thank you for completing the cognitive screening.
             </p>
           </div>
-          <div className="space-y-3 w-full">
+          <div className="w-full flex flex-col gap-y-4">
             <p className=" underline decoration-primary text-xl ">Results</p>
             <p className="text-destructive font-semibold text-sm">
               This screening provides a general snapshot of cognitive
               performance at one point in time. Results should be interpreted
               cautiously and in context.
             </p>
-            <ScoreMeter score={27} />
-            {/* Use progress bar */}
+            <ScoreMeter score={state.totalPoints} />
+            {/* Use progress bar for each category */}
+            <div className="mt-2 flex justify-between ">
+              <Button onClick={resetQuiz}>Reset</Button>
+              <Button onClick={() => navigate('/')}>Continue</Button>
+            </div>
           </div>
         </div>
       )}
