@@ -28,14 +28,6 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
     setUserInput("");
   };
 
-  const handleSubmit = () => {
-    dispatch({
-      type: "increaseTotalPoints",
-      payload: questionObj?.points || 0,
-    });
-    dispatch({ type: "end" });
-  };
-
   const startQuiz = () => {
     dispatch({ type: "start" });
   };
@@ -44,6 +36,12 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
     // Give them their score
     // Give them an option to try again or continue
     // Reset in both occasions. So dont reset at end but after end
+
+    // Increase total points
+    dispatch({
+      type: "increaseTotalPoints",
+      payload: questionObj?.points || 0,
+    });
 
     // End the quiz
     dispatch({ type: "end" });
@@ -139,6 +137,7 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
             ))}
         </div>
       )}
+
       {state.quizState === "finish" && (
         <div className="flex flex-col items-center gap-y-3">
           <div className="w-full">
