@@ -9,7 +9,7 @@
       "category": "orientation",
       "question": "What year is it?",
       "comment": "Enter the current year in YYYY format.",
-      "type": "system_time year",
+      "type": "year",
       "inputType": "number",
       "points": 1
     },
@@ -18,7 +18,7 @@
       "category": "orientation",
       "question": "What month is it?",
       "comment": "Enter the full month name.",
-      "type": "system_time month",
+      "type": "month",
       "inputType": "text",
       "points": 1
     },
@@ -27,7 +27,7 @@
       "category": "orientation",
       "question": "What day of the week is it?",
       "comment": "Enter the full day name.",
-      "type": "system_time day",
+      "type": "day",
       "inputType": "text",
       "points": 1
     },
@@ -36,7 +36,7 @@
       "category": "orientation",
       "question": "What is today’s date?",
       "comment": "Enter the current date in DD/MM/YYYY format.",
-      "type": "system_time date",
+      "type": "date",
       "inputType": "text",
       "points": 1
     },
@@ -45,7 +45,7 @@
       "category": "orientation",
       "question": "What season is it?",
       "comment": "Enter one of: Spring, Summer, Autumn, or Winter.",
-      "type": "system_time season",
+      "type": "season",
       "inputType": "text",
       "points": 2
     },
@@ -54,7 +54,7 @@
       "category": "orientation",
       "question": "What country are you in?",
       "comment": "Enter the name of the country you are currently in.",
-      "type": "rule_based country",
+      "type": "country",
       "inputType": "text",
       "points": 2
     },
