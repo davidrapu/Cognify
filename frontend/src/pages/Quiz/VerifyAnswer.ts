@@ -1,18 +1,4 @@
-const questionObj = {
-  id: 1,
-  category: "orientation",
-  question: "What year is it?",
-  type: "system_time date",
-  points: 1,
-};
 
-type QuestionObjectType = {
-  id: number,
-  category: string,
-  question: string,
-  type: string,
-  points: number
-};
 
 const days = [
   "sunday",
@@ -38,12 +24,6 @@ const months = [
     'december'
 ]
 
-const options: Intl.DateTimeFormatOptions = {
-  weekday: "long",
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-};
 function getSeason(month: number) : string {
     switch (month) {
         case 0:
@@ -74,25 +54,41 @@ function getSeason(month: number) : string {
             return ''
     }
 }
-function verifyAnswer(questionObj : QuestionObjectType) : void {
+export function verifyAnswer(type:string = '', points:number = 0, userInput:string) : void | number {
+
+    /**
+     * Verifies users answer is correct
+     * 
+     * @param type - type of question
+     * @param points - total points of the question
+     * @param userInput - users answer
+     * @returns The total points a user recieves from their answer
+     */
+
     const dateObj = new Date(Date.now())
     const month = dateObj.getMonth()
-    switch (questionObj.type.split(" ")[1].toLowerCase()){
+    const year = dateObj.getFullYear()
+    const day = dateObj.getDate()
+    switch (type.toLowerCase()){
         case 'year':
-            console.log(dateObj.getFullYear())
-            break;
+            if (parseInt(userInput) === year) return points
+            else return 0
         case 'month':
-            console.log(months[month]);
-            break;
-        case 'day': 
-            console.log(days[dateObj.getDay()]);
-            break;
+            if(userInput.trim().toLowerCase() === months[month]) return points
+            else return 0
+        case 'day':
+            if (userInput.trim().toLowerCase() === days[dateObj.getDay()])
+              return points;
+            else return 0;
         case 'date':
-            console.log(dateObj.toLocaleDateString(undefined, options))
-            break
+            try {
+                const [userDay, userMonth, userYear] = userInput.split('/').map(Number)
+                if (userDay === day && userMonth === month+1 && userYear === year) return points
+                return 0
+            }catch{
+                return 0
+            }
         case 'season':
             console.log(getSeason(month))
     }
 }
-
-verifyAnswer(questionObj)
