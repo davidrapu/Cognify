@@ -1,9 +1,9 @@
 import { useReducer } from "react";
 
 const initialState = {
-  currentQuestion: 1,
+  currentQuestion: 16,
   totalPoints: 0,
-  quizState: 'intro' // Intro | Active | Inactive
+  quizState: 'intro' // Intro | Active | Finish
 };
 export type QuizState = {
   currentQuestion: number;
@@ -19,11 +19,11 @@ function reducer(state: QuizState, action: QuizAction) {
     case "increaseTotalPoints":
       return {...state, totalPoints: state.totalPoints + action.payload}
     case 'start':
-      return {...state, quizState: 'Active'}
+      return {...state, quizState: 'active'}
     case 'end':
-      return {...state, quizState: 'Inactive'}
+      return {...state, quizState: 'finish'}
     case 'reset':
-      return {...state, quizState: 'Intro'}
+      return initialState
     default:
       return state;
   }
