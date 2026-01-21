@@ -88,21 +88,21 @@
     },
     {
       "id": 10,
-      "category": "recall",
-      "question": "Recall the three words you were asked to remember earlier.",
-      "comment": "Type the three remembered words in any order.",
-      "type": "memory",
-      "inputType": "text",
-      "points": 3
-    },
-    {
-      "id": 11,
       "category": "language",
       "question": "Name an object",
       "comment": "Any object",
       "type": "text",
       "inputType": "text",
       "points": 1
+    },
+    {
+      "id": 11,
+      "category": "recall",
+      "question": "Recall the three words you were asked to remember earlier.",
+      "comment": "Type the three remembered words in any order.",
+      "type": "memory",
+      "inputType": "text",
+      "points": 3
     },
     {
       "id": 12,
