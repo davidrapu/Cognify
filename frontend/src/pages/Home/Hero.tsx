@@ -21,7 +21,7 @@ export default function Hero() {
         onClick={() => navigate(loggedIn ? "/dashboard" : "/quiz")}
         className="
           self-center
-          text-xl font-semibold
+          text-xl
           py-[0.3em] px-[1em]
           rounded-[0.5em]
           border-2
