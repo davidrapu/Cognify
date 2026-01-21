@@ -9,7 +9,7 @@ export default function ScoreMeter({
   const [interpretation, context] = getScoreInterpretation(score);
   return (
     <div className="space-y-3">
-      <div className="space-y-1">
+      <div className="space-y-1 flex flex-col w-fit">
         <div className="flex gap-1 flex-wrap">
           {Array.from({ length: 30 }).map((_, i) => (
             <div
