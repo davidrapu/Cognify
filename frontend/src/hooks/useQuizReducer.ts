@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 
 const initialState = {
-  currentQuestion: 16,
+  currentQuestion: 1,
   totalPoints: 0,
   quizState: 'intro' // Intro | Active | Finish
 };
