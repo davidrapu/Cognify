@@ -9,7 +9,8 @@ export default function Button({children, className = '', ...props } : ButtonPro
   return (
     <button
       className={cn(
-        "bg-primary text-primary-foreground tracking-wide py-1 px-3 rounded cursor-pointer disabled:cursor-not-allowed disabled:bg-secondary", className,
+        "bg-primary text-primary-foreground tracking-wide py-1 px-3 rounded cursor-pointer font-semibold disabled:cursor-not-allowed disabled:bg-secondary",
+        className,
       )}
       {...props}
     >
