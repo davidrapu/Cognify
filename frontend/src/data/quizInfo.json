@@ -81,7 +81,7 @@
       "id": 9,
       "category": "attention_calculation",
       "question": "Starting from 100, subtract 7, five times.",
-      "comment": "Enter the sequence of numbers resulting from each subtraction. Include 100, In order",
+      "comment": "Enter the sequence of numbers resulting from each subtraction seperated by a comma. Include 100, In order",
       "type": "subtraction",
       "inputType": "text",
       "points": 5
