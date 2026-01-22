@@ -32,7 +32,7 @@ export default function ActionQuestion({question, comment, setUserInput, userInp
       }
       setIsActive(false)
       setTime(0)
-      setUserInput( time.toString() )
+      setUserInput( time.toFixed(2).toString() )
     }
 
     return (
