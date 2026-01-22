@@ -79,7 +79,8 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
             </p>
           </div>
           <ul className="space-y-2 text-base text-secondary">
-            <li> Answer each question to the best of your ability</li>
+            <li>Read each question and instruction carefully</li>
+            <li>Answer each question to the best of your ability</li>
             <li>Some tasks are timed — respond naturally</li>
             <li>Estimated time: 5–10 minutes</li>
           </ul>
