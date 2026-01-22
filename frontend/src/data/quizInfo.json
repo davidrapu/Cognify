@@ -73,7 +73,7 @@
       "statement": "Remember these three words: Apple, Chair, River.",
       "question": "Repeat those words.",
       "comment": "Type the three words exactly as presented, separated by commas.",
-      "type": "memory recall",
+      "type": "memory",
       "inputType": "text",
       "points": 3
     },
@@ -82,7 +82,7 @@
       "category": "attention_calculation",
       "question": "Starting from 100, subtract 7, five times.",
       "comment": "Enter the sequence of numbers resulting from each subtraction. Include 100, In order",
-      "type": "text",
+      "type": "subtraction",
       "inputType": "text",
       "points": 5
     },
@@ -118,7 +118,7 @@
       "category": "language",
       "question": "Repeat the sentence exactly: \"The dog ran quickly across the park.\"",
       "comment": "Type the sentence exactly as shown, including word order.",
-      "type": "text",
+      "type": "sentence_repetition",
       "inputType": "text",
       "points": 1
     },

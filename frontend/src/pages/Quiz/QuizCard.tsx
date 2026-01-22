@@ -39,7 +39,8 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
     // Increase total points
     dispatch({
       type: "increaseTotalPoints",
-      payload: questionObj?.points || 0,
+      payload:
+        verifyAnswer(questionObj?.type, questionObj?.points, userInput) || 0,
     });
 
     // End the quiz
