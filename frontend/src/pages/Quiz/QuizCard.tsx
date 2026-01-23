@@ -13,7 +13,7 @@ interface QuizCardProps {
   dispatch: React.Dispatch<QuizAction>;
 }
 
-export default function QuizCard({ state, dispatch }: QuizCardProps) {
+export default function QuizCard({ state, dispatch}: QuizCardProps) {
   const navigate = useNavigate()
 
   const questionObj = quizInfo.questions.find(
@@ -46,6 +46,17 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
     // End the quiz
     dispatch({ type: "end" });
   };
+
+  const handleEnter = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key !== 'Enter') return;
+
+    e.preventDefault()
+
+    if (userInput.trim() === '') return
+
+    if (questionObj && questionObj?.id < 16) handleNext()
+    else endQuiz()
+  }
 
   const resetQuiz = () => {
     setUserInput('')
@@ -92,7 +103,7 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
       )}
 
       {state.quizState === "active" && (
-        <div className="container flex flex-col gap-y-7  ">
+        <div className="container flex flex-col gap-y-7" onKeyDown={handleEnter} tabIndex={0} >
           <div className="flex flex-col gap-y-1">
             <h1 className="text-2xl tracking-wide font-black m-0 leading-tight">
               {quizInfo.testName}
