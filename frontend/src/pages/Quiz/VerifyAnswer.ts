@@ -1,3 +1,5 @@
+
+
 const days = [
   "sunday",
   "monday",
@@ -52,11 +54,12 @@ function getSeason(month: number): string {
       return "";
   }
 }
+
 export function verifyAnswer(
   type: string = "",
   points: number = 0,
-  userInput: string,
-): void | number {
+  userInput: string
+): number {
   /**
    * Verifies users answer is correct
    *
@@ -159,5 +162,9 @@ export function verifyAnswer(
         if (userInput.trim().toLocaleLowerCase() === 'apple') return points
         else return 0
     }
+    case 'country' : return points
+    case 'city' : return points
+    default:
+      return 0
   }
 }
