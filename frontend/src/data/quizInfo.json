@@ -63,7 +63,7 @@
       "category": "orientation",
       "question": "What city or town are you in?",
       "comment": "Enter the name of the city or town you are currently in.",
-      "type": "rule_based",
+      "type": "city",
       "inputType": "text",
       "points": 2
     },
