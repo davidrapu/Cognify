@@ -13,6 +13,21 @@ interface QuizCardProps {
   dispatch: React.Dispatch<QuizAction>;
 }
 
+const initialCategoryScores = {
+  orientation : 0,
+  language: 0,
+  registration : 0,
+  calculation: 0,
+  recall : 0
+}
+type CategoryScore = {
+  orientation : number,
+  language: number,
+  registration : number,
+  calculation: number,
+  recall : number
+}
+
 export default function QuizCard({ state, dispatch}: QuizCardProps) {
   const navigate = useNavigate()
 
@@ -21,11 +36,12 @@ export default function QuizCard({ state, dispatch}: QuizCardProps) {
   );
   const [userInput, setUserInput] = useState<string>('');
   const [isAknowledged, setIsAknowledged] = useState<boolean>(false);
+  const [categoryScore, setCategoryScore] = useState<CategoryScore>(initialCategoryScores)
 
   const handleNext = () => {
     dispatch({
       type: "increaseTotalPoints",
-      payload: verifyAnswer(questionObj?.type, questionObj?.points, userInput) || 0,
+      payload: verifyAnswer(questionObj?.type, questionObj?.category, questionObj?.points, userInput, setCategoryScore) || 0,
     });
     dispatch({ type: "next" });
     setUserInput("");

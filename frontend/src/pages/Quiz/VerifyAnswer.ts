@@ -1,5 +1,3 @@
-
-
 const days = [
   "sunday",
   "monday",
@@ -55,10 +53,22 @@ function getSeason(month: number): string {
   }
 }
 
+type CategoryScore = {
+  orientation: number;
+  language: number;
+  registration: number;
+  calculation: number;
+  recall: number;
+};
+
+type Category = keyof CategoryScore;
+
 export function verifyAnswer(
   type: string = "",
+  category: string = "",
   points: number = 0,
-  userInput: string
+  userInput: string,
+  setCategoryScore: React.Dispatch<React.SetStateAction<CategoryScore>>,
 ): number {
   /**
    * Verifies users answer is correct
@@ -66,6 +76,7 @@ export function verifyAnswer(
    * @param type - type of question
    * @param points - total points of the question
    * @param userInput - users answer
+   * @params setCategoryScore - to set the score of the user based of the category
    * @returns The total points a user recieves from their answer
    */
 
@@ -73,29 +84,45 @@ export function verifyAnswer(
   const month = dateObj.getMonth();
   const year = dateObj.getFullYear();
   const day = dateObj.getDate();
+
+  const increaseCategory = (category: Category, points: number = 1) => {
+    setCategoryScore((scoreObj) => ({
+      ...scoreObj,
+      [category]: scoreObj[category] + points,
+    }));
+  };
   switch (type.toLowerCase()) {
     case "year":
-      if (parseInt(userInput) === year) return points;
-      else return 0;
-    case "month":
-      if (userInput.trim().toLowerCase() === months[month]) return points;
-      else return 0;
-    case "day":
-      if (userInput.trim().toLowerCase() === days[dateObj.getDay()])
+      if (parseInt(userInput) === year) {
+        increaseCategory("orientation");
         return points;
-      else return 0;
+      } else return 0;
+    case "month":
+      if (userInput.trim().toLowerCase() === months[month]) {
+        increaseCategory("orientation");
+        return points;
+      } else return 0;
+    case "day":
+      if (userInput.trim().toLowerCase() === days[dateObj.getDay()]) {
+        increaseCategory("orientation");
+        return points;
+      } else return 0;
     case "date":
       try {
         const [userDay, userMonth, userYear] = userInput.split("/").map(Number);
-        if (userDay === day && userMonth === month + 1 && userYear === year)
+        if (userDay === day && userMonth === month + 1 && userYear === year) {
+          increaseCategory("orientation");
           return points;
+        }
         return 0;
       } catch {
         return 0;
       }
     case "season":
-      if (userInput.toLocaleLowerCase() === getSeason(month)) return points;
-      else return 0;
+      if (userInput.toLocaleLowerCase() === getSeason(month)) {
+        increaseCategory("orientation", points);
+        return points;
+      } else return 0;
     case "memory":
       try {
         const userValue = userInput
@@ -115,6 +142,10 @@ export function verifyAnswer(
         if (userValue[2] === "river") totalPoints += 1;
         else if (userValue.includes("river")) totalPoints += 0.5;
 
+        increaseCategory(
+          category && category === "registration" ? "registration" : "recall",
+          totalPoints,
+        );
         return totalPoints;
       } catch {
         return 0;
@@ -128,8 +159,10 @@ export function verifyAnswer(
 
       const total = userValue.reduce((sum, num) => sum + num, 0);
 
-      if (total === 495) return points;
-
+      if (total === 495) {
+        increaseCategory("calculation", points);
+        return points;
+      }
       return 0;
     }
     case "sentence_repetition": {
@@ -138,33 +171,48 @@ export function verifyAnswer(
           .toLocaleLowerCase()
           .replace(/[^\w\s]/g, "")
           .trim() === "The dog ran quickly across the park"
-      )
+      ) {
+        increaseCategory("language", points);
         return points;
+      }
       return 0;
     }
-    case "action" : {
-        const userValue = Number(userInput)
+    case "action": {
+      const userValue = Number(userInput);
 
-        if (userValue < 1.5 || userValue > 2.5) return 0;
-        else if (
-          (userValue >= 1.5 && userValue < 1.7) ||
-          (userValue >= 2.4 && userValue <= 2.5)
-        )
-          return 1;
-        else if (
-          (userValue >= 1.7 && userValue < 1.9) ||
-          (userValue >= 2.2 && userValue < 2.4)
-        )
-          return 2;
-        else return points
+      if (userValue < 1.5 || userValue > 2.5) return 0;
+      if (
+        (userValue >= 1.5 && userValue < 1.7) ||
+        (userValue >= 2.4 && userValue <= 2.5)
+      ) {
+        increaseCategory("calculation", 1);
+        return 1;
+      } else if (
+        (userValue >= 1.7 && userValue < 1.9) ||
+        (userValue >= 2.2 && userValue < 2.4)
+      ) {
+        increaseCategory("calculation", 2);
+        return 2;
+      } else {
+        increaseCategory("calculation", points);
+        return points;
+      }
     }
-    case 'multiple_choice': {
-        if (userInput.trim().toLocaleLowerCase() === 'apple') return points
-        else return 0
+    case "multiple_choice": {
+      if (userInput.trim().toLocaleLowerCase() === "apple") {
+        increaseCategory("language", points);
+        return points;
+      } else return 0;
     }
-    case 'country' : return points
-    case 'city' : return points
+    case "country": {
+      increaseCategory("language", points);
+      return points;
+    }
+    case "city": {
+      increaseCategory("language", points);
+      return points;
+    }
     default:
-      return 0
+      return 0;
   }
 }
