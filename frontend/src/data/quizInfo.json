@@ -3,6 +3,13 @@
   "description": "MMSE-inspired, non-clinical assessment",
   "totalPoints": 30,
   "totalQuestions": 16,
+  "categorySize" : {
+    "orientation": 10,
+    "language": 9,
+    "registeration": 3,
+    "calculation": 5,
+    "recall": 3
+  },
   "questions": [
     {
       "id": 1,
