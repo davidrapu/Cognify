@@ -1,5 +1,5 @@
 import Nav from "../../components/Nav";
-import QuizCard from "./QuizCard";
+import QuizCard from "./QuizCard/QuizCard";
 import { useQuizReducer } from "../../hooks/useQuizReducer";
 
 export default function Quiz() {
@@ -9,7 +9,7 @@ export default function Quiz() {
       <header>
         <Nav />
       </header>
-      <main className=" mt-30 flex justify-center min-h-fit ">
+      <main className=" my-15 flex justify-center min-h-fit ">
         <QuizCard state={state} dispatch={dispatch} />
       </main>
     </>
