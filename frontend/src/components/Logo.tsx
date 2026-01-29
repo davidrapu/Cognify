@@ -17,7 +17,7 @@ export default function Logo({ textSize = 1.8, tracking = 0.3 }: LogoProps) {
         }}
         className="m-0 font-(family-name:--headings)"
       >
-        COGNIFY
+        COG-NIFY
       </span>
     </Link>
   );
