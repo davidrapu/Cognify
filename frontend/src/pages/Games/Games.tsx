@@ -1,8 +1,7 @@
+import Nav from "@/components/Nav";
 
 export default function Games() {
   return (
-    <div>
-      
-    </div>
+    <Nav />
   )
 }
