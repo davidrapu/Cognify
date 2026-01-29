@@ -98,7 +98,7 @@
       "category": "language",
       "question": "Name an object",
       "comment": "Any object",
-      "type": "text",
+      "type": "object_naming",
       "inputType": "text",
       "points": 1
     },
@@ -116,7 +116,7 @@
       "category": "language",
       "question": "Name another object",
       "comment": "Any object except the last one",
-      "type": "text",
+      "type": "object_naming",
       "inputType": "text",
       "points": 1
     },
@@ -141,7 +141,7 @@
       "id": 15,
       "category": "language",
       "question": "Write a complete sentence of your choice.",
-      "type": "rule_based",
+      "type": "sentence_generation",
       "inputType": "textarea",
       "points": 1
     },

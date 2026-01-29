@@ -212,6 +212,14 @@ export function verifyAnswer(
       increaseCategory("language", points);
       return points;
     }
+    case "object_naming": {
+      increaseCategory("language", points);
+      return points;
+    }
+    case "sentence_generation": {
+      increaseCategory("language", points);
+      return points;
+    }
     default:
       return 0;
   }
