@@ -4,8 +4,10 @@ import Games from "./pages/Games/Games";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Quiz from "./pages/Quiz/Quiz";
+import GamesHome from "./pages/Games/GamesHome";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Analytics } from "@vercel/analytics/react";
+import CardMatch from "./pages/Games/GamePrograms/CardMatch";
 
 function App() {
   return (
@@ -15,7 +17,10 @@ function App() {
           <Route index element={<Home />} />
           <Route path="/home" element={<Navigate to="/" replace />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/games" element={<Games />} />
+          <Route path="/games" element={<Games />}>
+            <Route index element={<GamesHome />} />
+            <Route path="card-match" element={<CardMatch />} />
+          </Route>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/quiz" element={<Quiz />} />
         </Routes>
