@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Card from "./Card";
 import cardsObj from "@/data/cards.json";
-import 'animate.css'
 
 const shuffledCards = cardsObj.cards.sort(() => Math.random() - 0.5);
 export default function CardMatch() {
