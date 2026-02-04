@@ -7,21 +7,17 @@ export default function CardMatch() {
   const [cards, setCards] = useState<typeof cardsObj.cards>(shuffledCards);
   const [choiceOne, setChoiceOne] = useState<number | null>(null);
   const [choiceTwo, setChoiceTwo] = useState<number | null>(null);
-  const [disabled, setDisabled] = useState<boolean>(false);
 
 
   const handleChoice = (id: number) => {
     if (choiceTwo !== null) return; // Prevent selecting more than two cards
 
     if (choiceOne === null) setChoiceOne(id);
-    else {
-      setChoiceTwo(id);
-    };
+    else setChoiceTwo(id);
   }
   const reset = () => {
     setChoiceOne(null);
     setChoiceTwo(null);
-    setDisabled(false);
   }
 
   useEffect(() => {
@@ -45,7 +41,7 @@ export default function CardMatch() {
       reset();
     }
     else {
-      setTimeout(() => reset(), 900);
+      setTimeout(() => reset(), 600);
     }
   }, [choiceOne, choiceTwo, cards]);
 
@@ -64,7 +60,6 @@ export default function CardMatch() {
             choiceTwo={choiceTwo}
             handleFlip={handleFlip}
             key={i}
-            disabled={disabled}
           />
         ))}
       </div>
