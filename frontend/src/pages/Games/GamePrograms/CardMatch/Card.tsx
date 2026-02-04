@@ -1,5 +1,3 @@
-import { motion } from "framer-motion";
-import cardImage from "@/assets/images/card-bg.jpg";
 import { cn } from "@/lib/utils";
 
 type CardProps = {
@@ -7,27 +5,52 @@ type CardProps = {
   choiceOne: number | null;
   choiceTwo: number | null;
   handleFlip: (id: number) => void;
-  disabled: boolean;
 };
 
-export default function Card ({cardObj, choiceOne, choiceTwo, handleFlip, disabled }: CardProps) {
-  const flipped = choiceOne === cardObj.id || choiceTwo === cardObj.id;
+export default function Card({
+  cardObj,
+  choiceOne,
+  choiceTwo,
+  handleFlip,
+}: CardProps) {
+  const flipped =
+    cardObj.matched || choiceOne === cardObj.id || choiceTwo === cardObj.id;
 
   return (
-    <motion.div
-      onClick={() => handleFlip(cardObj.id)}
-      whileHover={ flipped || disabled ? {} : { scale: 1.05 }}
-      transition={ flipped || disabled ? {} : { type: "spring" }}
-      className={cn("w-50 h-38 bg-card m-2 rounded-[10px] cursor-pointer text-3xl flex items-center justify-center border-2 border-secondary overflow-hidden")}
-    >
-      {flipped || cardObj.matched ? (
-        cardObj.value
-      ) : (
-        <img
-          src={cardImage}
-          alt="Card back"
-          className="w-full h-full rounded-[8px]"
-        />
+    <div
+      className={cn(
+        "w-40 h-35 m-2 transform-3d cursor-pointer perspective-[1000px] transition-transform duration-500",
+        flipped && "cursor-not-allowed",
+        !flipped && 'hover:scale-[1.1]'
       )}
-    </motion.div>
-  )}
+      onClick={flipped ? undefined : () => handleFlip(cardObj.id)}
+    >
+      <div
+        className={cn(
+          "relative w-full h-full transition-transform duration-500 transform-3d",
+          flipped && "rotate-y-180",
+        )}
+      >
+        {/* FRONT */}
+        <div
+          className={cn(
+            "absolute inset-0 rounded-[10px] border border-secondary-foreground",
+            "bg-linear-to-tr/hsl from-primary to-secondary to-90%",
+            "backface-hidden flex items-center justify-center",
+          )}
+        ></div>
+
+        {/* BACK */}
+        <div
+          className={cn(
+            "absolute inset-0 rounded-[10px] border border-secondary-foreground",
+            "bg-card backface-hidden rotate-y-180",
+            "flex items-center justify-center text-3xl",
+          )}
+        >
+          {cardObj.value}
+        </div>
+      </div>
+    </div>
+  );
+}
