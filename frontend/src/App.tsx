@@ -7,7 +7,7 @@ import Quiz from "./pages/Quiz/Quiz";
 import GamesHome from "./pages/Games/GamesHome";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Analytics } from "@vercel/analytics/react";
-import CardMatch from "./pages/Games/GamePrograms/CardMatch";
+import CardMatch from "./pages/Games/GamePrograms/CardMatch/CardMatch";
 
 function App() {
   return (
