@@ -19,7 +19,7 @@ export default function Card({
   return (
     <div
       className={cn(
-        "w-40 h-35 m-2 transform-3d cursor-pointer perspective-[1000px] transition-transform duration-500",
+        "w-40 h-32 m-2 transform-3d cursor-pointer perspective-[1000px] transition-transform duration-300",
         flipped && "cursor-not-allowed",
         !flipped && 'hover:scale-[1.1]'
       )}
@@ -27,7 +27,7 @@ export default function Card({
     >
       <div
         className={cn(
-          "relative w-full h-full transition-transform duration-500 transform-3d",
+          "relative w-full h-full transition-transform duration-300 transform-3d",
           flipped && "rotate-y-180",
         )}
       >
