@@ -7,7 +7,7 @@ import Quiz from "./pages/Quiz/Quiz";
 import GamesHome from "./pages/Games/GamesHome";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Analytics } from "@vercel/analytics/react";
-import CardMatch from "./pages/Games/GamePrograms/CardMatch/CardMatch";
+import CardMatchGame from "./pages/Games/GamePrograms/CardMatch/CardMatchGame";
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/games" element={<Games />}>
             <Route index element={<GamesHome />} />
-            <Route path="cardMatch" element={<CardMatch />} />
+            <Route path="cardMatch" element={<CardMatchGame />} />
           </Route>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/quiz" element={<Quiz />} />
