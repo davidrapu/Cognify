@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import quizInfo from "../../../data/quizInfo.json";
 import type { QuizState, QuizAction } from "../../../hooks/useQuizReducer";
-import { verifyAnswer } from "./VerifyAnswer";
+import { verifyAnswer } from "../../../utils/VerifyAnswer";
 import Intro from "./states/Intro";
 import Active from "./states/Active";
 import Finish from "./states/Finish";
