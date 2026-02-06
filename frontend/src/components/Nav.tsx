@@ -4,7 +4,7 @@ import {
   NavigationMenuTrigger,
 } from "./ui/navigation-menu";
 import { NavigationMenuItem } from "@radix-ui/react-navigation-menu";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router";
 import { useAuth } from "../contexts/AuthContext/AuthContext";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { AvatarFallback } from "@radix-ui/react-avatar";

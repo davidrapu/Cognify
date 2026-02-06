@@ -1,5 +1,5 @@
 // import Button from "@/components/Button"
-// import { useNavigate } from "react-router-dom"
+// import { useNavigate } from "react-router"
 
 import Nav from "@/components/Nav";
 
