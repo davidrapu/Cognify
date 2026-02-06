@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import {Button} from "@/components/Button";
 import { useEffect, useRef } from "react";
 import ActionQuestion from "./ActionQuestion";
 import MultipleChoiceQuestion from "./MultipleChoiceQuestion";

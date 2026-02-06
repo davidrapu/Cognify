@@ -1,7 +1,7 @@
 import type { QuizAction } from "@/hooks/useQuizReducer";
 import type React from "react";
 import quizInfo from "@/data/quizInfo.json";
-import Button from "@/components/Button";
+import {Button} from "@/components/Button";
 
 type IntroProp = {
   dispatch: React.Dispatch<QuizAction>;
