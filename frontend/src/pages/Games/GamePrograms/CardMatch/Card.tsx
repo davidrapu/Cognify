@@ -52,7 +52,7 @@ export default function Card({
             "flex items-center justify-center text-3xl",
           )}
         >
-          {cardObj.value}
+          {!flipped ? "" : cardObj.value}
         </div>
       </div>
     </div>
