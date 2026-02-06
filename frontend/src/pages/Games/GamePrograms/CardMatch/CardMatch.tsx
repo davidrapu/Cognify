@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
 import Card from "./Card";
-import cardsObj from "@/data/cards.json";
 import { motion } from "framer-motion";
 import {type CardMatchAction} from "@/hooks/useCardMatchReducer";
-
-const shuffledCards = cardsObj.cards.sort(() => Math.random() - 0.5);
+import { generateCards } from "@/utils/generateCards";
+import { cn } from "@/lib/utils";
 
 type CardMatchProps = {
-    dispatch: React.Dispatch<CardMatchAction>;
-}
+  dispatch: React.Dispatch<CardMatchAction>;
+  pairs: number;
+  cols: number
+};
 
-export default function CardMatch({dispatch}: CardMatchProps) {
-  const [cards, setCards] = useState<typeof cardsObj.cards>(shuffledCards);
+
+export default function CardMatch({dispatch, pairs, cols}: CardMatchProps) {
+const [cards, setCards] = useState(() => generateCards(pairs));
+
   const [choiceOne, setChoiceOne] = useState<number | null>(null);
   const [choiceTwo, setChoiceTwo] = useState<number | null>(null);
 
@@ -30,7 +33,7 @@ export default function CardMatch({dispatch}: CardMatchProps) {
   };
 
   useEffect(() => {
-    if (!choiceOne || !choiceTwo) return;
+    if (choiceOne === null || choiceTwo === null) return;
 
     const [firstCard, secondCard] = [
       cards.find((card) => card.id === choiceOne),
@@ -68,14 +71,20 @@ export default function CardMatch({dispatch}: CardMatchProps) {
       transition={{ duration: 1.2 }}
       className="px-30 py-10 rounded-[30px] bg-secondary/25"
     >
-      <div className="grid grid-cols-4 gap-4 w-fit justify-items-center mx-auto">
-        {Array.from({ length: 16 }).map((_, i) => (
+      <div
+        className={cn("grid gap-y-2 gap-x-4 w-fit justify-items-center mx-auto")}
+        style={{
+          gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
+        }}
+      >
+        {cards.map((card) => (
           <Card
-            cardObj={cards[i]}
+            key={card.id}
+            cardObj={card}
             choiceOne={choiceOne}
             choiceTwo={choiceTwo}
             handleFlip={handleFlip}
-            key={i}
+            cols={cols}
           />
         ))}
       </div>

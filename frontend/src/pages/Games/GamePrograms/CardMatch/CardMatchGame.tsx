@@ -1,15 +1,21 @@
 import CardMatch from "./CardMatch";
-import cardObj from "@/data/cards.json";
 import { useCardMatchReducer } from "@/hooks/useCardMatchReducer";
 
+const difficultyConfig = {
+  "easy": { pairs: 8, cols: 4 },
+  "medium": { pairs: 12, cols: 6 },
+  "hard": { pairs: 16, cols: 8 },
+} as const;
 export default function CardMatchGame() {
   const [state, dispatch] = useCardMatchReducer();
+  const s = state.gameLevel as keyof typeof difficultyConfig;
+  const { pairs, cols } = difficultyConfig[s];
   return (
     // Depending on the state show the navigation bar
     //       <header>
     //     <Nav />
     //   </header>
-    <main className="p-10 mx-auto ">
+    <main className="mx-auto">
       <div className="flex flex-col items-center gap-y-6">
         <div className="flex flex-col">
           <h1 className="text-5xl font-bold leading-loose tracking-[0.2em] font-(family-name:--headings)">
@@ -17,15 +23,15 @@ export default function CardMatchGame() {
           </h1>
           <div className="flex justify-between text-[17px] w-full ">
             <p className="bg-secondary text-secondary-foreground rounded-[20px] px-10 py-4 ">
-              Matches: {state.matchedCards} / {cardObj.cards.length / 2}
+              Matches: {state.matchedCards} / {difficultyConfig[s].pairs}
             </p>
             <p className="bg-secondary text-secondary-foreground rounded-[20px] px-10 py-4 ">
               Attempts: {state.totalAttempts}
             </p>
           </div>
         </div>
-        <CardMatch dispatch={dispatch} />
-        {state.matchedCards === cardObj.cards.length / 2 && (
+        <CardMatch pairs={pairs} cols={cols} dispatch={dispatch} />
+        {state.matchedCards === difficultyConfig[s].pairs && (
           <div className="flex flex-col items-center gap-y-4">
             <h2 className="text-3xl font-bold">
               Congratulations! You've matched all the cards!

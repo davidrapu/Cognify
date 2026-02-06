@@ -5,6 +5,7 @@ type CardProps = {
   choiceOne: number | null;
   choiceTwo: number | null;
   handleFlip: (id: number) => void;
+  cols: number
 };
 
 export default function Card({
@@ -12,6 +13,7 @@ export default function Card({
   choiceOne,
   choiceTwo,
   handleFlip,
+  cols
 }: CardProps) {
   const flipped =
     cardObj.matched || choiceOne === cardObj.id || choiceTwo === cardObj.id;
@@ -19,9 +21,11 @@ export default function Card({
   return (
     <div
       className={cn(
-        "w-40 h-32 m-2 transform-3d cursor-pointer perspective-[1000px] transition-transform duration-300",
+        "w-34 h-26 m-2 transform-3d cursor-pointer perspective-[1000px] transition-transform duration-300",
         flipped && "cursor-not-allowed",
-        !flipped && 'hover:scale-[1.1]'
+        !flipped && 'hover:scale-[1.1]',
+        cols === 6 && "w-35 h-27",
+        cols === 8 && "w-30 h-22",
       )}
       onClick={flipped ? undefined : () => handleFlip(cardObj.id)}
     >
