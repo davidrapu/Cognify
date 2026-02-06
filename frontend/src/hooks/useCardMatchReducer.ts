@@ -4,7 +4,7 @@ import { useReducer } from "react";
 const initialState = {
     matchedCards: 0,
     totalAttempts: 0,
-    gameLevel: "easy",
+    gameLevel: "easy", // can be "easy", "medium", or "hard"
     gameState: "active" // can be "active", intro, or "completed"
 }
 
@@ -18,8 +18,8 @@ export type CardMatchState = {
 export type CardMatchAction =
     | { type: "increaseMatchedCards" }
     | { type: "reset" } | { type: "increaseAttempts" }
-    | { type: "setGameLevel", payload: string }
-    | { type: "setGameState", payload: string }
+    | { type: "setGameLevel", payload: "easy" | "medium" | "hard" }
+    | { type: "setGameState", payload: "active" | "intro" | "completed" }
 
 function reducer(state: CardMatchState, action: CardMatchAction) {
     switch (action.type) {
