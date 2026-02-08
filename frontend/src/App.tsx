@@ -8,6 +8,7 @@ import GamesHome from "./pages/Games/GamesHome";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Analytics } from "@vercel/analytics/react";
 import CardMatchGame from "./pages/Games/GamePrograms/CardMatch/CardMatchGame";
+import DigitalSpan from "./pages/Games/GamePrograms/DigitalSpan/DigitalSpan";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/games" element={<Games />}>
             <Route index element={<GamesHome />} />
             <Route path="card-match" element={<CardMatchGame />} />
+            <Route path="digital-span" element={<DigitalSpan />} />
           </Route>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/quiz" element={<Quiz />} />

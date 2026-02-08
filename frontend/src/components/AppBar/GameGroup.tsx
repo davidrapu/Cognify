@@ -19,7 +19,7 @@ const games = [
   {
     name: "Digital Span",
     icon: Binary,
-    location: "/",
+    location: "/games/digital-span",
   },
   {
     name: "Card Matching",
