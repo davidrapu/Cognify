@@ -1,6 +1,6 @@
-import Button from "@/components/Button";
+import {Button} from "@/components/Button";
 import { useAuth } from "../../contexts/AuthContext/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 export default function Hero() {
   const { loggedIn } = useAuth();

@@ -1,8 +1,8 @@
-import Button from "@/components/Button";
+import {Button} from "@/components/Button";
 import ScoreMeter from "@/components/ScoreMeter";
 import { type QuizState } from "@/hooks/useQuizReducer";
-import { useNavigate } from "react-router-dom";
-import { getScoreInterpretation } from "../getScoreInterpretation";
+import { useNavigate } from "react-router";
+import { getScoreInterpretation } from "../../../../utils/getScoreInterpretation";
 import quizInfo from '@/data/quizInfo.json';
 
 type CategoryScore = {

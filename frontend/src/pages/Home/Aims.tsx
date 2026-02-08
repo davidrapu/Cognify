@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Aims() {
   return (
-    <section className="flex flex-col items-center gap-y-8 py-16">
+    <section className="flex flex-col items-center gap-y-8 py-16 bg-secondary/40 w-full">
       <h2 className="text-3xl font-semibold tracking-wider">Our Aims</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
