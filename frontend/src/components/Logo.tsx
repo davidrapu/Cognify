@@ -1,24 +1,34 @@
-import logo from "@/assets/images/icons8-brain-pastel-color-32.png";
+import { BrainCircuit } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Link } from 'react-router';
 
 type LogoProps = {
-    textSize?: number;
-    tracking?: number;
+  className?: string
+  size?: "small" | "default"
 }
 
-export default function Logo({ textSize = 1.8, tracking = 0.3 }: LogoProps) {
+export function Logo({ className, size = "default" }: LogoProps) {
   return (
-    <Link to="/" className="flex flex-row items-center gap-x-1">
-      <img src={logo} alt="Logo" />
+    <Link to="/" className={cn("flex flex-row items-center gap-x-2")}>
+      <BrainCircuit color="#0083a3" size={size === "small" ? 30 : 35} />
       <span
-        style={{
-          fontSize: `${textSize}em`,
-          letterSpacing: `${tracking}em`,
-        }}
-        className="m-0 font-(family-name:--headings)"
+        className={cn(
+          "m-0 font-(family-name:--headings) text-[1.8em] tracking-[0.3em]",
+          className,
+        )}
       >
         COG-NIFY
       </span>
     </Link>
   );
 }
+
+export function LogoIcon(){
+  return (
+    <span>
+      <BrainCircuit color="#0083a3" size={25} />
+    </span>
+  );
+}
+
+
