@@ -1,4 +1,4 @@
-import {AnimatedButton, Button} from "@/components/Button";
+import {AnimatedButton} from "@/components/Button";
 import { useAuth } from "../../contexts/AuthContext/AuthContext";
 import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
