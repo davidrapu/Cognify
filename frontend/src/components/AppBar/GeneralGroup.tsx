@@ -1,10 +1,4 @@
-import {
-  LayoutDashboard,
-  Home,
-  Gamepad2,
-  Info,
-  Mail
- } from "lucide-react";
+import { CircleGauge, Home, Gamepad2, Info, Mail } from "lucide-react";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -40,7 +34,7 @@ export default function GeneralGroup() {
           <SidebarMenuItem>
             <Link to="/dashboard">
               <SidebarMenuButton tooltip="Dashboard" className="cursor-pointer">
-                <LayoutDashboard className="text-sidebar-primary" />
+                <CircleGauge className="text-sidebar-primary" />
                 <span className="tracking-widest">Dashboard</span>
               </SidebarMenuButton>
             </Link>
