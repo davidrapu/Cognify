@@ -8,7 +8,7 @@ export default function Summary() {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -30 }}
       transition={{ duration: 0.5 }}
-      className="bg-secondary/25 w-full p-3 rounded-[30px] space-y-5"
+      className="bg-secondary/25 w-180 p-3 rounded-[30px] space-y-5"
     >
       <p>Game Complete</p>
       <p>Rank: X</p>
