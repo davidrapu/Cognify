@@ -69,8 +69,8 @@ const [cards, setCards] = useState(() => generateCards(pairs));
       initial={{ opacity: 0, x: 30 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{opacity:0, x:-30}}
-      transition={{ duration: 0.5 }}
-      className="container px-30 py-10 rounded-[30px] bg-secondary/25"
+      transition={{ duration: 0.4 }}
+      className="px-5 py-10 rounded-[30px] bg-secondary/70 backdrop-blur-sm"
     >
       <div
         className={cn("grid gap-y-2 gap-x-4 w-fit justify-items-center mx-auto")}
