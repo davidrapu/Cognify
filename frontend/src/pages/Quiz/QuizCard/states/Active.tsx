@@ -39,7 +39,7 @@ export default function Active({state, handleEnter, questionObj, userInput, setU
         <h1 className="text-2xl tracking-wide font-black m-0 leading-tight">
           {quizInfo.testName}
         </h1>
-        <p className="text-secondary font-medium">{quizInfo.description}</p>
+        <p className="text-secondary-text font-medium">{quizInfo.description}</p>
       </div>
       <div className="flex flex-col gap-y-2">
         <Progress value={state.currentQuestion} max={quizInfo.totalQuestions} />
