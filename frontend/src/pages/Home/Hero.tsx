@@ -1,13 +1,14 @@
-import {Button} from "@/components/Button";
+import {AnimatedButton, Button} from "@/components/Button";
 import { useAuth } from "../../contexts/AuthContext/AuthContext";
 import { useNavigate } from "react-router";
+import { motion } from "framer-motion";
 
 export default function Hero() {
   const { loggedIn } = useAuth();
   const navigate = useNavigate();
 
   return (
-    <section className="flex flex-col items-center gap-y-6 md:gap-y-8">
+    <motion.section initial={{ opacity: 0, y:50 }} animate={{ opacity: 1, y: 0 }} transition={{duration: 0.5}} className="flex flex-col items-center gap-y-6 md:gap-y-8">
       <div className="flex flex-col items-center">
         <h1 className="text-8xl font-(family-name:--headings) tracking-[0.2em] text-foreground leading-[0.9] m-0">
           WELCOME
@@ -16,8 +17,7 @@ export default function Hero() {
           Hi, welcome to Cognify. Helping you think sharper, every day.
         </p>
       </div>
-
-      <Button
+      <AnimatedButton
         onClick={() => navigate(loggedIn ? "/dashboard" : "/quiz")}
         className="
           self-center
@@ -30,7 +30,7 @@ export default function Hero() {
         "
       >
         Get Started
-      </Button>
-    </section>
+      </AnimatedButton>
+    </motion.section>
   );
 }
