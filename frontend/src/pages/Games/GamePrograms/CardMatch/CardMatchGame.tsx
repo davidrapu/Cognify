@@ -5,7 +5,6 @@ import { ChevronRight } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
 import Summary from "./Summary";
 import Intro from "./Intro";
-import { motion } from "framer-motion";
 
 const difficultyConfig = {
   easy: { pairs: 8, cols: 4 },
@@ -22,17 +21,13 @@ export default function CardMatchGame() {
       <main>{state.gameState === "intro" && <Intro />}</main>
       {state.gameState !== "intro" && (
         <main className="flex flex-1 justify-center items-center">
-          <motion.div
-            initial={{scale: 0}}
-            animate={{scale: 1}}
-            exit={{scale: 0}}
-            transition={{ duration: 0.5 }}
-            className="p-2 gap-y-1 drop-shadow-xl/30 bg-secondary rounded-2xl aspect-auto min-w-300 "
+          <div
+            className="p-2 gap-y-1 drop-shadow-xl/30 bg-secondary rounded-2xl aspect-auto min-w-300 animate-in zoom-in-0 duration-300 "
           >
             {state.gameState === "active" && (
-              <motion.div initial={{opacity: 0}} animate={{opacity: 1}} transition={{duration:0.6}} className="flex flex-col items-center gap-y-5 p-4">
+              <div className="flex flex-col items-center gap-y-5 p-3">
                 <div className="flex flex-col">
-                  <h1 className="text-4xl font-bold leading-loose tracking-[0.2em] font-(family-name:--headings)">
+                  <h1 className="text-4xl font-bold leading-normal tracking-[0.2em] font-(family-name:--headings)">
                     Card Matching
                   </h1>
                   <div className="flex justify-between text-[17px] w-full">
@@ -56,11 +51,7 @@ export default function CardMatchGame() {
                         payload: "completed",
                       })
                     }
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3 }}
-                    exit={{ opacity: 0 }}
-                    className="w-fit px-8 py-2 self-end"
+                    className="w-fit px-8 py-2 self-end animate-in fade-in slide-in-from-top-20 duration-300"
                   >
                     <ChevronRight
                       absoluteStrokeWidth={false}
@@ -69,14 +60,14 @@ export default function CardMatchGame() {
                     />
                   </AnimatedButton>
                 )}
-              </motion.div>
+              </div>
             )}
             {state.gameState === "completed" && (
               <AnimatePresence>
                 <Summary />
               </AnimatePresence>
             )}
-          </motion.div>
+          </div>
         </main>
       )}
     </>
