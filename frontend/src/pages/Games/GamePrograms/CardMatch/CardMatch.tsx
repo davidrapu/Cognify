@@ -68,7 +68,7 @@ const [cards, setCards] = useState(() => generateCards(pairs));
       className="px-5 py-10 rounded-[30px] bg-card backdrop-blur-sm"
     >
       <div
-        className={cn("grid gap-y-2 gap-x-4 w-fit justify-items-center mx-auto")}
+        className={cn("grid gap-5 w-fit justify-items-center mx-auto")}
         style={{
           gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
         }}
