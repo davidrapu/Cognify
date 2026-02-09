@@ -16,54 +16,50 @@ export default function CardMatchGame() {
   const s = state.gameLevel as keyof typeof difficultyConfig;
   const { pairs, cols } = difficultyConfig[s];
   return (
-    <div>
-      {state.gameState === "intro" && (
-        <main className="w-full">
-          <Intro />
-        </main>
-      )}
+    <>
+      {/* Intro, Active, and Complete should all use the same box */}
+      <main>{state.gameState === "intro" && <Intro />}</main>
       {state.gameState !== "intro" && (
-        <main className="w-full">
-          <div className="flex flex-col items-center gap-y-6">
-            <div className="flex flex-col">
-              <h1 className="text-4xl font-bold leading-loose tracking-[0.2em] font-(family-name:--headings)">
-                Card Matching
-              </h1>
-              <div className="flex justify-between text-[17px] w-full ">
-                <p className="bg-secondary text-secondary-foreground rounded-4xl px-10 py-4 ">
-                  Matches: {state.matchedCards} / {difficultyConfig[s].pairs}
-                </p>
-                <p className="bg-secondary text-secondary-foreground rounded-4xl px-10 py-4 ">
-                  Attempts: {state.totalAttempts}
-                </p>
-              </div>
-            </div>
+        <main className="flex flex-1 justify-center items-center">
+          <div
+            className="p-2 gap-y-1 drop-shadow-xl/30 bg-secondary rounded-2xl aspect-auto min-w-300 animate-in zoom-in-0 duration-300 "
+          >
             {state.gameState === "active" && (
-              <div className="flex relative gap-x-4 w-auto justify-center">
-                <AnimatePresence mode="wait">
+              <div className="flex flex-col items-center gap-y-5 p-3">
+                <div className="flex flex-col">
+                  <h1 className="text-4xl font-bold leading-normal tracking-[0.2em] font-(family-name:--headings)">
+                    Card Matching
+                  </h1>
+                  <div className="flex justify-between text-[17px] w-full">
+                    <p className="bg-card text-secondary-foreground rounded-2xl p-3">
+                      Matches: {state.matchedCards} /{" "}
+                      {difficultyConfig[s].pairs}
+                    </p>
+                    <p className="bg-card text-secondary-foreground rounded-2xl p-3">
+                      Attempts: {state.totalAttempts}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-col relative gap-y-4 w-auto justify-center">
                   <CardMatch pairs={pairs} cols={cols} dispatch={dispatch} />
-                  {state.matchedCards === difficultyConfig[s].pairs && (
-                    <AnimatedButton
-                      onClick={() =>
-                        dispatch({
-                          type: "setGameState",
-                          payload: "completed",
-                        })
-                      }
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.3 }}
-                      exit={{ opacity: 0 }}
-                      className="absolute left-full ml-6 top-1/2 -translate-y-1/2 h-50 w-20 rounded-[15px]"
-                    >
-                      <ChevronRight
-                        absoluteStrokeWidth={false}
-                        size={65}
-                        strokeWidth={3}
-                      />
-                    </AnimatedButton>
-                  )}
-                </AnimatePresence>
+                </div>
+                {state.matchedCards === difficultyConfig[s].pairs && (
+                  <AnimatedButton
+                    onClick={() =>
+                      dispatch({
+                        type: "setGameState",
+                        payload: "completed",
+                      })
+                    }
+                    className="w-fit px-8 py-2 self-end animate-in fade-in slide-in-from-top-20 duration-300"
+                  >
+                    <ChevronRight
+                      absoluteStrokeWidth={false}
+                      size={25}
+                      strokeWidth={3}
+                    />
+                  </AnimatedButton>
+                )}
               </div>
             )}
             {state.gameState === "completed" && (
@@ -74,6 +70,6 @@ export default function CardMatchGame() {
           </div>
         </main>
       )}
-    </div>
+    </>
   );
 }

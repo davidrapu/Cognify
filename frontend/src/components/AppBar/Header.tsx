@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
-import { BrainCircuit } from "lucide-react";
+import { BrainCircuit } from '@/components/icons';
 
 export default function Header() {
   return (

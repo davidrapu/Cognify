@@ -1,14 +1,8 @@
-import { motion } from "framer-motion";
 
 export default function Summary() {
   return (
-    <motion.div
-      key="3"
-      initial={{ opacity: 0, x: 30 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -30 }}
-      transition={{ duration: 0.5 }}
-      className="bg-secondary/25 w-180 p-3 rounded-[30px] space-y-5"
+    <div
+      className="bg-secondary/25 w-180 p-3 rounded-[30px] space-y-5 animate-in fade-in slide-in-from-right-30 duration-500"
     >
       <p>Game Complete</p>
       <p>Rank: X</p>
@@ -26,6 +20,6 @@ export default function Summary() {
         </ul>
       </div>
       <p>Difficulty: X</p>
-    </motion.div>
+    </div>
   );
 }

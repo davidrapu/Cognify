@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Card from "./Card";
-import { motion } from "framer-motion";
 import {type CardMatchAction} from "@/hooks/useCardMatchReducer";
 import { generateCards } from "@/utils/generateCards";
 import { cn } from "@/lib/utils";
@@ -65,15 +64,11 @@ const [cards, setCards] = useState(() => generateCards(pairs));
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 30 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{opacity:0, x:-30}}
-      transition={{ duration: 0.4 }}
-      className="px-5 py-10 rounded-[30px] bg-secondary/70 backdrop-blur-sm"
+    <div
+      className="px-5 py-10 rounded-[30px] bg-card backdrop-blur-sm"
     >
       <div
-        className={cn("grid gap-y-2 gap-x-4 w-fit justify-items-center mx-auto")}
+        className={cn("grid gap-5 w-fit justify-items-center mx-auto")}
         style={{
           gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
         }}
@@ -89,6 +84,6 @@ const [cards, setCards] = useState(() => generateCards(pairs));
           />
         ))}
       </div>
-    </motion.div>
+    </div>
   );
 }

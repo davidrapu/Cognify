@@ -21,11 +21,11 @@ export default function Card({
   return (
     <div
       className={cn(
-        "w-34 h-26 m-2 transform-3d cursor-pointer perspective-[1000px] transition-transform duration-300",
-        flipped && "cursor-not-allowed",
+        "w-30 h-20 m-1 aspect-auto transform-3d cursor-pointer perspective-[1000px] transition-transform duration-300",
+        flipped && "cursor-default",
         !flipped && 'hover:scale-[1.1]',
-        cols === 6 && "w-35 h-27",
-        cols === 8 && "w-30 h-22",
+        cols === 6 && "w-25 h-22",
+        cols === 8 && "w-23 h-22",
       )}
       onClick={flipped ? undefined : () => handleFlip(cardObj.id)}
     >
@@ -47,7 +47,7 @@ export default function Card({
         {/* BACK */}
         <div
           className={cn(
-            "absolute inset-0 rounded-[10px] border border-secondary-foreground",
+            "absolute inset-0 rounded-[10px] border-2 border-secondary-foreground",
             "bg-card backface-hidden rotate-y-180",
             "flex items-center justify-center text-3xl",
           )}
