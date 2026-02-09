@@ -85,7 +85,8 @@ export default function DigitalSpan() {
                       </FieldLabel>
                       <Input
                         id="input-field-for-number"
-                        type="number"
+                        inputMode="numeric"
+                        type="text"
                         className="h-10 bg-card text-card-foreground rounded-xl caret-primary"
                         value={userInput ?? ""}
                         onChange={(e) => setUserInput(e.target.value)}
