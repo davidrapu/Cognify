@@ -2,18 +2,18 @@
 import { Link } from "react-router";
 import { SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
 import {
-    Binary, 
-    LayoutGrid,
-  ListOrdered,    
-  Search,         
-  Palette,        
-  Zap,            
-  Play,           
-  GitBranch,      
-  Puzzle,         
-  Calculator,     
-  Route           
-} from "lucide-react";
+  Binary,
+  LayoutGrid,
+  ListOrdered,
+  Search,
+  Palette,
+  Zap,
+  Play,
+  GitBranch,
+  Puzzle,
+  Calculator,
+  Route,
+} from "@/components/icons";
 
 const games = [
   {
