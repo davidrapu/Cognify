@@ -12,8 +12,8 @@ export default function Games() {
       <SidebarProvider>
         <AppBar />
         <SidebarInset>
-          <div>
-            <SidebarTrigger className="ml-1 text-foreground" />
+          <SidebarTrigger className="ml-1 text-foreground" />
+          <div className="flex-1">
             <Outlet />
           </div>
         </SidebarInset>
