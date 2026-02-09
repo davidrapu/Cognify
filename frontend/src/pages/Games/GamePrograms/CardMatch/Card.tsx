@@ -21,7 +21,7 @@ export default function Card({
   return (
     <div
       className={cn(
-        "w-30 h-20 m-2 aspect-auto transform-3d cursor-pointer perspective-[1000px] transition-transform duration-300",
+        "w-30 h-20 m-1 aspect-auto transform-3d cursor-pointer perspective-[1000px] transition-transform duration-300",
         flipped && "cursor-default",
         !flipped && 'hover:scale-[1.1]',
         cols === 6 && "w-25 h-22",
