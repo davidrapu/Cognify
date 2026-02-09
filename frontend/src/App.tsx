@@ -2,9 +2,9 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Analytics } from "@vercel/analytics/react";
+import Home from "./pages/Home/Home";
 
 // Lazy load all routes
-const Home = lazy(() => import("./pages/Home/Home"));
 const Login = lazy(() => import("./pages/Login/Login"));
 const Games = lazy(() => import("./pages/Games/Games"));
 const GamesHome = lazy(() => import("./pages/Games/GamesHome"));
