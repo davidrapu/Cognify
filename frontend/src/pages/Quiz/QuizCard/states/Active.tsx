@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
+import React, { useState } from "react";
 import quizInfo from "@/data/quizInfo.json";
-import Progress from '@/components/ui/progress';
-import { Question } from '../../Question/Question';
-import type { QuizState} from "../../../../hooks/useQuizReducer";
-import {Button} from '@/components/Button';
+import Progress from "@/components/CustomProgress";
+import { Question } from "../../Question/Question";
+import type { QuizState } from "../../../../hooks/useQuizReducer";
+import { Button } from "@/components/Button";
 
 type QuestionData = {
   id: number;
@@ -17,18 +17,26 @@ type QuestionData = {
   options?: string[];
 };
 
-interface ActiveProps{
-    state: QuizState
-    handleEnter: (e: React.KeyboardEvent<HTMLDivElement>) => void
-    handleNext: () => void
-    endQuiz: () => void
-    questionObj: QuestionData
-    userInput: string
-    setUserInput: React.Dispatch<React.SetStateAction<string>>
+interface ActiveProps {
+  state: QuizState;
+  handleEnter: (e: React.KeyboardEvent<HTMLDivElement>) => void;
+  handleNext: () => void;
+  endQuiz: () => void;
+  questionObj: QuestionData;
+  userInput: string;
+  setUserInput: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function Active({state, handleEnter, questionObj, userInput, setUserInput, handleNext, endQuiz} : ActiveProps) {
-      const [isAknowledged, setIsAknowledged] = useState<boolean>(false);
+export default function Active({
+  state,
+  handleEnter,
+  questionObj,
+  userInput,
+  setUserInput,
+  handleNext,
+  endQuiz,
+}: ActiveProps) {
+  const [isAknowledged, setIsAknowledged] = useState<boolean>(false);
   return (
     <div
       className="container flex flex-col gap-y-7"
@@ -39,7 +47,9 @@ export default function Active({state, handleEnter, questionObj, userInput, setU
         <h1 className="text-2xl tracking-wide font-black m-0 leading-tight">
           {quizInfo.testName}
         </h1>
-        <p className="text-secondary-text font-medium">{quizInfo.description}</p>
+        <p className="text-secondary-text font-medium">
+          {quizInfo.description}
+        </p>
       </div>
       <div className="flex flex-col gap-y-2">
         <Progress value={state.currentQuestion} max={quizInfo.totalQuestions} />
