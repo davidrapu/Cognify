@@ -1,10 +1,10 @@
 // import Button from "@/components/Button"
-// import { useNavigate } from "react-router-dom"
+// import { useNavigate } from "react-router"
+import EmptyPage from "@/components/EmptyPage";
 
 export default function GamesHome() {
     // const navigate = useNavigate()
   return (
-    <main className="">
-    </main>
-  )
+      <EmptyPage/>
+  );
 }

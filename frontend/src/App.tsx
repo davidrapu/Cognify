@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Games from "./pages/Games/Games";
 import Home from "./pages/Home/Home";
@@ -7,7 +7,7 @@ import Quiz from "./pages/Quiz/Quiz";
 import GamesHome from "./pages/Games/GamesHome";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Analytics } from "@vercel/analytics/react";
-import CardMatch from "./pages/Games/GamePrograms/CardMatch";
+import CardMatchGame from "./pages/Games/GamePrograms/CardMatch/CardMatchGame";
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/games" element={<Games />}>
             <Route index element={<GamesHome />} />
-            <Route path="card-match" element={<CardMatch />} />
+            <Route path="card-match" element={<CardMatchGame />} />
           </Route>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/quiz" element={<Quiz />} />

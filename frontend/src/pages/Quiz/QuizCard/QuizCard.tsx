@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import quizInfo from "../../../data/quizInfo.json";
 import type { QuizState, QuizAction } from "../../../hooks/useQuizReducer";
-import { verifyAnswer } from "./VerifyAnswer";
+import { verifyAnswer } from "../../../utils/VerifyAnswer";
 import Intro from "./states/Intro";
 import Active from "./states/Active";
 import Finish from "./states/Finish";
@@ -94,7 +94,7 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
   if (!questionObj) return null;
 
   return (
-    <div className="container bg-card text-card-foreground w-210 p-10 rounded-[20px] font-black border border-white/10 ">
+    <div className="container bg-card text-card-foreground w-210 p-10 rounded-4xl font-black border border-white/10 ">
       {state.quizState === "intro" && <Intro dispatch={dispatch} />}
 
       {state.quizState === "active" && <Active handleEnter={handleEnter} state={state} questionObj={questionObj} userInput={userInput} setUserInput={setUserInput} handleNext={handleNext} endQuiz={endQuiz} />}

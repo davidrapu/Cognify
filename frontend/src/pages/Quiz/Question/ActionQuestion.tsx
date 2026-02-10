@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import Button from '@/components/Button'
+import {Button} from '@/components/Button'
 
 interface ActionQuestionProps {
     question: string
