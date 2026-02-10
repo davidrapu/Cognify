@@ -4,7 +4,6 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { PanelRightClose } from "lucide-react";
 import { Outlet } from "react-router";
 
 export default function Games() {
@@ -13,10 +12,10 @@ export default function Games() {
       <SidebarProvider>
         <AppBar />
         <SidebarInset>
-          <SidebarTrigger className="ml-1 text-foreground">
-            <PanelRightClose />
-          </SidebarTrigger>
-          <Outlet />
+          <SidebarTrigger className="ml-1 text-foreground" />
+          <div className="flex-1">
+            <Outlet />
+          </div>
         </SidebarInset>
       </SidebarProvider>
     </div>

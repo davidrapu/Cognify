@@ -39,7 +39,7 @@ export default function ActionQuestion({question, comment, setUserInput, userInp
       <div className="w-full h-full flex flex-col gap-y-3 ">
         <div>
           <h1 className="text-2xl">{question}</h1>
-          <p className="font-medium text-secondary"> {comment} </p>
+          <p className="font-medium text-secondary-text"> {comment} </p>
         </div>
         <Button disabled={userInput.trim() !== '' && isActive === false } onClick={isActive ? stopTimer : startTimer} className={`self-center rounded-[50%] size-30 mt-3 text-xl font-semibold ${isActive ? 'bg-destructive' : ''} `}>{isActive ? "Stop" : "Start"}</Button>
       </div>

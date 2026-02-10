@@ -1,4 +1,4 @@
-import { BrainCircuit } from "lucide-react";
+import { BrainCircuit } from "@/components/icons";
 import { cn } from "@/lib/utils";
 import { Link } from 'react-router';
 

@@ -1,4 +1,4 @@
-import { CircleGauge, Home, Gamepad2, Info, Mail } from "lucide-react";
+import { CircleGauge, Home, Gamepad2, Info, Mail } from '@/components/icons';
 import {
   SidebarGroup,
   SidebarGroupContent,
