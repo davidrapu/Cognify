@@ -14,6 +14,9 @@ const CardMatchGame = lazy(
 const DigitalSpan = lazy(
   () => import("./pages/Games/GamePrograms/DigitalSpan/DigitalSpan"),
 );
+const SequenceRecall = lazy(
+  () => import("./pages/Games/GamePrograms/SequenceRecall/SequenceRecall"),
+);
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const Quiz = lazy(() => import("./pages/Quiz/Quiz"));
 
@@ -42,6 +45,7 @@ function App() {
               <Route index element={<GamesHome />} />
               <Route path="card-match" element={<CardMatchGame />} />
               <Route path="digital-span" element={<DigitalSpan />} />
+              <Route path="sequence-recall" element={<SequenceRecall />} />
             </Route>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/quiz" element={<Quiz />} />
