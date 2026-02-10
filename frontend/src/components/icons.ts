@@ -15,5 +15,7 @@ export {
   Gamepad2,
   Info,
   Mail,
-  BrainCircuit
+  BrainCircuit,
+  Delete,
+  Eraser
 } from "lucide-react";

@@ -29,7 +29,7 @@ const games = [
   {
     name: "Sequence Recall",
     icon: ListOrdered,
-    location: "/",
+    location: "/games/sequence-recall",
   },
   {
     name: "Visual Search Game",

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Delete, Eraser } from "lucide-react";
+import { Delete, Eraser } from "@/components/icons";
 
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 
