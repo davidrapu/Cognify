@@ -1,4 +1,5 @@
 import ClusteredNumbers from "@/components/ClusteredNumbers";
+import GameLayout from "@/components/GameLayout";
 import { Button } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -51,58 +52,56 @@ export default function Active() {
   }, [displayedNumberIndex, numberList.length]);
 
   return (
-    <div className="flex h-full justify-center backdrop-blur-sm">
-      <div className="min-h-[90%] flex flex-col self-center drop-shadow-xl/30 bg-secondary aspect-video rounded-2xl border p-5 gap-y-3 animate-in zoom-in-0 duration-300">
-        <div className=" flex-1 flex font-(family-name: --headings) rounded-lg text-primary-foreground bg-primary">
-          <div className="flex-1"></div>
-          <div className="flex-1 flex flex-col justify-center items-center">
-            {displayedNumberIndex < numberList.length ? (
-              <p className="text-[60px]">{numberList[displayedNumberIndex]}</p>
-            ) : (
-              <div className="w-full">
-                <FieldGroup onKeyDown={handleEnter} className="flex">
-                  <Field>
-                    <FieldLabel
-                      htmlFor="input-field-for-number"
-                      className="text-xl"
+    <GameLayout>
+      <div className=" flex-1 flex font-(family-name: --headings) rounded-lg text-primary-foreground bg-primary">
+        <div className="flex-1"></div>
+        <div className="flex-1 flex flex-col justify-center items-center">
+          {displayedNumberIndex < numberList.length ? (
+            <p className="text-[60px]">{numberList[displayedNumberIndex]}</p>
+          ) : (
+            <div className="w-full">
+              <FieldGroup onKeyDown={handleEnter} className="flex">
+                <Field>
+                  <FieldLabel
+                    htmlFor="input-field-for-number"
+                    className="text-xl"
+                  >
+                    Enter number
+                  </FieldLabel>
+                  <Input
+                    id="input-field-for-number"
+                    inputMode="numeric"
+                    type="number"
+                    className="h-10 bg-card text-card-foreground rounded-xl caret-primary"
+                    value={userInput ?? ""}
+                    onChange={(e) => setUserInput(e.target.value)}
+                    ref={inputRef}
+                  />
+                </Field>
+                {userInput && (
+                  <Field className="w-fit self-end">
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      className="self-end cursor-pointer animate-in fade-in duration-300"
+                      onClick={submit}
                     >
-                      Enter number
-                    </FieldLabel>
-                    <Input
-                      id="input-field-for-number"
-                      inputMode="numeric"
-                      type="number"
-                      className="h-10 bg-card text-card-foreground rounded-xl caret-primary"
-                      value={userInput ?? ""}
-                      onChange={(e) => setUserInput(e.target.value)}
-                      ref={inputRef}
-                    />
+                      Submit
+                    </Button>
                   </Field>
-                  {userInput && (
-                    <Field className="w-fit self-end">
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        className="self-end cursor-pointer animate-in fade-in duration-300"
-                        onClick={submit}
-                      >
-                        Submit
-                      </Button>
-                    </Field>
-                  )}
-                </FieldGroup>
-              </div>
-            )}
-          </div>
-          <div className="flex-1"></div>
+                )}
+              </FieldGroup>
+            </div>
+          )}
         </div>
-        <div className="flex-1 flex items-center justify-center">
-          <ClusteredNumbers
-            setUserInput={setUserInput}
-            disabled={displayedNumberIndex < numberList.length}
-          />
-        </div>
+        <div className="flex-1"></div>
       </div>
-    </div>
+      <div className="flex-1 flex items-center justify-center">
+        <ClusteredNumbers
+          setUserInput={setUserInput}
+          disabled={displayedNumberIndex < numberList.length}
+        />
+      </div>
+    </GameLayout>
   );
 }
