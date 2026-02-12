@@ -34,7 +34,7 @@ const games = [
   {
     name: "Visual Search Game",
     icon: Search,
-    location: "/",
+    location: "/games/visual-search",
   },
   {
     name: "Stroop Test",
