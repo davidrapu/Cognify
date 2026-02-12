@@ -17,5 +17,6 @@ export {
   Mail,
   BrainCircuit,
   Delete,
-  Eraser
+  Eraser,
+  Clock8
 } from "lucide-react";

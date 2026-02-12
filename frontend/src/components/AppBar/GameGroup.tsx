@@ -44,7 +44,7 @@ const games = [
   {
     name: "Reaction Time Test",
     icon: Zap,
-    location: "/",
+    location: "/games/reaction-time-test",
   },
   {
     name: "Go / No Go Task",

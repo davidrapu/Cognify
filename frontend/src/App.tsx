@@ -23,6 +23,9 @@ const VisualSearch = lazy(
 const StroopTest = lazy(
   () => import("./pages/Games/GamePrograms/StroopTest/StroopTest"),
 );
+const ReactionTimeTest = lazy(
+  () => import("./pages/Games/GamePrograms/ReactionTimeTest/ReactionTimeTest"),
+);
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const Quiz = lazy(() => import("./pages/Quiz/Quiz"));
 
@@ -54,6 +57,7 @@ function App() {
               <Route path="sequence-recall" element={<SequenceRecall />} />
               <Route path="visual-search" element={<VisualSearch />} />
               <Route path="stroop-test" element={<StroopTest />} />
+              <Route path="reaction-time-test" element={<ReactionTimeTest />} />
             </Route>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/quiz" element={<Quiz />} />
