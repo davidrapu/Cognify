@@ -1,4 +1,3 @@
-import React from 'react'
 import Active from './states/Active'
 import EmptyPage from '@/components/EmptyPage'
 
