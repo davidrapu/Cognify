@@ -54,7 +54,7 @@ export default function Active() {
       {boxState === "listening" && (
         <div
           onClick={handleClick}
-          className="flex-1 bg-acceptive rounded-2xl flex items-center justify-center cursor-pointer"
+          className="flex-1 bg-acceptive-2 rounded-2xl flex items-center justify-center cursor-pointer"
         >
           <p className="text-primary-foreground text-6xl font-semibold tracking-wide">
             Click!!!
@@ -64,7 +64,7 @@ export default function Active() {
       {boxState === "clicked" && (
         <div
           onClick={handleClick}
-          className="flex-1 gap-3 text-primary-foreground flex-col bg-acceptive rounded-2xl flex items-center justify-center cursor-pointer"
+          className="flex-1 gap-3 text-primary-foreground flex-col bg-acceptive-2 rounded-2xl flex items-center justify-center cursor-pointer"
         >
           <Clock8 size={60} color="rgb(246, 249, 252)" />
           <p className=" text-6xl font-semibold tracking-wide">
