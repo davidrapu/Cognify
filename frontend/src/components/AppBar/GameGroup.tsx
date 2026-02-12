@@ -39,7 +39,7 @@ const games = [
   {
     name: "Stroop Test",
     icon: Palette,
-    location: "/",
+    location: "/games/stroop-test",
   },
   {
     name: "Reaction Time Test",
