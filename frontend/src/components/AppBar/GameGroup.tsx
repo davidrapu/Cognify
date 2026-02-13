@@ -49,27 +49,27 @@ const games = [
   {
     name: "Go / No Go Task",
     icon: Play,
-    location: "/",
+    location: "/games/go-no-go",
   },
   {
     name: "Choice Reaction Time Test",
     icon: GitBranch,
-    location: "/",
+    location: "/games/choice-reaction-time-test",
   },
   {
     name: "Pattern Puzzle",
     icon: Puzzle,
-    location: "/",
+    location: "/games/pattern-puzzle",
   },
   {
     name: "Arithmetic Puzzle",
     icon: Calculator,
-    location: "/",
+    location: "/games/arithmetic-puzzle",
   },
   {
     name: "PathFinding",
     icon: Route,
-    location: "/",
+    location: "/games/path-finding",
   },
 ];
 export default function GameGroup() {
