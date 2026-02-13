@@ -65,6 +65,7 @@ function App() {
             </Route>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/quiz" element={<Quiz />} />
+            <Route path="/*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>
       </BrowserRouter>
