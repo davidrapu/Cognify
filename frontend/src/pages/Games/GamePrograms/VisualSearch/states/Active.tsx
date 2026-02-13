@@ -86,7 +86,7 @@ export default function Active({ difficulty = "medium" }: ActiveProps) {
       <div className="absolute top-5 right-5">
         <p className="text-xl">Score: <span className="font-semibold text-primary">{score}</span></p>
         {failed &&
-          <Button variant="outline" size="sm" onClick={handleReset} className="mt-2 animate-in slide-in-from-bottom-20 fade-in duration-300">Reset</Button>
+          <Button variant="destructive" size="sm" onClick={handleReset} className="mt-2 animate-in slide-in-from-bottom-20 fade-in duration-300">Reset</Button>
         }
       </div>
       </div>
