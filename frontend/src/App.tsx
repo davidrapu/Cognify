@@ -26,6 +26,9 @@ const StroopTest = lazy(
 const ReactionTimeTest = lazy(
   () => import("./pages/Games/GamePrograms/ReactionTimeTest/ReactionTimeTest"),
 );
+const GoNoGo = lazy(
+  () => import("./pages/Games/GamePrograms/GoNoGo/GoNoGo"),
+);
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const Quiz = lazy(() => import("./pages/Quiz/Quiz"));
 
@@ -58,6 +61,7 @@ function App() {
               <Route path="visual-search" element={<VisualSearch />} />
               <Route path="stroop-test" element={<StroopTest />} />
               <Route path="reaction-time-test" element={<ReactionTimeTest />} />
+              <Route path="go-no-go" element={<GoNoGo />} />
             </Route>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/quiz" element={<Quiz />} />
