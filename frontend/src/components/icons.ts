@@ -18,5 +18,7 @@ export {
   BrainCircuit,
   Delete,
   Eraser,
-  Clock8
+  Clock8,
+  ArrowBigLeft,
+  ArrowBigRight
 } from "lucide-react";
