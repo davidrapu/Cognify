@@ -10,7 +10,7 @@ const getRandomBoolean = () => {
 };
 
 export default function Active() {
-  const [selectionState, setSelectionState] = useState<"go" | "wait" | "noGo" | "reset">("go");
+  const [selectionState, setSelectionState] = useState<"go" | "wait" | "noGo" | "reset">("wait");
   const [score, setScore] = useState<number>(0);
 
   // Window-level spacebar listener
