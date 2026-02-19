@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
 const incompleteNumbers = [1, 2, 3, 4, "?"];
-const completeNumbers = [1, 2, 3, 4, 5];
+// const completeNumbers = [1, 2, 3, 4, 5];
 export default function Active() {
     const [userInput, setUserInput] = useState<null | number>(null);
 
