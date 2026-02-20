@@ -1,5 +1,8 @@
 export {
   Binary,
+  Brain,
+  Eye,
+  Star,
   LayoutGrid,
   ListOrdered,
   Search,
