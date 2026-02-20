@@ -70,7 +70,7 @@
   --foreground: oklch(0.12 0.01 260); /* body text, headings, icons */
   --radius: 0.5rem;
 
-  --secondary-text: oklch(0.42 0.03 200);
+  --secondary-text: #3a5253;
 
   /* Buttons, links, highlights */
   --primary: #0083a3;
@@ -78,7 +78,7 @@
 
   /* Cards, chips, secondary buttons */
   --secondary: oklch(0.92 0.015 255);
-  --secondary-foreground: oklch(0.18 0.02 260);
+  --secondary-foreground: #0c121a;
 
   --card: oklch(0.96 0.01 260);
   --card-foreground: oklch(0.14 0.015 260);
