@@ -7,6 +7,7 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import image from "@/assets/images/Pop-up-rafiki.svg";
+import GameCardRow from "./GameRow";
 
 const games = [
   {
@@ -70,47 +71,6 @@ export default function GamesHome() {
       {games.map((gameCategory, index) => (
         <GameCardRow key={index} rowDataObject={gameCategory} />
       ))}
-    </div>
-  );
-}
-
-type GameCardRowProps = {
-  rowDataObject: {
-    category: string;
-    icon: React.ComponentType<{ size: number; fill: string; color: string }>;
-    games: { name: string; path: string }[];
-  };
-};
-
-function GameCardRow({ rowDataObject }: GameCardRowProps) {
-  const navigate = useNavigate();
-  return (
-    <div className="space-y-1">
-      <div className="flex gap-x-1 items-center">
-        <rowDataObject.icon
-          size={14}
-          fill="var(--primary-foreground)"
-          color="var(--primary)"
-        />
-        <p className="font-family-heading text-sm text-primary">
-          {rowDataObject.category}
-        </p>
-      </div>
-      <Carousel className="w-full">
-        <CarouselContent className="-ml-2">
-          {rowDataObject.games.map((game, index) => (
-            <CarouselItem
-              className="basis-4/5 sm:basis-1/2 lg:basis-1/3"
-              key={index}
-            >
-              <div
-                className="bg-muted w-full h-30 rounded-2xl cursor-pointer"
-                onClick={() => navigate(game.path)}
-              ></div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-      </Carousel>
     </div>
   );
 }
