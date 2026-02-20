@@ -12,7 +12,7 @@ import {
   GitBranch,
   Puzzle,
   Calculator,
-  Route,
+  // Route,
 } from "@/components/icons";
 
 const games = [
