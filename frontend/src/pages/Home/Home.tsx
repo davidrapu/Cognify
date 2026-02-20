@@ -4,7 +4,7 @@ import Aims from "./Aims";
 
 export default function Home() {
   return (
-    <div className="relative z-10 flex flex-col gap-y-10 w-full">
+    <div className="relative z-10 flex flex-col gap-y-5 w-full">
       <header>
         <Nav />
       </header>
