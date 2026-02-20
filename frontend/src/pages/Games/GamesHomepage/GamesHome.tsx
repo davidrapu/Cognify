@@ -1,11 +1,5 @@
-// import Button from "@/components/Button"
-import { useNavigate } from "react-router";
+
 import { Brain, Eye, Zap, Puzzle } from "@/components/icons";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
 import image from "@/assets/images/Pop-up-rafiki.svg";
 import GameCardRow from "./GameRow";
 
