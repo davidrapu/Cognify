@@ -7,7 +7,7 @@ import Home from "./pages/Home/Home";
 // Lazy load all routes
 const Login = lazy(() => import("./pages/Login/Login"));
 const Games = lazy(() => import("./pages/Games/Games"));
-const GamesHome = lazy(() => import("./pages/Games/GamesHome"));
+const GamesHome = lazy(() => import("./pages/Games/GamesHomepage/GamesHome"));
 const CardMatchGame = lazy(
   () => import("./pages/Games/GamePrograms/CardMatch/CardMatchGame"),
 );
