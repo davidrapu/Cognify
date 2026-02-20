@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import {Button} from "@/components/Button";
 import { useEffect, useRef } from "react";
 import ActionQuestion from "./ActionQuestion";
 import MultipleChoiceQuestion from "./MultipleChoiceQuestion";
@@ -55,7 +55,7 @@ export function Question({
       <div className="w-full h-full flex flex-col gap-y-3 ">
         <div>
           <h1 className="text-2xl">{questionObj.question}</h1>
-          <p className="font-medium text-secondary"> {questionObj.comment} </p>
+          <p className="font-medium text-secondary-text"> {questionObj.comment} </p>
         </div>
 
         <input

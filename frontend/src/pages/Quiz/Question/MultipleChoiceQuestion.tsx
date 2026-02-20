@@ -13,7 +13,7 @@ export default function MultipleChoiceQuestion({id, question, comment, options, 
       <div className="w-full h-full flex flex-col gap-y-3 ">
         <div>
           <h1 className="text-2xl">{question}</h1>
-          <p className="font-medium text-secondary"> {comment} </p>
+          <p className="font-medium text-secondary-text"> {comment} </p>
         </div>
         <div className="grid grid-rows-2 grid-flow-col gap-2.5">
           {options.map((choice) => (

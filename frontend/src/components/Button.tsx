@@ -1,15 +1,19 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>{
-  className?: string
+const baseButtonClasses =
+  "bg-primary text-primary-foreground tracking-wide py-1 px-3 rounded cursor-pointer font-semibold disabled:bg-secondary disabled:cursor-default";
+
+
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  className?: string;
 }
 
-export default function Button({children, className = '', ...props } : ButtonProps) {
+export function Button({ children, className = "", ...props }: ButtonProps) {
   return (
     <button
       className={cn(
-        "bg-primary text-primary-foreground tracking-wide py-1 px-3 rounded cursor-pointer font-semibold disabled:cursor-not-allowed disabled:bg-secondary",
+        baseButtonClasses,
         className,
       )}
       {...props}
@@ -18,3 +22,20 @@ export default function Button({children, className = '', ...props } : ButtonPro
     </button>
   );
 }
+
+
+export function AnimatedButton({
+  children,
+  className = "",
+  ...props
+}: ButtonProps) {
+  return (
+    <button
+      className={cn(baseButtonClasses, className, 'hover:scale-[1.02] active:scale-[0.98] transition-transform duration-200 ease-out')}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}
+
