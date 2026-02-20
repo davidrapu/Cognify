@@ -13,7 +13,7 @@ export function Logo({ className, size = "default" }: LogoProps) {
       <BrainCircuit color="#0083a3" size={size === "small" ? 30 : 35} />
       <span
         className={cn(
-          "m-0 font-(family-name:--headings) text-[1.8em] tracking-[0.3em]",
+          "m-0 font-family-heading text-[1.8em] tracking-[0.3em]",
           className,
         )}
       >
