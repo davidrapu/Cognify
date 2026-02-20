@@ -33,7 +33,10 @@ const ChoiceReaction = lazy(
   () => import("./pages/Games/GamePrograms/ChoiceReaction/ChoiceReaction"),
 );
 const PatternPuzzle = lazy(
-  () => import("./pages/Games/GamePrograms/PatternPuzzle/PatternPuzle"),
+  () => import("./pages/Games/GamePrograms/PatternPuzzle/PatternPuzzle"),
+);
+const ArithmeticPuzzle = lazy(
+  () => import("./pages/Games/GamePrograms/ArithmeticPuzzle/ArithmeticPuzzle"),
 );
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const Quiz = lazy(() => import("./pages/Quiz/Quiz"));
@@ -70,6 +73,7 @@ function App() {
               <Route path="go-no-go" element={<GoNoGo />} />
               <Route path="choice-reaction-time-test" element={<ChoiceReaction />} />
               <Route path="pattern-puzzle" element={<PatternPuzzle />} />
+              <Route path="arithmetic-puzzle" element={<ArithmeticPuzzle />} />
             </Route>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/quiz" element={<Quiz />} />

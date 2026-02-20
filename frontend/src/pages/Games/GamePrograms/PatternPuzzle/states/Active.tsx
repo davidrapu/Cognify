@@ -1,41 +1,47 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 
-const incompleteNumbers = [1, 2, 3, 4, "?"];
-// const completeNumbers = [1, 2, 3, 4, 5];
-export default function Active() {
-    const [userInput, setUserInput] = useState<null | number>(null);
+const incompletePattern = ['green', 'red', 'green', 'red', 'green', '?'];
+const correctAnswer = 'red'
 
-    const handleSubmit = () => {
-        if (userInput === 5) {
-            console.log("Correct! The missing number is 5.");
-        } else {
-            console.log("Incorrect. Try again!");
-        }
+export default function Active() {
+  const [userInput, setUserInput] = useState<string | null>(null);
+
+  const handleSubmit = () => {
+    if (userInput === correctAnswer) {
+      console.log("Correct! Well done.");
+    } else {
+      console.log("Incorrect. Try again!");
     }
+    setUserInput(null)
+  }
+
   return (
     <>
-      <div className="flex-2 flex bg-primary rounded-2xl justify-center items-center">
-        {incompleteNumbers.map((num) => (
-          <div
-            key={num}
-            className=" w-20 h-30 text-4xl bg-secondary rounded-2xl m-2 flex items-center justify-center border border-secondary-foreground shadow-lg/20"
-          >
-            {num}
+      <div className="flex-2 bg-primary flex items-center justify-center">
+        {incompletePattern.map((color, index) => (
+          <div key={index} className={cn('w-20 h-30 m-2 rounded-2xl shadow-lg/20' , color === '?' ? 'bg-muted flex items-center justify-center' : color === 'green' ? 'bg-acceptive' : 'bg-destructive' )}>
+            {color === '?' && <span className="text-muted-foreground text-2xl font-bold">?</span>}
           </div>
-        ))}
+        ))
+
+        }
+
       </div>
       <div className="flex-1 bg-secondary rounded-2xl flex items-center justify-center">
         <div className="flex flex-col gap-4">
           <Input
-            type="number"
-            placeholder="Enter the missing number"
+            type="text"
+            placeholder="Enter the missing color"
             className=" h-12 w-150 bg-muted border-primary border-2 "
-            value={userInput || ''}
-            onChange={(e) => setUserInput(Number(e.target.value))}
+            value={userInput || ""}
+            onChange={(e) => setUserInput(e.target.value)}
           />
-          <Button className="self-end" onClick={handleSubmit}>Submit</Button>
+          <Button className="self-end" onClick={handleSubmit}>
+            Submit
+          </Button>
         </div>
       </div>
     </>

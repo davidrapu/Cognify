@@ -66,11 +66,12 @@ const games = [
     icon: Calculator,
     location: "/games/arithmetic-puzzle",
   },
-  {
-    name: "PathFinding",
-    icon: Route,
-    location: "/games/path-finding",
-  },
+  // // Add Pathfinding later when implemented
+  // {
+  //   name: "PathFinding",
+  //   icon: Route,
+  //   location: "/games/path-finding",
+  // },
 ];
 export default function GameGroup() {
   return (

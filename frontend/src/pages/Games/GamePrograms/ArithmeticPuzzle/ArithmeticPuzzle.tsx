@@ -4,7 +4,7 @@ import Active from "./states/Active";
 
 const state: 'active' | 'inactive' = 'active';
 
-export default function PatternPuzle() {
+export default function ArithmeticPuzzle() {
   return (
     <>
     {state === 'active' ? (
