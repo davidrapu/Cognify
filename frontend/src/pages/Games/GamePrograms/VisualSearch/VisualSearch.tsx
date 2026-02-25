@@ -6,7 +6,7 @@ export default function VisualSearch() {
   return (
     <>
       {state === "intro" && <EmptyPage />}
-      {state === "active" && <Active difficulty="medium" />}
+      {state === "active" && <Active difficulty="hard" />}
     </>
   );
 }
