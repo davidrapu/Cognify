@@ -12,15 +12,27 @@ import { Input } from "@/components/ui/input"
 import image from "@/assets/images/Mobile login-amico.svg"
 import { Link } from "react-router"
 
+type LoginFormProps = React.ComponentProps<"div"> & {
+  setEmail?: React.Dispatch<React.SetStateAction<string | null>>;
+  setPassword?: React.Dispatch<React.SetStateAction<string | null>>;
+  email?: string | null;
+  password?: string | null;
+  handleSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
+};
 export function LoginForm({
   className,
+  setEmail,
+  setPassword,
+  email,
+  password,
+  handleSubmit,
   ...props
-}: React.ComponentProps<"div">) {
+}: LoginFormProps) {
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <form className="p-6 md:p-8" onSubmit={handleSubmit}>
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-2xl font-bold">Welcome back</h1>
@@ -35,6 +47,9 @@ export function LoginForm({
                   type="email"
                   placeholder="m@example.com"
                   required
+                  {
+                    ...(setEmail ? { onChange: (e) => setEmail(e.target.value), value: email || "" } : {})
+                  }
                 />
               </Field>
               <Field>
@@ -47,7 +62,10 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input
+                 id="password" type="password" required 
+                 { ...(setPassword ? { onChange: (e) => setPassword(e.target.value), value: password || "" } : {}) }
+                />
               </Field>
               <Field>
                 <Button type="submit">Login</Button>
