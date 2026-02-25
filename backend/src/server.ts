@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const auth = require("./routers/auth");
 const errorHandler = require("./middleware/error");
 const notFound = require("./middleware/notFound");
@@ -6,6 +7,11 @@ import type { Request, Response } from "express";
 
 const app = express();
 
+app.use(
+  cors({
+    origin: "http://localhost:5173"
+  }),
+);
 app.use(express.json());
 
 app.get("/", (req: Request, res: Response) => {
