@@ -6,6 +6,7 @@ import Home from "./pages/Home/Home";
 
 // Lazy load all routes
 const Login = lazy(() => import("./pages/Login/Login"));
+const Signup = lazy(() => import("./pages/Signup/Signup"));
 const Games = lazy(() => import("./pages/Games/Games"));
 const GamesHome = lazy(() => import("./pages/Games/GamesHomepage/GamesHome"));
 const CardMatchGame = lazy(
@@ -62,6 +63,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="/home" element={<Navigate to="/" replace />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
             <Route path="/games" element={<Games />}>
               <Route index element={<GamesHome />} />
               <Route path="card-match" element={<CardMatchGame />} />
