@@ -1,13 +1,15 @@
 [
     {
         "id": 1,
-        "username": "testuser",
+        "firstName": "Test",
+        "lastName": "User",
         "email": "testuser@example.com",
         "password": "hashedpassword123"
     },
     {
         "id": 2,
-        "username": "admin",
+        "firstName": "Admin",
+        "lastName": "User",
         "email": "admin@example.com",
         "password": "admin"
     }
