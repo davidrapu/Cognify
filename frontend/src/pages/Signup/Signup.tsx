@@ -28,7 +28,7 @@ export default function Signup() {
 
     // encrypt(password)
 
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
       method: "POST",
       body: JSON.stringify({
         firstName: userName.split(" ")[0],
@@ -36,6 +36,10 @@ export default function Signup() {
         email: email,
         password: password,
       }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include"
     });
 
     if (response.status === 409) {
