@@ -14,7 +14,7 @@ export default function Login() {
     e.preventDefault();
     const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
       method: "POST",
-      body: JSON.stringify({ username: email, password }),
+      body: JSON.stringify({ email, password }),
       headers: {
         "Content-Type": "application/json",
       },
