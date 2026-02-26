@@ -3,6 +3,8 @@ import { useAuth } from "@/contexts/AuthContext/AuthContext";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
+const AUTH_URL = import.meta.env.VITE_AUTH_URL;
+
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -12,26 +14,31 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    try{
 
-    if (!response.ok) {
-      setEmail(null)
-      setPassword(null)
-      setError(true);
-      console.log(error, 'Username or password is incorrect');
-      return;
+      const response = await fetch(`${AUTH_URL}/login`, {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (!response.ok) {
+        setEmail(null)
+        setPassword(null)
+        setError(true);
+        console.log(error, 'Username or password is incorrect');
+        return;
+      }
+  
+      // const data = await response.json();
+      login()
+      navigate("/dashboard");
+    } catch (error){
+      console.log(error)
     }
-
-    // const data = await response.json();
-    login()
-    navigate("/dashboard");
   };
 
   return (

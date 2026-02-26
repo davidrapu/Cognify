@@ -3,6 +3,8 @@ import { useAuth } from "@/contexts/AuthContext/AuthContext";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 
+const AUTH_URL = import.meta.env.VITE_AUTH_URL;
+
 export default function Signup() {
   const { login } = useAuth()
   const navigate = useNavigate();
@@ -28,7 +30,7 @@ export default function Signup() {
 
     // encrypt(password)
 
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
+    const response = await fetch(`${AUTH_URL}/register`, {
       method: "POST",
       body: JSON.stringify({
         firstName: userName.split(" ")[0],
