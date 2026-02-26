@@ -12,16 +12,37 @@ import { Input } from "@/components/ui/input"
 import { Link } from "react-router"
 import image from "@/assets/images/Mobile login-amico.svg"
 
+type SignupFormProps = React.ComponentProps<"div"> & {
+  userName?: string;
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+  setUserName?: React.Dispatch<React.SetStateAction<string>>;
+  setEmail?: React.Dispatch<React.SetStateAction<string>>;
+  setPassword?: React.Dispatch<React.SetStateAction<string>>;
+  setConfirmPassword?: React.Dispatch<React.SetStateAction<string>>;
+  handleSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
+}
+
 export function SignupForm({
   className,
+  userName,
+  email,
+  password,
+  confirmPassword,
+  setUserName,
+  setEmail,
+  setPassword,
+  setConfirmPassword,
+  handleSubmit,
   ...props
-}: React.ComponentProps<"div">) {
+}: SignupFormProps) {
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <form className="p-6 md:p-8" onSubmit={handleSubmit}>
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-2xl font-bold">Create your account</h1>
@@ -30,12 +51,28 @@ export function SignupForm({
                 </p>
               </div>
               <Field>
+                <FieldLabel htmlFor="name">Full Name</FieldLabel>
+                <Input id="name" type="text" placeholder="John Doe" required 
+                {
+                  ...(setUserName && {
+                    value: userName || "",
+                    onChange: (e) => setUserName(e.target.value),
+                  })
+                } />
+              </Field>
+              <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
                   id="email"
                   type="email"
                   placeholder="m@example.com"
                   required
+                  {
+                    ...(setEmail && {
+                      value: email || "",
+                      onChange: (e) => setEmail(e.target.value),
+                    })
+                  }
                 />
                 <FieldDescription>
                   We&apos;ll use this to contact you. We will not share your
@@ -46,13 +83,25 @@ export function SignupForm({
                 <Field className="grid grid-cols-2 gap-4">
                   <Field>
                     <FieldLabel htmlFor="password">Password</FieldLabel>
-                    <Input id="password" type="password" required />
+                    <Input id="password" type="password" required 
+                    {
+                      ...(setPassword && {
+                        value: password || "",
+                        onChange: (e) => setPassword(e.target.value),
+                      })
+                    } />
                   </Field>
                   <Field>
                     <FieldLabel htmlFor="confirm-password">
                       Confirm Password
                     </FieldLabel>
-                    <Input id="confirm-password" type="password" required />
+                    <Input id="confirm-password" type="password" required 
+                    {
+                      ...(setConfirmPassword && {
+                        value: confirmPassword || "",
+                        onChange: (e) => setConfirmPassword(e.target.value),
+                      })
+                    } />
                   </Field>
                 </Field>
                 <FieldDescription>
@@ -113,5 +162,5 @@ export function SignupForm({
         and <a href="#">Privacy Policy</a>.
       </FieldDescription>
     </div>
-  )
+  );
 }
