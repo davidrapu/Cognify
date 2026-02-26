@@ -24,7 +24,7 @@ export default function ClusteredNumbers({
     }
   };
   return (
-    <div className=" grid grid-cols-3 gap-5">
+    <div className=" grid lg:grid-cols-3 grid-cols-4 gap-3">
       {numbers.map((num) => (
         <Button
           disabled={disabled}
@@ -32,7 +32,7 @@ export default function ClusteredNumbers({
           onClick={() => handleButtonClick(num)}
           variant="outline"
           className={cn(
-            "p-7 bg-primary/20 rounded-lg flex items-center justify-center cursor-pointer aspect-video",
+            "p-6 md:p-7 bg-primary/20 rounded-lg flex items-center justify-center cursor-pointer aspect-video",
           )}
           key={num}
         >
@@ -45,7 +45,7 @@ export default function ClusteredNumbers({
         onClick={() => setUserInput && setUserInput(null)}
         variant="outline"
         className={cn(
-          "p-7 bg-primary/20 rounded-lg flex items-center justify-center cursor-pointer aspect-video",
+          "p-6 md:p-7 bg-primary/20 rounded-lg flex items-center justify-center cursor-pointer aspect-video",
         )}
       >
         <Eraser size={27} />
@@ -56,7 +56,7 @@ export default function ClusteredNumbers({
         onClick={() => handleDelete()}
         variant="outline"
         className={cn(
-          "p-7 bg-primary/20 rounded-lg flex items-center justify-center cursor-pointer aspect-video",
+          "p-6 md:p-7 bg-primary/20 rounded-lg flex items-center justify-center cursor-pointer aspect-video",
         )}
       >
         <Delete size={40} />

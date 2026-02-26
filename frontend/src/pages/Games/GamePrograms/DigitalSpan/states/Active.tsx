@@ -53,7 +53,7 @@ export default function Active({setState}: {setState: React.Dispatch<React.SetSt
 
   return (
     <GameLayout>
-      <div className=" flex-1 flex font-(family-name: --headings) rounded-lg text-primary-foreground bg-primary">
+      <div className=" md:p-4 flex-1 flex font-family-heading rounded-lg min-h-fit text-primary-foreground bg-primary">
         <div className="flex-1"></div>
         <div className="flex-1 flex flex-col justify-center items-center">
           {timeSpent < 101 ? (
