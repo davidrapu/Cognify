@@ -105,12 +105,12 @@ export default function Active({
   useEffect(() => {
     if (countDownTimeSpent < 101) {
       const timer = setTimeout(() => {
-        setCountDownTimeSpent((prev) => prev + 5);
+        setCountDownTimeSpent((prev) => prev + (10 - digitsToRemember));
       }, 50);
 
       return () => clearTimeout(timer);
     }
-  }, [countDownTimeSpent]);
+  }, [countDownTimeSpent, digitsToRemember]);
 
   return (
     <GameLayout>
