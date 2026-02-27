@@ -20,7 +20,7 @@ export default function Games() {
               <AvatarFallback>UN</AvatarFallback>
             </Avatar>
           </div>
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-hidden">
             <Outlet />
           </div>
         </SidebarInset>

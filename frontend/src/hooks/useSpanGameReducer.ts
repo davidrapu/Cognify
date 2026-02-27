@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 
-const initialState = {
-    gameState: "intro", // can be "active", intro, or "completed"
+const initialState: SpanGameState = {
+    gameState: "home",
     totalAttempts: 0,
     totalTime: [], // array to store time taken for each attempt
     totalCorrect: 0,
@@ -10,7 +10,7 @@ const initialState = {
     highestConsecutiveCorrect: 0,
 }
 export type SpanGameState = {
-    gameState: string;
+    gameState: "intro" | "active" | "completed" | "home";
     totalAttempts: number;
     totalTime: number[];
     totalCorrect: number;
@@ -28,7 +28,7 @@ export type SpanGameAction =
     | { type: "incrementIncorrect" } // increment total incorrect by 1
     | { type: "setHighestConsecutiveCorrect", payload: number } // set the highest consecutive correct count
 
-function reducer (state: SpanGameState, action: SpanGameAction) {
+function reducer (state: SpanGameState, action: SpanGameAction): SpanGameState {
     switch (action.type) {
         case "startGame":
             return { ...state, gameState: "active" };
