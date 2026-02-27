@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 
 const initialState = {
-    gameState: "active", // can be "active", intro, or "completed"
+    gameState: "intro", // can be "active", intro, or "completed"
     totalAttempts: 0,
     totalTime: [], // array to store time taken for each attempt
     totalCorrect: 0,
