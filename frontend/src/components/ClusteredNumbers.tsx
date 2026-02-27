@@ -24,43 +24,43 @@ export default function ClusteredNumbers({
     }
   };
   return (
-    <div className=" grid lg:grid-cols-3 grid-cols-4 gap-3">
-      {numbers.map((num) => (
+      <div className=" grid lg:grid-cols-3 grid-cols-4 gap-3">
+        {numbers.map((num) => (
+          <Button
+            disabled={disabled}
+            type="button"
+            onClick={() => handleButtonClick(num)}
+            variant="outline"
+            className={cn(
+              "p-6 md:p-7 bg-primary/20 rounded-lg flex items-center justify-center cursor-pointer aspect-video",
+            )}
+            key={num}
+          >
+            <span className="text-2xl">{num}</span>
+          </Button>
+        ))}
         <Button
           disabled={disabled}
           type="button"
-          onClick={() => handleButtonClick(num)}
+          onClick={() => setUserInput && setUserInput(null)}
           variant="outline"
           className={cn(
             "p-6 md:p-7 bg-primary/20 rounded-lg flex items-center justify-center cursor-pointer aspect-video",
           )}
-          key={num}
         >
-          <span className="text-2xl">{num}</span>
+          <Eraser size={27} />
         </Button>
-      ))}
-      <Button
-        disabled={disabled}
-        type="button"
-        onClick={() => setUserInput && setUserInput(null)}
-        variant="outline"
-        className={cn(
-          "p-6 md:p-7 bg-primary/20 rounded-lg flex items-center justify-center cursor-pointer aspect-video",
-        )}
-      >
-        <Eraser size={27} />
-      </Button>
-      <Button
-        disabled={disabled}
-        type="button"
-        onClick={() => handleDelete()}
-        variant="outline"
-        className={cn(
-          "p-6 md:p-7 bg-primary/20 rounded-lg flex items-center justify-center cursor-pointer aspect-video",
-        )}
-      >
-        <Delete size={40} />
-      </Button>
-    </div>
+        <Button
+          disabled={disabled}
+          type="button"
+          onClick={() => handleDelete()}
+          variant="outline"
+          className={cn(
+            "p-6 md:p-7 bg-primary/20 rounded-lg flex items-center justify-center cursor-pointer aspect-video",
+          )}
+        >
+          <Delete size={40} />
+        </Button>
+      </div>
   );
 }
