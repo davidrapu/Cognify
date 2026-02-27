@@ -24,5 +24,7 @@ export {
   Clock8,
   ArrowBigLeft,
   ArrowBigRight,
-  Heart
+  Heart,
+  Moon,
+  Sun,
 } from "lucide-react";
