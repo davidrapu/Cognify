@@ -2,6 +2,7 @@ import EmptyPage from "@/components/EmptyPage";
 import Active from "./states/Active";
 import { useSpanGameReducer } from "@/hooks/useSpanGameReducer";
 import { useEffect } from "react";
+import Intro from "./states/Intro";
 
 export default function DigitalSpan() {
   const [state, dispatch] = useSpanGameReducer();
@@ -13,10 +14,11 @@ export default function DigitalSpan() {
   }, [state.totalAllowedTries, dispatch]);
   return (
     <>
-      {state.gameState === "start" && <EmptyPage />}
+      {state.gameState === "intro" && <Intro />}
       {state.gameState === "active" && (
         <Active state={state} dispatch={dispatch} />
       )}
+      {state.gameState === "completed" && <EmptyPage />}
     </>
   );
 }
