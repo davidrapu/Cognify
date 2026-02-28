@@ -57,7 +57,7 @@ export default function GameHomePage(props : GameHomePageProps) {
               subtitle="Last 10 sessions"
             />
             <StatCard label="High Score" value={props.highScore || "N/A"} subtitle="Personal best" />
-            <StatCard label="Accuracy" value={`${props.averageAccuracy || "N/A"}%`} subtitle="Overall correct" />
+            <StatCard label="Accuracy" value={`${props.averageAccuracy || "N/A"} %`} subtitle="Overall correct" />
           </div>
         </section>
 
