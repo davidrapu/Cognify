@@ -55,13 +55,13 @@ export default function GameHistory({ history = historyData }: GameHistoryProps)
                 <TableCell className="pl-6 text-foreground">
                   {game.date}
                 </TableCell>
-                <TableCell className="text-right font-mono text-foreground">
+                <TableCell className="text-right text-foreground">
                   {game.score}
                 </TableCell>
-                <TableCell className="text-right font-mono text-muted-foreground">
+                <TableCell className="text-right text-muted-foreground">
                   {game.accuracy}%
                 </TableCell>
-                <TableCell className="text-right font-mono text-muted-foreground">
+                <TableCell className="text-right text-muted-foreground pr-6">
                   {game.reaction}
                 </TableCell>
               </TableRow>
