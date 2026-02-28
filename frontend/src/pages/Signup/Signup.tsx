@@ -82,7 +82,7 @@ export default function Signup() {
         <img
           src={image}
           alt="Image"
-          className="absolute inset-0 h-full w-full object-contain dark:brightness-[0.2] dark:grayscale"
+          className="absolute inset-0 h-full w-full object-contain dark:brightness-[0.65]"
         />
       </div>
     </div>
