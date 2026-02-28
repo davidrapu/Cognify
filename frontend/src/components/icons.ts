@@ -22,8 +22,6 @@ export {
   Delete,
   Eraser,
   Clock8,
-  ArrowBigLeft,
-  ArrowBigRight,
   Heart,
   Moon,
   Sun,
