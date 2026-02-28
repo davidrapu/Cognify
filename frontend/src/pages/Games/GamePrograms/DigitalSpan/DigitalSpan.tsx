@@ -1,9 +1,8 @@
-import EmptyPage from "@/components/EmptyPage";
 import Active from "./states/Active";
 import { useSpanGameReducer } from "@/hooks/useSpanGameReducer";
-import { useEffect } from "react";
 import Intro from "./states/Intro";
-import GameHomePage from "../../../../components/GameHomePage/GameHomePage";
+import GameHomePage from "@/components/GameHomePage/GameHomePage";
+import Completed from "@/components/CompletedGameSession";
 
 const historyData = [
   { id: 1, date: "Mar 1", score: 4, accuracy: 50, reaction: 10 },
@@ -25,19 +24,13 @@ const historyData = [
 
 export default function DigitalSpan() {
   const [state, dispatch] = useSpanGameReducer();
-
-  useEffect(() => {
-    if (state.totalAllowedTries <= 0) {
-      dispatch({ type: "endGame" });
-    }
-  }, [state.totalAllowedTries, dispatch]);
   return (
     <>
-      {state.gameState === "intro" && <Intro />}
+      {state.gameState === "intro" && <Intro dispatch={dispatch} />}
       {state.gameState === "active" && (
         <Active state={state} dispatch={dispatch} />
       )}
-      {state.gameState === "completed" && <EmptyPage />}
+      {state.gameState === "completed" && <Completed goHome={() => dispatch({type: "home"})} playAgain={() => dispatch({type: "startGame"})} totalTime={state.totalTime} totalAttempts={state.totalAttempts} totalCorrect={state.totalCorrect} totalIncorrect={state.totalIncorrect} highestConsecutiveCorrect={state.highestConsecutiveCorrect} />}
       {state.gameState === "home" && <GameHomePage 
       title="Digital Span"
       description="Test your working memory by recalling sequences of numbers. The longer the sequence, the more points you earn!"
