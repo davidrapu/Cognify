@@ -39,10 +39,13 @@ export default function Active({
 
   const submit = () => {
     dispatch({ type: "increaseAttempts" });
-    dispatch({ type: "addTimeTaken", payload: timeTaken });
 
     if (userInput === currentDigits) {
       dispatch({ type: "incrementCorrect" }); // Increment total correct answers
+      dispatch({
+        type: "addTimeTaken",
+        payload: { time: timeTaken, correct: true },
+      }); // Add the time taken for this attempt to the totalTime array with correct: true
 
       // Get the current consecutive correct count and refresh consecutive correct count from state
       const newRefreshConsecutiveCorrect = refreshConsecutiveCorrect + 1;
@@ -71,9 +74,10 @@ export default function Active({
       }
       console.log("Correct!");
     } else {
-      // If the answer is incorrect, reduce the total allowed tries by 1, increment total incorrect answers, reset the refresh consecutive correct count and consecutive correct count, and generate new digits.
+      // If the user is incorrect, reduce the total allowed tries by 1, increment total incorrect by 1, add the time taken for this attempt to the totalTime array with correct: false, reset the refresh consecutive correct count and consecutive correct count, and generate new digits.
       dispatch({ type: "reduceAllowedTries" });
       dispatch({ type: "incrementIncorrect" });
+      dispatch({ type: "addTimeTaken", payload: { time: timeTaken, correct: false } }); // Add the time taken for this attempt to the totalTime array with correct: false
       setRefreshConsecutiveCorrect(0);
       setConsecutiveCorrectValue(0);
       setCurrentDigits(generateRandomDigits(digitsToRemember));
@@ -88,6 +92,13 @@ export default function Active({
     e.preventDefault();
     if (userInput) submit();
   };
+
+  // Watch for when total allowed tries reaches 0 and end the game
+  useEffect(() => {
+    if (state.totalAllowedTries <= 0) {
+      dispatch({ type: "endGame" });
+    }
+  }, [state.totalAllowedTries, dispatch, state]);
 
   // Start the timer when the digits are displayed and focus the input field
   useEffect(() => {
@@ -113,7 +124,7 @@ export default function Active({
   }, [countDownTimeSpent, digitsToRemember]);
 
   return (
-    <GameLayout>
+    <GameLayout animateIn={false}>
       <div className=" md:p-4 flex-1 flex rounded-lg min-h-fit text-primary-foreground bg-primary">
         <div className="flex-1"></div>
         <div className="flex-1 flex flex-col justify-center items-center">
