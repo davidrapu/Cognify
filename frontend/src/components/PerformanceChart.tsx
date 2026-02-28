@@ -45,39 +45,39 @@ export default function PerformanceChart({ data = testData }: PerformanceChartPr
               <linearGradient id="scoreGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="0%"
-                  stopColor="var(--color-primary)"
+                  stopColor="var(--primary)"
                   stopOpacity={0.3}
                 />
                 <stop
                   offset="100%"
-                  stopColor="var(--color-primary)"
+                  stopColor="var(--primary)"
                   stopOpacity={0}
                 />
               </linearGradient>
             </defs>
             <CartesianGrid
               strokeDasharray="3 3"
-              stroke="var(--color-border)"
+              stroke="var(--border)"
               vertical={false}
             />
             <XAxis
               dataKey="session"
-              tick={{ fill: "var(--color-muted-foreground)", fontSize: 12 }}
+              tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
               tickLine={false}
               axisLine={false}
             />
             <YAxis
-              tick={{ fill: "var(--color-muted-foreground)", fontSize: 12 }}
+              tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
               tickLine={false}
               axisLine={false}
               domain={[0, 10]}
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: "var(--color-card)",
-                border: "1px solid var(--color-border)",
+                backgroundColor: "var(--card)",
+                border: "1px solid var(--border)",
                 borderRadius: "8px",
-                color: "var(--color-foreground)",
+                color: "var(--foreground)",
                 fontSize: "13px",
               }}
               labelFormatter={(label) => `Session ${label}`}
@@ -85,13 +85,13 @@ export default function PerformanceChart({ data = testData }: PerformanceChartPr
             <Area
               type="monotone"
               dataKey="score"
-              stroke="var(--color-primary)"
+              stroke="var(--primary)"
               strokeWidth={2}
               fill="url(#scoreGradient)"
               activeDot={{
                 r: 5,
-                fill: "var(--color-primary)",
-                stroke: "var(--color-card)",
+                fill: "var(--primary)",
+                stroke: "var(--card)",
                 strokeWidth: 2,
               }}
             />
