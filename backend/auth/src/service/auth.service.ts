@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const users = require("../data/users.json");
 import type { HttpError } from "../types/errorsType";
-require("dotenv").config();
 
 function generateToken(user: any) {
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "45m" });

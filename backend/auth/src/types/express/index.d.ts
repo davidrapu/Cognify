@@ -1,6 +1,6 @@
-import "express-serve-static-core";
+import { Request, Response, NextFunction } from "express";
 
-declare module "express-serve-static-core" {
+declare module "express" {
   interface Request {
     user?: {
       id: number;

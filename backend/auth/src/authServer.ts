@@ -5,7 +5,6 @@ const notFound = require("./middleware/notFound");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 const { login, register, logout, refreshToken } = require("./controller/auth.controller");
-import type { Request, Response } from "express";
 
 const app = express();
 
@@ -24,7 +23,7 @@ app.use(cookieParser());
 app.post("/login", login )
 app.post("/register", register)
 app.post("/logout", logout)
-app.post("/token", refreshToken)
+app.get("/refresh", refreshToken)
 
 
 app.use(notFound);
