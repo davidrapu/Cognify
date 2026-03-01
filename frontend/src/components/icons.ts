@@ -23,6 +23,8 @@ export {
   Eraser,
   Clock8,
   Heart,
+  ArrowBigRight,
+  ArrowBigLeft,
   Moon,
   Sun,
 } from "lucide-react";
