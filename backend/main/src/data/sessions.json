@@ -1,0 +1,16 @@
+{
+    "sessions": [
+        {
+            "id": 1,
+            "userId": 2,
+            "gameName" : "game1",
+            "correct": 5,
+            "incorrect": 3,
+            "reactionTimeAvg": 1.5,
+            "reactionTimeStd": 0.5,
+            "duration": 60,
+            "domain": "memory",
+            "date": "2024-06-01T12:00:00Z"
+        }
+        ]
+}
