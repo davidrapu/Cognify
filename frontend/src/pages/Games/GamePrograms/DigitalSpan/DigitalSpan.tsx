@@ -26,26 +26,61 @@ export default function DigitalSpan() {
   const [state, dispatch] = useSpanGameReducer();
   return (
     <>
+      {state.gameState === "home" && (
+        <GameHomePage
+          title="Digital Span"
+          description="Test your working memory by recalling sequences of numbers. The longer the sequence, the more points you earn!"
+          onStartGame={() => {
+            dispatch({ type: "startGame" });
+          }}
+          highScore={8}
+          averageScore={6.5}
+          averageAccuracy={72}
+          instructions={[
+            {
+              step: 1,
+              title: "Begin the Game",
+              desc: "Click the 'Start Game' button to begin your first session.",
+            },
+            {
+              step: 2,
+              title: "View Sequence",
+              desc: "A sequence of numbers will appear on the screen. Try to memorize them!",
+            },
+            {
+              step: 3,
+              title: "Recall",
+              desc: "After the numbers disappear, input the sequence in the correct order.",
+            },
+            {
+              step: 4,
+              title: "Feedback",
+              desc: "After each attempt, you'll receive feedback on your score and accuracy.",
+            },
+            {
+              step: 5,
+              title: "Improve",
+              desc: "Use the performance chart and game history to track your improvement over time.",
+            },
+          ]}
+          history={historyData}
+        />
+      )}
       {state.gameState === "intro" && <Intro dispatch={dispatch} />}
       {state.gameState === "active" && (
         <Active state={state} dispatch={dispatch} />
       )}
-      {state.gameState === "completed" && <Completed goHome={() => dispatch({type: "home"})} playAgain={() => dispatch({type: "startGame"})} totalTime={state.totalTime} totalAttempts={state.totalAttempts} totalCorrect={state.totalCorrect} totalIncorrect={state.totalIncorrect} highestConsecutiveCorrect={state.highestConsecutiveCorrect} />}
-      {state.gameState === "home" && <GameHomePage 
-      title="Digital Span"
-      description="Test your working memory by recalling sequences of numbers. The longer the sequence, the more points you earn!"
-      onStartGame={() => {dispatch({type: "startGame"})}}
-      highScore={8}
-      averageScore={6.5}
-      averageAccuracy={72}
-      instructions={[
-        { step: 1, title: "Begin the Game", desc: "Click the 'Start Game' button to begin your first session." },
-        { step: 2, title: "View Sequence", desc: "A sequence of numbers will appear on the screen. Try to memorize them!" },
-        { step: 3, title: "Recall", desc: "After the numbers disappear, input the sequence in the correct order." },
-        { step: 4, title: "Feedback", desc: "After each attempt, you'll receive feedback on your score and accuracy." },
-        { step: 5, title: "Improve", desc: "Use the performance chart and game history to track your improvement over time." },
-      ]}
-      history={historyData} />}
+      {state.gameState === "completed" && (
+        <Completed
+          goHome={() => dispatch({ type: "home" })}
+          playAgain={() => dispatch({ type: "startGame" })}
+          totalTime={state.totalTime}
+          totalAttempts={state.totalAttempts}
+          totalCorrect={state.totalCorrect}
+          totalIncorrect={state.totalIncorrect}
+          highestConsecutiveCorrect={state.highestConsecutiveCorrect}
+        />
+      )}
     </>
   );
 }
