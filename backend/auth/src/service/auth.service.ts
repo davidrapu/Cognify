@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { createNewUser } = require("../../../database/");
+const { createNewUser } = require("@cognify/database");
 import type { HttpError } from "../types/errorsType";
 
 function generateToken(user: any) {
