@@ -1,0 +1,27 @@
+{
+  "name": "cognify",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "frontend/*",
+    "backend/*"
+  ],
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://cseegit.essex.ac.uk/25-26-ce301/25-26_CE301_rapu_david.git"
+  },
+  "packageManager": "npm@8.5.0",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "turbo": "^2.8.16"
+  }
+
+}
