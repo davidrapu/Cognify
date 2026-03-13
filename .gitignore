@@ -1,4 +1,5 @@
+.env
 node_modules
 .qodo
 dist/
-.env
+generated/
