@@ -1,6 +1,6 @@
 import { configDotenv } from "dotenv";
 if (process.env.ENV !== "production") {
-  configDotenv({ path: "../../.env" });
+  configDotenv({ path: "../.env" });
 }
 
 const { PrismaPg } = require("@prisma/adapter-pg");
