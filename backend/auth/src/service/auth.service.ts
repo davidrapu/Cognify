@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const users = require("../data/users.json");
+const { createNewUser } = require("../../../database/");
 import type { HttpError } from "../types/errorsType";
 
 function generateToken(user: any) {
@@ -15,36 +16,6 @@ async function getUser(email: string) {
   return user;
 }
 
-async function getUsers() {
-  return users;
-}
-
-async function createUser(
-  firstName: string,
-  lastName: string,
-  email: string,
-  password: string,
-) {
-  // This function will create a new user and store it in the database. For now, we are just updating the json file with the new user details.
-
-  //   in the case theres already a user
-  const user = await getUser(email);
-  if (user) {
-    const err: HttpError = new Error("User already exists");
-    err.status = 409;
-    throw err;
-  }
-  const newUser = {
-    id: (await getUsers()).length + 1,
-    firstName,
-    lastName,
-    email,
-    password,
-  };
-  users.push(newUser);
-  return { id: newUser.id };
-}
-
 async function userRegister(
   firstName: string,
   lastName: string,
@@ -52,7 +23,7 @@ async function userRegister(
   password: string,
 ) {
   try {
-    const userData = await createUser(firstName, lastName, email, password);
+    const userData = await createNewUser(firstName, lastName, email, password);
     const accessToken = generateToken(userData);
     const refreshToken = generateRefreshToken(userData);
     return {

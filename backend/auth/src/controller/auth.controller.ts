@@ -54,6 +54,8 @@ async function register(req: Request, res: Response, next: NextFunction) {
       .json({ message: "User registered successfully" });
   } catch (error) {
     next(error);
+  }finally{
+    res.end()
   }
 }
 
