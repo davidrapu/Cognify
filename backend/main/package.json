@@ -15,7 +15,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@cognify/database": "workspace:*",
+    "@cognify/database": "file:../database",
     "dotenv": "^17.3.1",
     "express": "^5.0.0"
   }
