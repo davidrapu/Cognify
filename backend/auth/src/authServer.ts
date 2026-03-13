@@ -3,12 +3,17 @@ const cors = require("cors");
 const errorHandler = require("./middleware/error");
 const notFound = require("./middleware/notFound");
 const cookieParser = require("cookie-parser");
-require("dotenv").config();
+
+const { configDotenv } = require("dotenv");
+if (process.env.ENV !== "production") {
+  configDotenv({ path: "../../.env" });
+}
+
 const { login, register, logout, refreshToken } = require("./controller/auth.controller");
 
 const app = express();
 
-const allowedOrigin = process.env.NODE_ENV === "production" ? process.env.PRODUCTION_FRONTEND_URL : "http://localhost:5173";
+const allowedOrigin = process.env.ENV === "production" ? process.env.PRODUCTION_FRONTEND_URL : "http://localhost:5173";
 
 app.use(
   cors({
