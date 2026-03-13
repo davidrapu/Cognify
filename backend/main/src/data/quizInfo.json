@@ -1,0 +1,159 @@
+{
+  "testName": "Cognitive Screening Test",
+  "description": "MMSE-inspired, non-clinical assessment",
+  "totalPoints": 30,
+  "totalQuestions": 16,
+  "categorySize" : {
+    "orientation": 10,
+    "language": 9,
+    "registration": 3,
+    "calculation": 5,
+    "recall": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "category": "orientation",
+      "question": "What year is it?",
+      "comment": "Enter the current year in YYYY format.",
+      "type": "year",
+      "inputType": "number",
+      "points": 1
+    },
+    {
+      "id": 2,
+      "category": "orientation",
+      "question": "What month is it?",
+      "comment": "Enter the full month name.",
+      "type": "month",
+      "inputType": "text",
+      "points": 1
+    },
+    {
+      "id": 3,
+      "category": "orientation",
+      "question": "What day of the week is it?",
+      "comment": "Enter the full day name.",
+      "type": "day",
+      "inputType": "text",
+      "points": 1
+    },
+    {
+      "id": 4,
+      "category": "orientation",
+      "question": "What is today’s date?",
+      "comment": "Enter the current date in DD/MM/YYYY format.",
+      "type": "date",
+      "inputType": "text",
+      "points": 1
+    },
+    {
+      "id": 5,
+      "category": "orientation",
+      "question": "What season is it?",
+      "comment": "Enter one of: Spring, Summer, Autumn, or Winter.",
+      "type": "season",
+      "inputType": "text",
+      "points": 2
+    },
+    {
+      "id": 6,
+      "category": "orientation",
+      "question": "What country are you in?",
+      "comment": "Enter the name of the country you are currently in.",
+      "type": "country",
+      "inputType": "text",
+      "points": 2
+    },
+    {
+      "id": 7,
+      "category": "orientation",
+      "question": "What city or town are you in?",
+      "comment": "Enter the name of the city or town you are currently in.",
+      "type": "city",
+      "inputType": "text",
+      "points": 2
+    },
+    {
+      "id": 8,
+      "category": "registration",
+      "statement": "Remember these three words: Apple, Chair, River.",
+      "question": "Repeat those words.",
+      "comment": "Type the three words exactly as presented, separated by commas.",
+      "type": "memory",
+      "inputType": "text",
+      "points": 3
+    },
+    {
+      "id": 9,
+      "category": "attention_calculation",
+      "question": "Starting from 100, subtract 7, five times.",
+      "comment": "Enter the sequence of numbers resulting from each subtraction seperated by a comma. Include 100, In order",
+      "type": "subtraction",
+      "inputType": "text",
+      "points": 5
+    },
+    {
+      "id": 10,
+      "category": "language",
+      "question": "Name an object",
+      "comment": "Any object",
+      "type": "object_naming",
+      "inputType": "text",
+      "points": 1
+    },
+    {
+      "id": 11,
+      "category": "recall",
+      "question": "Recall the three words you were asked to remember earlier.",
+      "comment": "Type the three remembered words in any order.",
+      "type": "memory",
+      "inputType": "text",
+      "points": 3
+    },
+    {
+      "id": 12,
+      "category": "language",
+      "question": "Name another object",
+      "comment": "Any object except the last one",
+      "type": "object_naming",
+      "inputType": "text",
+      "points": 1
+    },
+    {
+      "id": 13,
+      "category": "language",
+      "question": "Repeat the sentence exactly: \"The dog ran quickly across the park.\"",
+      "comment": "Type the sentence exactly as shown, including word order.",
+      "type": "sentence_repetition",
+      "inputType": "text",
+      "points": 1
+    },
+    {
+      "id": 14,
+      "category": "language",
+      "question": "Follow this instruction: Click the button, wait two seconds, then click it again.",
+      "type": "action",
+      "inputType": "action",
+      "points": 3
+    },
+    {
+      "id": 15,
+      "category": "language",
+      "question": "Write a complete sentence of your choice.",
+      "type": "sentence_generation",
+      "inputType": "textarea",
+      "points": 1
+    },
+    {
+      "id": 16,
+      "category": "language",
+      "question": "Which of the following is a fruit?",
+      "comment": "Select the correct option from the choices provided.",
+      "type": "multiple_choice",
+      "inputType": "radio",
+      "options": ["Car", "Apple", "Chair"],
+      "points": 2
+    }
+  ]
+}

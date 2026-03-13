@@ -22,6 +22,9 @@ export {
   Delete,
   Eraser,
   Clock8,
+  Heart,
+  ArrowBigRight,
   ArrowBigLeft,
-  ArrowBigRight
+  Moon,
+  Sun,
 } from "lucide-react";

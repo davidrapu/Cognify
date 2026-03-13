@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Analytics } from "@vercel/analytics/react";
 import Home from "./pages/Home/Home";
+import { ModeToggle } from "./components/ModeToggle";
 
 // Lazy load all routes
 const Login = lazy(() => import("./pages/Login/Login"));
@@ -85,6 +86,7 @@ function App() {
       </BrowserRouter>
       <SpeedInsights />
       <Analytics />
+      <ModeToggle />
     </>
   );
 }
