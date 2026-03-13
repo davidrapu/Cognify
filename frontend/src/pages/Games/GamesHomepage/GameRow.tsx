@@ -23,7 +23,7 @@ export default function GameCardRow({ rowDataObject }: GameCardRowProps) {
           fill="var(--primary-foreground)"
           color="var(--primary)"
         />
-        <p className="font-family-heading text-sm text-primary">
+        <p className="font-family-heading tracking-wide text-sm text-primary">
           {rowDataObject.category}
         </p>
       </div>

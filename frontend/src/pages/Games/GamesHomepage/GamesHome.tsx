@@ -49,7 +49,7 @@ export default function GamesHome() {
         <div className="flex gap-y-2 max-w-2xl flex-col justify-center text-center">
           <h1 className="text-6xl font-bold tracking-wide text-primary-foreground font-family-heading">Train Your Mind</h1>
 
-          <p className="text-muted-foreground text-sm sm:text-base font-medium">
+          <p className="text-accent text-sm sm:text-base font-medium">
             Strengthen memory, sharpen focus, improve reaction speed, and
             enhance problem-solving through structured cognitive challenges.
           </p>

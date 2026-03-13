@@ -1,8 +1,16 @@
+import { cn } from "@/lib/utils";
 
-export default function GameLayout({children}: {children: React.ReactNode}) {
+export default function GameLayout({children, animateIn = true}: {children: React.ReactNode, animateIn?: boolean}) {
   return (
-    <div className="flex h-full justify-center backdrop-blur-sm">
-      <div className="min-h-[90%] flex flex-col self-center drop-shadow-xl/30 bg-secondary aspect-video rounded-2xl border p-5 gap-y-3 animate-in zoom-in-0 duration-300">{children}</div>
+    <div className="flex min-h-full justify-center backdrop-blur-sm">
+      <div
+        className={cn(
+          " md:w-285 md:aspect-video flex flex-col self-center drop-shadow-xl/30 bg-secondary rounded-2xl p-5 gap-y-3",
+          animateIn && "animate-in zoom-in-0 duration-300"
+        )}
+      >
+        {children}
+      </div>
     </div>
   );
 }
