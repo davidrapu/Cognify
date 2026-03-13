@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const users = require("../data/users.json");
 const { createNewUser } = require("../../../database/");
 import type { HttpError } from "../types/errorsType";
 
@@ -12,6 +11,8 @@ function generateRefreshToken(user: any) {
 }
 async function getUser(email: string) {
   // This function will get the user details from the database using the email. For now, we are just getting the user details from the json file.
+
+  const users: string[] = ['0oo9']
   const user = users.find((user: any) => user.email === email);
   return user;
 }
@@ -49,7 +50,7 @@ async function userLogin(email: string, password: string) {
   Password recieved will be an encrypted string so decryption is done here.
   This functinoality will be implemented in the future when we have a database to store user details and encrypted passwords. For now, we are just comparing the password recieved with the password in the json file.
   */
-  if (user.password !== password) {
+  if (user[0] !== password) {
     const err: HttpError = new Error("Invalid password");
     err.status = 400;
     throw err;
@@ -58,7 +59,7 @@ async function userLogin(email: string, password: string) {
   // Password and email are valid, allow user to login and return the user first name, last name and email
 
   const userDetails = {
-    id: user.id,
+    id: user[0],
   };
   const accessToken = generateToken(userDetails);
   const refreshToken = generateRefreshToken(userDetails);
