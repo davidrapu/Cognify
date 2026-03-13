@@ -10,7 +10,7 @@ require("dotenv").config();
 const app = express();
 
 const allowedOrigin =
-  process.env.NODE_ENV === "production"
+  process.env.ENV === "production"
     ? process.env.PRODUCTION_FRONTEND_URL
     : "http://localhost:5173";
 
