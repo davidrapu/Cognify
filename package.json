@@ -15,7 +15,7 @@
     "type": "git",
     "url": "https://cseegit.essex.ac.uk/25-26-ce301/25-26_CE301_rapu_david.git"
   },
-  "packageManager": "npm@8.5.0",
+  "packageManager": "npm@11.7.0",
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -23,5 +23,4 @@
   "devDependencies": {
     "turbo": "^2.8.16"
   }
-
 }
