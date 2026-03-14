@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import image from "@/assets/images/Mobile login-amico.svg";
 import { Logo } from "@/components/Logo";
 
-const AUTH_URL = import.meta.env.VITE_AUTH_URL;
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Login() {
   const { login } = useAuth();
@@ -18,7 +18,7 @@ export default function Login() {
     e.preventDefault();
     try{
 
-      const response = await fetch(`${AUTH_URL}/login`, {
+      const response = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
         body: JSON.stringify({ email, password }),
         credentials: "include",

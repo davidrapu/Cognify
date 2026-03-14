@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Logo } from "@/components/Logo";
 import image from "@/assets/images/Mobile login-amico.svg";
 
-const AUTH_URL = import.meta.env.VITE_AUTH_URL;
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Signup() {
   const { login } = useAuth()
@@ -30,9 +30,7 @@ export default function Signup() {
       return;
     }
 
-    // encrypt(password)
-
-    const response = await fetch(`${AUTH_URL}/register`, {
+    const response = await fetch(`${API_URL}/auth/register`, {
       method: "POST",
       body: JSON.stringify({
         firstName: userName.split(" ")[0],
