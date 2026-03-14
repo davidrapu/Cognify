@@ -17,12 +17,36 @@ model User {
   firstName String
   lastName  String
   email     String   @unique
-  password  String
+  hash      String   
+  session   GameSession[]
   role      Role     @default(USER)
   createdAt DateTime @default(now())
+}
+
+model GameSession {
+  id              Int @id @default(autoincrement())
+  userId          String
+  gameName        String
+  correct         Int
+  incorrect       Int
+  reactionTimeAvg Float
+  reactionTimeStd Float
+  duration        Float
+  domain          Domain
+  createdAt       DateTime @default(now())
+  // Define the relations to the User model
+  user            User   @relation(fields: [userId], references: [id])
 }
 
 enum Role {
   USER
   ADMIN
+}
+
+enum Domain {
+  MEMORY
+  ATTENTION
+  PROCESSING_SPEED
+  EXECUTIVE_FUNCTIONS
+  REASONING
 }
