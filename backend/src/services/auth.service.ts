@@ -1,20 +1,18 @@
 const jwt = require("jsonwebtoken");
-const { createNewUser } = require("../../database/repositories/user.repository");
+const { createNewUser, getUserByEmail } = require("../../database/repositories/user.repository");
+const bcrypt = require("bcrypt");
 import type { HttpError } from "@/types/errorsType";
 
-function generateToken(user: any) {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "45m" });
+function generateToken(userId: any) {
+  return jwt.sign({ id: userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "45m" });
 }
 
-function generateRefreshToken(user: any) {
-  return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
+function generateRefreshToken(userId: any) {
+  return jwt.sign({ id: userId }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
 }
-async function getUser(email: string) {
-  // This function will get the user details from the database using the email. For now, we are just getting the user details from the json file.
 
-  const users: string[] = ["0oo9"];
-  const user = users.find((user: any) => user.email === email);
-  return user;
+async function encryptPassword(password: string) {
+  return await bcrypt.hash(password, 10);
 }
 
 async function userRegister(
@@ -24,12 +22,14 @@ async function userRegister(
   password: string,
 ) {
   try {
-    const userData = await createNewUser(firstName, lastName, email, password);
-    const accessToken = generateToken(userData);
-    const refreshToken = generateRefreshToken(userData);
+    const encryptedPassword = await encryptPassword(password);
+    const userData = await createNewUser(firstName, lastName, email, encryptedPassword);
+    const accessToken = generateToken(userData.id);
+    const refreshToken = generateRefreshToken(userData.id);
     return {
       accessToken: accessToken,
       refreshToken: refreshToken,
+      user : userData
     };
   } catch (error) {
     throw error;
@@ -38,7 +38,7 @@ async function userRegister(
 
 async function userLogin(email: string, password: string) {
   // Find user by email
-  const user = await getUser(email);
+  const user = await getUserByEmail(email);
 
   if (user === undefined) {
     const err: HttpError = new Error("Invalid email");
@@ -46,11 +46,8 @@ async function userLogin(email: string, password: string) {
     throw err;
   }
 
-  /*
-  Password recieved will be an encrypted string so decryption is done here.
-  This functinoality will be implemented in the future when we have a database to store user details and encrypted passwords. For now, we are just comparing the password recieved with the password in the json file.
-  */
-  if (user[0] !== password) {
+  const isValid = await bcrypt.compare(password, user.hash);
+  if (!isValid) {
     const err: HttpError = new Error("Invalid password");
     err.status = 400;
     throw err;
@@ -58,12 +55,15 @@ async function userLogin(email: string, password: string) {
 
   // Password and email are valid, allow user to login and return the user first name, last name and email
 
-  const userDetails = {
-    id: user[0],
+  const userDetail = {
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email
   };
-  const accessToken = generateToken(userDetails);
-  const refreshToken = generateRefreshToken(userDetails);
-  return { accessToken, refreshToken };
+
+  const accessToken = generateToken(user.id);
+  const refreshToken = generateRefreshToken(user.id);
+  return { accessToken, refreshToken, user: userDetail };
 }
 
 function verifyRefreshToken(refreshToken: string) {

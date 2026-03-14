@@ -1,14 +1,19 @@
+import { hash } from "node:crypto";
+
 const {prisma} = require("../lib/prisma");
-async function createNewUser(firstName: string, lastName: string, email: string, password: string) {
+async function createNewUser(firstName: string, lastName: string, email: string, hash: string) {
   return prisma.user.create({
     data: {
       firstName,
       lastName,
       email,
-      password
+      hash
     },
     select: {
-        id: true
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true
     }
   });
 }
@@ -16,6 +21,13 @@ async function createNewUser(firstName: string, lastName: string, email: string,
 async function getUserByEmail(email: string) {
   return prisma.user.findUnique({
     where: { email },
+    select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        hash: true
+    }
   });
 }
 
