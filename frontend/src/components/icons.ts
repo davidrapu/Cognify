@@ -27,4 +27,7 @@ export {
   ArrowBigLeft,
   Moon,
   Sun,
+  ChevronsUpDown,
+  LogOut,
+  User
 } from "lucide-react";
