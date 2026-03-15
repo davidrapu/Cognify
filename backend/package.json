@@ -4,7 +4,7 @@
   "description": "Backend server",
   "main": "./dist/server.js",
   "scripts": {
-    "build": "tsc",
+    "build": "prisma generate && tsc",
     "dev": "nodemon",
     "start": "node ./dist/server.js",
     "db:generate": "prisma generate",
