@@ -31,6 +31,18 @@ async function getUserByEmail(email: string) {
   });
 }
 
+async function getUserById(id: number) {
+  return prisma.user.findUnique({
+    where: { id },
+    select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true
+    }
+  });
+}
+
 async function getUsers() {
   return prisma.user.findMany()
 }
@@ -44,6 +56,7 @@ async function deleteUserByEmail(email: string) {
 module.exports = {
     createNewUser,
     getUserByEmail,
+    getUserById,
     getUsers,
     deleteUserByEmail
 }
