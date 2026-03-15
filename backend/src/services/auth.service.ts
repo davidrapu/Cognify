@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { createNewUser, getUserByEmail, getUserById } = require("../../database/repositories/user.repository");
+const { createNewUser, getUserByEmail, getUserById } = require("../database/repositories/user.repository");
 const bcrypt = require("bcrypt");
 import type { HttpError } from "@/types/errorsType";
 
