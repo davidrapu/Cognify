@@ -81,6 +81,7 @@ async function refreshToken(req: Request, res: Response, next: NextFunction) {
     const {accessToken, user} = await verifyRefreshToken(req.cookies.refreshToken);
     res.status(200).json({ message: "Access token refreshed", accessToken, user });
   } catch (error) {
+    console.log(error)
     next(error);
   }
 }
