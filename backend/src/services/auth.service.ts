@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken");
-const { createNewUser, getUserByEmail } = require("../../database/repositories/user.repository");
+const { createNewUser, getUserByEmail, getUserById } = require("../../database/repositories/user.repository");
 const bcrypt = require("bcrypt");
 import type { HttpError } from "@/types/errorsType";
 
 function generateToken(userId: any) {
-  return jwt.sign({ id: userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "45m" });
+  return jwt.sign({ id: userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
 }
 
 function generateRefreshToken(userId: any) {
@@ -66,7 +66,7 @@ async function userLogin(email: string, password: string) {
   return { accessToken, refreshToken, user: userDetail };
 }
 
-function verifyRefreshToken(refreshToken: string) {
+async function verifyRefreshToken(refreshToken: string) {
   try {
     // If no refresh token, return 401
     if (!refreshToken) {
@@ -81,7 +81,18 @@ function verifyRefreshToken(refreshToken: string) {
 
     // Verify refresh token is valid
     const payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET); // throws if invalid
-    return generateToken({ id: payload.id });
+    const user = await getUserById(payload.id); // get user data from db using user id
+
+    if (!user) {
+      const err: HttpError = new Error("User not found");
+      err.status = 404;
+      throw err;
+    }
+
+    const accessToken = generateToken(payload.id);
+
+    return { accessToken, user };
+    
   } catch (error) {
     throw new Error("Invalid refresh token");
   }
