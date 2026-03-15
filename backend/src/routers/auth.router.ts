@@ -23,7 +23,7 @@ router.post("/register", register);
 router.post("/logout", logout);
 
 // @desc Refresh access token
-// @route GET /auth/refresh
-router.get("/refresh", refreshToken);
+// @route POST /auth/refresh
+router.post("/refresh", refreshToken);
 
 module.exports = router;
