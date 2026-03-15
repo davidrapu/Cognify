@@ -46,8 +46,8 @@ export default function Signup() {
       console.log("User already exists");
       return;
     }
-
-    login()
+    const data = await res.json();
+    login(data.user)
     navigate("/dashboard");
 
   }
