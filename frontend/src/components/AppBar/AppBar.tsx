@@ -8,7 +8,7 @@ import {
 import Header from "./Header";
 import GeneralGroup from "./GeneralGroup";
 import GameGroup from "./GameGroup";
-import User from "./User";
+import UserProfile from "./UserProfile";
 
 export default function AppBar() {
   return (
@@ -24,7 +24,7 @@ export default function AppBar() {
         </SidebarContent>
 
         <SidebarFooter>
-          <User />
+          <UserProfile />
         </SidebarFooter>
 
         <SidebarRail />
@@ -32,4 +32,3 @@ export default function AppBar() {
     </>
   );
 }
-
