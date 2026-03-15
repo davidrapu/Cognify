@@ -4,6 +4,7 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Analytics } from "@vercel/analytics/react";
 import Home from "./pages/Home/Home";
 import { ModeToggle } from "./components/ModeToggle";
+import PageLoader from "./components/PageLoader";
 
 // Lazy load all routes
 const Login = lazy(() => import("./pages/Login/Login"));
@@ -44,16 +45,6 @@ const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const Quiz = lazy(() => import("./pages/Quiz/Quiz"));
 
 // Loading fallback component
-function PageLoader() {
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="text-center">
-        <div className="size-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-        <p className="text-muted-foreground">Loading...</p>
-      </div>
-    </div>
-  );
-}
 
 function App() {
   return (
