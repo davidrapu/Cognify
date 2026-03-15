@@ -78,8 +78,8 @@ async function logout(req: Request, res: Response, next: NextFunction) {
 
 async function refreshToken(req: Request, res: Response, next: NextFunction) {
   try {
-    const accessToken = verifyRefreshToken(req.cookies.refreshToken);
-    res.status(200).json({ message: "Access token refreshed", accessToken });
+    const {accessToken, user} = await verifyRefreshToken(req.cookies.refreshToken);
+    res.status(200).json({ message: "Access token refreshed", accessToken, user });
   } catch (error) {
     next(error);
   }
