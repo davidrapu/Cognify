@@ -4,8 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import image from "@/assets/images/Mobile login-amico.svg";
 import { Logo } from "@/components/Logo";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { useApiFetch } from "@/hooks/useApiFetch";
 
 export default function Login() {
   const { login } = useAuth();
@@ -13,21 +12,18 @@ export default function Login() {
   const [email, setEmail] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
   const [error, setError] = useState<boolean>(false);
+  const apiFetch = useApiFetch()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try{
-
-      const response = await fetch(`${API_URL}/auth/login`, {
+      const res = await apiFetch("/auth/login", {
         method: "POST",
         body: JSON.stringify({ email, password }),
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+        credentials: "include"
+      })
   
-      if (!response.ok) {
+      if (!res.ok) {
         setEmail(null)
         setPassword(null)
         setError(true);
@@ -35,8 +31,8 @@ export default function Login() {
         return;
       }
   
-      // const data = await response.json();
-      login()
+      const data = await res.json();
+      login(data.user);
       navigate("/dashboard");
     } catch (error){
       console.log(error)
