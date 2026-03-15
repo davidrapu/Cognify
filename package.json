@@ -11,6 +11,8 @@
     "build": "turbo build",
     "lint": "turbo lint"
   },
+  "incremental": true,
+  "tsBuildInfoFile": ".tsbuildinfo",
   "repository": {
     "type": "git",
     "url": "https://cseegit.essex.ac.uk/25-26-ce301/25-26_CE301_rapu_david.git"
