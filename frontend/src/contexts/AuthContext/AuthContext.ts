@@ -1,26 +1,29 @@
-import User from "@/components/AppBar/User";
+import User from "@/components/AppBar/UserProfile";
 import { createContext, useContext } from "react";
 
 type AuthContextType = {
-    loggedIn: boolean;
-    login: (fetchedUser?: User) => void;
-    logout: () => void;
-    user: User | null;
-}
+  loggedIn: boolean;
+  login: (fetchedUser: User) => void;
+  logout: () => void;
+  refresh: () => Promise<string | null>;
+  user: User;
+  accessToken?: string | null;
+};
 type User = {
-  id: number;
   firstName: string;
   lastName: string;
   email: string;
+  image?: string;
 };
 
 const defaultAuthContext: AuthContextType = {
-    loggedIn: false,
-    login: () => null,
-    logout: () => null,
-    user: null
+  loggedIn: false,
+  login: () => null,
+  logout: () => null,
+  refresh: () => Promise.resolve(null),
+  user: {} as User,
+  accessToken: null,
 };
-
 
 export const AuthContext = createContext<AuthContextType>(defaultAuthContext);
 
