@@ -1,23 +1,21 @@
 import { HttpError } from "../types/errorsType";
 import type dataTypes = require("../types/dataTypes");
-// import type errorsType = require("../types/errorsType");
+import type errorsType = require("../types/errorsType");
 const {
   createGameSession,
+  getGameSessions,
 } = require("../database/repositories/gameSession.repository");
 
 const data: string[] = ["po"];
 
-async function getSessionsData(userId: number) {
-  // check if that user ID exists in the data file, showing if the user has any sessions recorded
-  // if it does return all sessions with that ID
-  // otherwise throw an error saying no sessions found for that user ID
-  // const userSessions = data[0].filter((session: any ) => session.userId === userId);
-  // if (userSessions.length === 0) {
-  //   const err: errorsType.HttpError = new Error("No sessions found for the given user ID");
-  //   err.status = 404;
-  //   throw err;
-  // }
-  return 0;
+async function getSessionsData(userId: string) {
+  const userGameSessions: dataTypes.SessionDataType[] = await getGameSessions(userId);
+  if (userGameSessions.length === 0) {
+    const err: errorsType.HttpError = new Error("No sessions found for the given user ID");
+    err.status = 404;
+    throw err;
+  }
+  return userGameSessions;
 }
 
 async function getSessionDataById(userId: number, sessionId: number) {
