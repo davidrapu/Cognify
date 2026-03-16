@@ -19,8 +19,6 @@ function authenticateToken(req: Request, res: Response, next: NextFunction) {
     const err: errorsType.HttpError = new Error("Invalid token");
     err.status = 403;
     return next(err);
-  }finally{
-    res.end()
   }
 }
 
