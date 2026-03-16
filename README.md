@@ -14,12 +14,13 @@ Built with a modern tech stack, it combines a smooth frontend experience with a 
 - TypeScript
 - React
 - Tailwind CSS
+- shadcn ui
 
 **Backend:**
 - Node.js
 - Express.js
-<!-- - Prisma ORM
-- PostgreSQL -->
+- Prisma ORM
+- PostgreSQL
 
 ## Installation
 1. Clone the repository:
@@ -33,30 +34,43 @@ cd cognify
 # Frontend
 cd frontend
 npm install
+
+# Backend
+cd backend
+npm install
 ```
 
-<!-- 3. Setup environment variables:
-Create a `.env` file in the backend folder:
+3. Setup environment variables:
+Create a `.env` file:
 ```env
 DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
-JWT_SECRET="your_jwt_secret"
-PORT=5000
-``` -->
-
-3. Run the app:
-```bash
-# Frontend
-cd ../frontend
-npm start
+VITE_API_URL=http://localhost:5000
+ENV=development
+ACCESS_TOKEN_SECRET=YOUR-TOKEN_HERE
+REFRESH_TOKEN_SECRET=YOUR_TOKEN_HERE
 ```
 
-<!-- The app should now be running locally at `http://localhost:3000`. -->
+##### Run the app (production):
+```bash
+npm run build
+npm run start
+```
+
+##### Run the app (development):
+```bash
+npm run dev
+```
+
+
+The app should now be running locally at 
+- Frontend: `http://localhost:5173`.
+- Backend: `http://localhost:5000`
 
 <!-- ## API Endpoints -->
 <!-- - `POST /auth/register` – Register a new user -->
 <!-- - `POST /auth/login` – Login and receive a JWT token -->
-<!-- - `GET /game/levels` – Fetch available game levels -->
-<!-- - `POST /game/score` – Submit user score -->
+<!-- - `GET /game/levels` – Fetch available game levels
+- `POST /game/score` – Submit user score -->
 <!-- *(Add more as your API grows)* -->
 
 ## Contributing
