@@ -29,8 +29,9 @@ async function addSession(req: Request, res: Response, next: NextFunction) {
 async function getSessions(req: Request, res: Response, next: NextFunction) {
   try {
     // Call the service to get all the sessions based of the user ID
-    const userId = req.user.id;
-    const sessions = await getSessionsData(userId);
+    // console.log(req.user)
+    // console.log(req.user.id)
+    const sessions = await getSessionsData(req.user);
     res
       .status(200)
       .json({ message: "Sessions retrieved successfully", data: sessions });
