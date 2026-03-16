@@ -1,5 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import type dataTypes = require("../types/dataTypes");
+import { GameName } from "../database/generated/prisma/enums";
+import { HttpError } from "../types/errorsType";
 const {
   getSessionsData,
   getSessionDataById,
@@ -25,16 +27,21 @@ async function addSession(req: Request, res: Response, next: NextFunction) {
 /**
  * @desc Get all sessions from the data file
  * @route GET /sessions
+ * @route GET /sessions?gameName=gameName
  */
 async function getSessions(req: Request, res: Response, next: NextFunction) {
   try {
-    // Call the service to get all the sessions based of the user ID
-    // console.log(req.user)
-    // console.log(req.user.id)
-    const sessions = await getSessionsData(req.user);
-    res
-      .status(200)
-      .json({ message: "Sessions retrieved successfully", data: sessions });
+    const validGameNames = Object.values(GameName);
+    const gameName = req.query.gameName as string;
+
+    if (gameName && !validGameNames.includes(gameName.toUpperCase() as GameName)) {
+      const err: HttpError = new Error("Invalid game name");
+      err.status = 400;
+      return next(err);
+    }
+
+    const { sessions, stats } = await getSessionsData(req.user, gameName.toUpperCase() as GameName);
+    res.status(200).json({ message: "Sessions retrieved successfully", data: { sessions, stats } });
   } catch (error) {
     next(error);
   }
@@ -61,5 +68,5 @@ async function getSession(req: Request, res: Response, next: NextFunction) {
 module.exports = {
   addSession,
   getSessions,
-  getSession,
+  getSession
 };

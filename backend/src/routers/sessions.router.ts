@@ -4,6 +4,7 @@ const { addSession, getSession, getSessions } = require("../controllers/sessions
 const router = express.Router();
 // @desc Get all sessions
 // @route GET /sessions
+// @route GET /sessions?gameName=gameName
 router.get("/", getSessions);
 
 // @desc Get a specific session by ID
