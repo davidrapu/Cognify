@@ -1,7 +1,18 @@
 const z = require('zod');
 
 const SessionSchema = z.object({
-  gameName: z.string(),
+  gameName: z.enum([
+    "DIGITAL_SPAN",
+    "CARD_MATCH",
+    "SEQUENCE_RECALL",
+    "VISUAL_SEARCH",
+    "STROOP_TEST",
+    "REACTION_TIME",
+    "GO_NO_GO",
+    "CHOICE_REACTION_TIME",
+    "PATTERN_RECOGNITION",
+    "ARITHMETIC_PATTERN_RECOGNITION"
+  ]),
   correct: z.number(),
   incorrect: z.number(),
   reactionTimeAvg: z.number(),

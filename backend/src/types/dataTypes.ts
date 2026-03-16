@@ -1,11 +1,11 @@
-import { Domain } from "../database/generated/prisma/enums";
+import { Domain, GameName } from "../database/generated/prisma/enums";
 export interface UserData {
   id: number;
 };
 
 export interface SessionDataType {
   id?: string;
-  gameName: string;
+  gameName: GameName;
   correct: number;
   incorrect: number;
   reactionTimeAvg: number;
