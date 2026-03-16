@@ -1,4 +1,3 @@
-import type { Request, Response } from "express";
 const express = require("express");
 const { addSession, getSession, getSessions } = require("../controllers/sessions.controller");
 
