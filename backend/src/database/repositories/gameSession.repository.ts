@@ -4,27 +4,31 @@ import { PrismaClient } from '../generated/prisma/client';
 const {prisma}: {prisma:PrismaClient} = require('../lib/prisma');
 
 
-// CRUD operations for game sessions
-
-
-
 // Create a new game session
 async function createGameSession(sessionData: SessionDataType, userId: string) {
     return prisma.gameSession.create({
         data: {
-            ...sessionData,
-            userId: userId
+            userId: userId,
+            gameName: sessionData.gameName,
+            correct: sessionData.correct,
+            incorrect: sessionData.incorrect,
+            reactionTimeAvg: sessionData.reactionTimeAvg,
+            reactionTimeStd: sessionData.reactionTimeStd,
+            duration: sessionData.duration,
+            domain: sessionData.domain
         }
     })
 
 }
 
 // get all game sessions for a user
-
-async function getGameSessionsByUserId(userId: string) {
+async function getGameSessions(userId: string) {
     return prisma.gameSession.findMany({
         where: {
             userId: userId
+        },
+        omit: {
+            userId: true
         },
         take: 10
     })
@@ -33,5 +37,5 @@ async function getGameSessionsByUserId(userId: string) {
 
 module.exports = {
   createGameSession,
-  getGameSessionsByUserId
+  getGameSessions
 };
