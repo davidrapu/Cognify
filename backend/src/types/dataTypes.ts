@@ -4,6 +4,7 @@ export interface UserData {
 };
 
 export interface SessionDataType {
+  id?: string;
   gameName: string;
   correct: number;
   incorrect: number;
