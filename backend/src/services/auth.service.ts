@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken");
 const { createNewUser, getUserByEmail, getUserById } = require("../database/repositories/user.repository");
 const bcrypt = require("bcrypt");
-import type { HttpError } from "@/types/errorsType";
+import type { HttpError } from "../types/errorsType";
 
 function generateToken(userId: any) {
-  return jwt.sign({ id: userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
+  return jwt.sign({ id: userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30m" });
 }
 
 function generateRefreshToken(userId: any) {
@@ -38,32 +38,41 @@ async function userRegister(
 
 async function userLogin(email: string, password: string) {
   // Find user by email
-  const user = await getUserByEmail(email);
+  try{
+    const user = await getUserByEmail(email);
+    console.log(user);
 
-  if (user === undefined) {
-    const err: HttpError = new Error("Invalid email");
-    err.status = 400;
-    throw err;
+    if (user === undefined) {
+      const err: HttpError = new Error("Invalid email");
+      err.status = 400;
+      throw err;
+    }
+
+    const isValid = await bcrypt.compare(password, user.hash);
+
+    if (!isValid) {
+      const err: HttpError = new Error("Invalid password");
+      err.status = 400;
+      throw err;
+    }
+
+    const userDetail = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email
+    };
+  
+    const accessToken = generateToken(user.id);
+    const refreshToken = generateRefreshToken(user.id);
+    return { accessToken, refreshToken, user: userDetail };
+  } catch (e) {
+    console.log(e)
   }
 
-  const isValid = await bcrypt.compare(password, user.hash);
-  if (!isValid) {
-    const err: HttpError = new Error("Invalid password");
-    err.status = 400;
-    throw err;
-  }
+
 
   // Password and email are valid, allow user to login and return the user first name, last name and email
 
-  const userDetail = {
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email
-  };
-
-  const accessToken = generateToken(user.id);
-  const refreshToken = generateRefreshToken(user.id);
-  return { accessToken, refreshToken, user: userDetail };
 }
 
 async function verifyRefreshToken(refreshToken: string) {
