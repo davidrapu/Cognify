@@ -20,6 +20,7 @@ model User {
   hash      String   
   session   GameSession[]
   role      Role     @default(USER)
+  refreshTokens RefreshToken[]
   createdAt DateTime @default(now())
 }
 
@@ -36,6 +37,15 @@ model GameSession {
   createdAt       DateTime @default(now())
   // Define the relations to the User model
   user            User   @relation(fields: [userId], references: [id])
+}
+
+model RefreshToken {
+  id        Int    @id @default(autoincrement())
+  userId    String
+  token     String @unique
+  createdAt DateTime @default(now())
+  // Define the relations to the User model
+  user      User   @relation(fields: [userId], references: [id])
 }
 
 enum Role {
