@@ -27,7 +27,7 @@ model User {
 model GameSession {
   id              Int @id @default(autoincrement())
   userId          String
-  gameName        String
+  gameName        GameName
   correct         Int
   incorrect       Int
   reactionTimeAvg Float
@@ -59,4 +59,17 @@ enum Domain {
   PROCESSING_SPEED
   EXECUTIVE_FUNCTIONS
   REASONING
+}
+
+enum GameName {
+  DIGITAL_SPAN
+  CARD_MATCH
+  SEQUENCE_RECALL
+  VISUAL_SEARCH
+  STROOP_TEST
+  REACTION_TIME
+  GO_NO_GO
+  CHOICE_REACTION_TIME
+  PATTERN_RECOGNITION
+  ARITHMETIC_PATTERN_RECOGNITION
 }
