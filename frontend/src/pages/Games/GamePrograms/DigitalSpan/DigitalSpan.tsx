@@ -24,6 +24,13 @@ const historyData = [
 
 export default function DigitalSpan() {
   const [state, dispatch] = useSpanGameReducer();
+
+  // Load data into the game state when the component mounts
+  // useEffect(() => {
+  //   dispatch({ type: "setHighScore", payload: 8 });
+  //   dispatch({ type: "setAverages", payload: { averageScore: 6.5, averageAccuracy: 72 } });
+  // }, [dispatch]);
+
   return (
     <>
       {state.gameState === "home" && (
