@@ -9,6 +9,16 @@ import type { HttpError } from "../types/errorsType";
 // Store all refresh tokens in a db when db integrated
 
 async function login(req: Request, res: Response, next: NextFunction) {
+    if (
+      !req.body ||
+      !req.body.email ||
+      !req.body.password
+    ) {
+      const err: HttpError = new Error("Missing required fields");
+      err.status = 400;
+      return next(err);
+    }
+    
   try {
     const { accessToken, refreshToken, user } = await userLogin(
       req.body.email,
@@ -23,13 +33,16 @@ async function login(req: Request, res: Response, next: NextFunction) {
     res.status(200).json({ message: "Login successful", user, accessToken });
   } catch (error: any) {
     next(error);
-  } finally {
-    res.end();
   }
 }
 
 async function register(req: Request, res: Response, next: NextFunction) {
-  // Example register logic
+  if ( !req.body || !req.body.firstName || !req.body.lastName || !req.body.email || !req.body.password) {
+    const err: HttpError = new Error("Missing required fields");
+    err.status = 400;
+    return next(err);
+  }
+
   try {
     const { accessToken, refreshToken, user } = await userRegister(
       req.body.firstName,
@@ -48,8 +61,6 @@ async function register(req: Request, res: Response, next: NextFunction) {
       .json({ message: "User registered successfully", user, accessToken });
   } catch (error) {
     next(error);
-  } finally {
-    res.end();
   }
 }
 
