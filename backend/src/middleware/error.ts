@@ -4,7 +4,6 @@ const errorHandler = (err: any, req: Request, res: Response, next: NextFunction)
   if (err.status) {
     res.status(err.status).send({ message: err.message });
   } else {
-    console.log(err);
     res
       .status(500)
       .send({ message: "Something went wrong!", error: err.message });
