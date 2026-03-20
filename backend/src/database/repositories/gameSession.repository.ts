@@ -28,6 +28,9 @@ async function getGameSessions(userId: string) {
     omit: {
       userId: true,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
     take: 10,
   });
 }
@@ -42,13 +45,16 @@ async function getGameSessionsByGameType(userId: string, gameName: GameName) {
     omit: {
       userId: true,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
     take: 10,
   });
 }
 
 // get Statistics for a user
 async function getGameSessionsStatistics(userId: string) {
-  const [highscore, totals] = await Promise.all([
+  const [highscore, totals] = await Promise.all([ // Get the highest score (max correct answers) for the user and the total correct and incorrect answers for the user
     prisma.gameSession.aggregate({
       where: { userId },
       _max: { correct: true },
@@ -72,7 +78,7 @@ async function getGameSessionsStatistics(userId: string) {
 
 // get stats for a user of a game type
 async function getGameSessionsStatisticsByGameType(userId: string, gameName: GameName ) {
-      const [highscore, totals] = await Promise.all([
+      const [highscore, totals] = await Promise.all([ // Get the highest score (max correct answers) for the user and the total correct and incorrect answers for the user for a specific game type
         prisma.gameSession.aggregate({
           where: {
             userId, gameName
