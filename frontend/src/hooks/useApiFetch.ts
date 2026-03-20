@@ -13,6 +13,7 @@ export function useApiFetch() {
         ...options.headers,
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
+        credentials: "include",
       },
     });
 
@@ -28,6 +29,7 @@ export function useApiFetch() {
             ...options.headers,
             "Content-Type": "application/json",
             Authorization: `Bearer ${newToken}`,
+            credentials: "include",
           },
         });
       } else {
