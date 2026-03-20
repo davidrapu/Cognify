@@ -1,33 +1,69 @@
 import { HttpError } from "../types/errorsType";
 import type dataTypes = require("../types/dataTypes");
 import type errorsType = require("../types/errorsType");
-import { GameName } from "../database/generated/prisma/enums";
+import { Domain, GameName } from "../database/generated/prisma/enums";
 const {
   createGameSession,
   getGameSessions,
   getGameSessionsStatistics,
   getGameSessionsStatisticsByGameType,
-  getGameSessionsByGameType
+  getGameSessionsByGameType,
 } = require("../database/repositories/gameSession.repository");
+const { SessionSchema } = require("../schemas/session.schema");
 
-
-async function getSessionsData(userId: string, gameName?: GameName) {
-  if (gameName) {console.log(gameName)}
+async function getSessionsData(userId: string) {
   const [sessions, statistics] = await Promise.all([
-    gameName ? getGameSessionsByGameType(userId, gameName) : getGameSessions(userId),
-    gameName ? getGameSessionsStatisticsByGameType(userId, gameName) : getGameSessionsStatistics(userId)
+    // If a game name is provided, get the sessions and statistics for that game type, otherwise get all sessions and statistics for the user
+    getGameSessions(userId),
+    getGameSessionsStatistics(userId),
   ]);
+
   if (sessions.length === 0) {
-    const err: errorsType.HttpError = new Error("No sessions found for the given user ID");
+    const err: errorsType.HttpError = new Error(
+      "No sessions found for the given user ID",
+    );
     err.status = 404;
     throw err;
   }
-    const averageScore =
-      sessions.length > 0
-        ? sessions.reduce((sum: number, s: dataTypes.SessionDataType) => sum + s.correct, 0) / sessions.length
-        : 0;
+  const averageScore =
+    sessions.length > 0
+      ? sessions.reduce(
+          (sum: number, s: dataTypes.SessionDataType) => sum + s.correct,
+          0,
+        ) / sessions.length
+      : 0;
 
-  return {sessions, stats:{...statistics, averageScore: Math.round(averageScore * 10) / 10}};
+  return {
+    sessions,
+    stats: { ...statistics, averageScore: Math.round(averageScore * 10) / 10 },
+  };
+}
+async function getSessionsDataByGameName(userId: string, gameName: GameName) {
+  const [sessions, statistics] = await Promise.all([
+    // If a game name is provided, get the sessions and statistics for that game type, otherwise get all sessions and statistics for the user
+    getGameSessionsByGameType(userId, gameName),
+    getGameSessionsStatisticsByGameType(userId, gameName),
+  ]);
+
+  if (sessions.length === 0) {
+    const err: errorsType.HttpError = new Error(
+      "No sessions found for the given user ID and game name",
+    );
+    err.status = 404;
+    throw err;
+  }
+  const averageScore =
+    sessions.length > 0
+      ? sessions.reduce(
+          (sum: number, s: dataTypes.SessionDataType) => sum + s.correct,
+          0,
+        ) / sessions.length
+      : 0;
+
+  return {
+    sessions,
+    stats: { ...statistics, averageScore: Math.round(averageScore * 10) / 10 },
+  };
 }
 
 async function getSessionDataById(userId: number, sessionId: number) {
@@ -43,18 +79,53 @@ async function getSessionDataById(userId: number, sessionId: number) {
   return 0;
 }
 
-async function addNewSession(sessionData: dataTypes.SessionDataType, userId: string) {
-  try {
-    await createGameSession(sessionData, userId);
-  } catch (error) {
-    const err: HttpError = error instanceof Error ? error : new Error(String(error));
-    err.status = 500;
+function standardDeviation(values: number[]): number {
+  const mean = values.reduce((sum, v) => sum + v, 0) / values.length;
+  const squaredDiffs = values.map((v) => Math.pow(v - mean, 2));
+  const avgSquaredDiff =
+    squaredDiffs.reduce((sum, v) => sum + v, 0) / values.length;
+  return Math.sqrt(avgSquaredDiff);
+}
+
+async function addNewSession(
+  gameName: GameName,
+  correct: number,
+  incorrect: number,
+  totalTime: { time: number; correct: boolean }[],
+  domain: Domain,
+  userId: string,
+) {
+
+  if (!gameName || correct === undefined || incorrect === undefined || !totalTime || !domain) {
+    const err: HttpError = new Error("Missing required session data");
+    err.status = 400;
     throw err;
   }
+
+  const totalDuration = totalTime.reduce((sum, item) => sum + item.time, 0);
+
+  const data: dataTypes.SessionDataType = {
+    gameName,
+    correct,
+    incorrect,
+    reactionTimeAvg: totalDuration / totalTime.length,
+    reactionTimeStd: standardDeviation(totalTime.map((item) => item.time)),
+    duration: totalDuration,
+    domain,
+  };
+  const validationResult = SessionSchema.safeParse(data);
+
+  if (!validationResult.success) {
+    const err: HttpError = new Error("Invalid session data");
+    err.status = 400;
+    throw err;
+  }
+  await createGameSession(data, userId);
 }
 
 module.exports = {
   getSessionsData,
   getSessionDataById,
   addNewSession,
+  getSessionsDataByGameName,
 };
