@@ -3,11 +3,11 @@ import { useReducer } from "react";
 const initialState: SpanGameState = {
     gameState: "home",
     totalAllowedTries: 6,
+    totalAttempts: 0,
     // Sent to the db after game completion
     totalTime: [], // array to store time taken for each attempt (time taken to recall sequence) {time, correct:boolean}
     totalCorrect: 0,
     totalIncorrect: 0,
-    totalAttempts: 0,
     highestConsecutiveCorrect: 0, // highscore
     // Gotten from db upon render of game home page
     averageScore: 0, // gotten from backend upon render of game home page

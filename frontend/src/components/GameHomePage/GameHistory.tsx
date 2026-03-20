@@ -8,19 +8,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const historyData = [
-  { id: 1, date: "Today", score: 7, accuracy: 88, reaction: 2 },
-  { id: 2, date: "Today", score: 6, accuracy: 75, reaction: 3 },
-  { id: 3, date: "Yesterday", score: 5, accuracy: 60, reaction: 4},
-  { id: 4, date: "Yesterday", score: 8, accuracy: 92, reaction: 7 },
-  { id: 5, date: "Feb 24", score: 4, accuracy: 50, reaction: 10 },
-];
 
 type GameHistoryProps = {
-  history?: { id: number; date: string; score: number, accuracy: number, reaction: number }[];
+  history: { id: number; date: Date; score: number, accuracy: number, reaction: number }[] | undefined;
 };
 
-export default function GameHistory({ history = historyData }: GameHistoryProps) {
+export default function GameHistory({ history }: GameHistoryProps) {
   return (
     <Card className="border-border/50 bg-card">
       <CardHeader>
@@ -47,13 +40,13 @@ export default function GameHistory({ history = historyData }: GameHistoryProps)
             </TableRow>
           </TableHeader>
           <TableBody>
-            {history.map((game) => (
+            {history?.map((game) => (
               <TableRow
                 key={game.id}
                 className="border-border/30 hover:bg-accent/50"
               >
                 <TableCell className="pl-6 text-foreground">
-                  {game.date}
+                  {game.date.toLocaleDateString()}
                 </TableCell>
                 <TableCell className="text-right text-foreground">
                   {game.score}
@@ -62,7 +55,7 @@ export default function GameHistory({ history = historyData }: GameHistoryProps)
                   {game.accuracy}%
                 </TableCell>
                 <TableCell className="text-right text-muted-foreground pr-6">
-                  {game.reaction}
+                  {Math.round(game.reaction / 1000 * 100) / 100}
                 </TableCell>
               </TableRow>
             ))}

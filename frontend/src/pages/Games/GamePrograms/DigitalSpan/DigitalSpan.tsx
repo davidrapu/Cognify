@@ -1,35 +1,106 @@
 import Active from "./states/Active";
 import { useSpanGameReducer } from "@/hooks/useSpanGameReducer";
 import Intro from "./states/Intro";
-import GameHomePage from "@/components/GameHomePage/GameHomePage";
+import { GameHomePage } from "@/components/GameHomePage/GameHomePage";
 import Completed from "@/components/CompletedGameSession";
-
-const historyData = [
-  { id: 1, date: "Mar 1", score: 4, accuracy: 50, reaction: 10 },
-  { id: 2, date: "Mar 2", score: 5, accuracy: 60, reaction: 9 },
-  { id: 3, date: "Mar 3", score: 6, accuracy: 70, reaction: 8 },
-  { id: 4, date: "Mar 4", score: 5, accuracy: 65, reaction: 8 },
-  { id: 5, date: "Mar 5", score: 7, accuracy: 75, reaction: 7 },
-  { id: 6, date: "Mar 6", score: 6, accuracy: 72, reaction: 6 },
-  { id: 7, date: "Mar 7", score: 8, accuracy: 85, reaction: 6 },
-  { id: 8, date: "Mar 8", score: 7, accuracy: 82, reaction: 5 },
-  { id: 9, date: "Mar 9", score: 9, accuracy: 90, reaction: 4 },
-  { id: 10, date: "Mar 10", score: 8, accuracy: 88, reaction: 4 },
-  { id: 11, date: "Mar 11", score: 10, accuracy: 95, reaction: 3 },
-  { id: 12, date: "Mar 12", score: 9, accuracy: 92, reaction: 3 },
-  { id: 13, date: "Yesterday", score: 8, accuracy: 89, reaction: 3 },
-  { id: 14, date: "Today", score: 9, accuracy: 93, reaction: 2 },
-  { id: 15, date: "Today", score: 10, accuracy: 96, reaction: 2 },
-];
+import { useApiFetch } from "@/hooks/useApiFetch";
+import { useEffect, useState } from "react";
+import type { SessionsResponse } from "@/types/session.fetched";
+import { GameName } from "@/enums/gameName";
+import { Domain } from "@/enums/domain";
 
 export default function DigitalSpan() {
   const [state, dispatch] = useSpanGameReducer();
+  const apiFetch = useApiFetch();
+  const [history, setHistory] = useState<
+    {
+      id: number;
+      date: Date;
+      score: number;
+      accuracy: number;
+      reaction: number;
+    }[]
+  >();
+
+  const playAgain = async () => {
+    // send data to db
+    const response = await apiFetch("/sessions", {
+      method: "POST",
+      body: JSON.stringify({
+        gameName: GameName.DIGITAL_SPAN,
+        correct: state.totalCorrect,
+        incorrect: state.totalIncorrect,
+        totalTime: state.totalTime,
+        domain: Domain.MEMORY,
+      }),
+    });
+
+    if (!response.ok) {
+      console.error("Failed to save session data");
+      return;
+    }
+
+    // reset game
+    // start new game
+    dispatch({ type: "resetGame" });
+  };
+  const returnHome = async () => {
+    // send data to db
+    const response = await apiFetch("/sessions/", {
+      method: "POST",
+      body: JSON.stringify({
+        gameName: GameName.DIGITAL_SPAN,
+        correct: state.totalCorrect,
+        incorrect: state.totalIncorrect,
+        totalTime: state.totalTime,
+        domain: Domain.MEMORY,
+      }),
+    });
+
+    if (!response.ok) {
+      console.error("Failed to save session data");
+      return;
+    }
+
+    // reset game
+    // start new game
+    dispatch({ type: "home" });
+  };
 
   // Load data into the game state when the component mounts
-  // useEffect(() => {
-  //   dispatch({ type: "setHighScore", payload: 8 });
-  //   dispatch({ type: "setAverages", payload: { averageScore: 6.5, averageAccuracy: 72 } });
-  // }, [dispatch]);
+  useEffect(() => {
+    // fetch user performance data from the API and dispatch to the reducer
+    const fetchData = async () => {
+      const response = await apiFetch("/sessions/digital-span/", {
+        method: "GET",
+      });
+      // Process the data and dispatch to the reducer
+      const result: SessionsResponse = await response.json();
+      console.log("Fetched data:", result);
+      dispatch({
+        type: "setAverages",
+        payload: {
+          averageScore: result.data.stats.averageScore,
+          averageAccuracy: result.data.stats.accuracy,
+        },
+      });
+      dispatch({ type: "setHighScore", payload: result.data.stats.highscore });
+      const historyData = result.data.sessions.map((session) => ({
+        id: session.id,
+        date: new Date(session.createdAt),
+        score: session.correct,
+        accuracy:
+          session.correct + session.incorrect > 0
+            ? Math.round(
+                (session.correct / (session.correct + session.incorrect)) * 100,
+              )
+            : 0,
+        reaction: session.reactionTimeAvg,
+      }));
+      setHistory(historyData);
+    };
+    fetchData();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -40,9 +111,9 @@ export default function DigitalSpan() {
           onStartGame={() => {
             dispatch({ type: "startGame" });
           }}
-          highScore={8}
-          averageScore={6.5}
-          averageAccuracy={72}
+          highScore={state.highScore}
+          averageScore={state.averageScore}
+          averageAccuracy={state.averageAccuracy}
           instructions={[
             {
               step: 1,
@@ -70,7 +141,7 @@ export default function DigitalSpan() {
               desc: "Use the performance chart and game history to track your improvement over time.",
             },
           ]}
-          history={historyData}
+          history={history}
         />
       )}
       {state.gameState === "intro" && <Intro dispatch={dispatch} />}
@@ -79,8 +150,8 @@ export default function DigitalSpan() {
       )}
       {state.gameState === "completed" && (
         <Completed
-          goHome={() => dispatch({ type: "home" })}
-          playAgain={() => dispatch({ type: "startGame" })}
+          goHome={returnHome}
+          playAgain={playAgain}
           totalTime={state.totalTime}
           totalAttempts={state.totalAttempts}
           totalCorrect={state.totalCorrect}

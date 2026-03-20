@@ -20,10 +20,10 @@ type GameHomePageProps = {
   averageScore: number;
   averageAccuracy: number;
   instructions: { step: number; title: string; desc: string }[];
-  history: {id:number, date: string; score: number, accuracy: number, reaction: number }[];
+  history: {id:number, date: Date; score: number, accuracy: number, reaction: number }[] | undefined;
 };
 
-export default function GameHomePage(props : GameHomePageProps) {
+export function GameHomePage(props : GameHomePageProps) {
   return (
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
@@ -53,18 +53,18 @@ export default function GameHomePage(props : GameHomePageProps) {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <StatCard
               label="Average Score"
-              value={props.averageScore || "N/A"}
-              subtitle="Last 10 sessions"
+              value={props.averageScore || "0"}
+              subtitle="Average across all sessions"
             />
-            <StatCard label="High Score" value={props.highScore || "N/A"} subtitle="Personal best" />
-            <StatCard label="Accuracy" value={`${props.averageAccuracy || "N/A"} %`} subtitle="Overall correct" />
+            <StatCard label="High Score" value={props.highScore || "0"} subtitle="Personal best" />
+            <StatCard label="Accuracy" value={`${props.averageAccuracy || "0"} %`} subtitle="Overall correct" />
           </div>
         </section>
 
         {/* Chart + About */}
         <section className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-5">
           <div className="lg:col-span-3">
-            <PerformanceChart data={props.history.map((game, index) => ({ session: index, score: game.score }))} />
+            <PerformanceChart data={props.history?.map((game, index) => ({ session: index, score: game.score })) || []} />
           </div>
           <div className="lg:col-span-2">
             <Card className="h-full border-border/50 bg-card flex flex-col">
