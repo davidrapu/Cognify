@@ -31,3 +31,6 @@ dist-ssr
 
 .turbo
 .tsbuildinfo
+
+# Design folder 
+design/
