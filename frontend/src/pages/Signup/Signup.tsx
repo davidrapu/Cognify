@@ -37,8 +37,7 @@ export default function Signup() {
         lastName: userName.split(" ")[1],
         email: email,
         password: password,
-      }),
-      credentials: "include"
+      })
     });
 
     if (res.status === 409) {

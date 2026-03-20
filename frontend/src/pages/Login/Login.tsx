@@ -20,7 +20,6 @@ export default function Login() {
       const res = await apiFetch("/auth/login", {
         method: "POST",
         body: JSON.stringify({ email, password }),
-        credentials: "include"
       })
   
       if (!res.ok) {
