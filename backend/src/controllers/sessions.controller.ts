@@ -4,10 +4,10 @@ import { GameName } from "../database/generated/prisma/enums";
 import { HttpError } from "../types/errorsType";
 const {
   getSessionsData,
+  getSessionsDataByGameName,
   getSessionDataById,
   addNewSession,
 } = require("../services/sessions.service");
-const { SessionSchema } = require("../schemas/session.schema");
 
 /**
  * @desc Create a new session and save it to the data file
@@ -16,8 +16,21 @@ const { SessionSchema } = require("../schemas/session.schema");
 async function addSession(req: Request, res: Response, next: NextFunction) {
   // Logic to add a new session
   try {
-    const sessionData: dataTypes.SessionDataType = SessionSchema.parse(req.body);
-    await addNewSession(sessionData, req.user);
+    if (!req.body) {
+      const err: HttpError = new Error("Request body is required");
+      err.status = 400;
+      return next(err);
+    }
+    const { gameName, correct, incorrect, totalTime, domain } = req.body;
+
+    await addNewSession(
+      gameName,
+      correct,
+      incorrect,
+      totalTime,
+      domain,
+      req.user
+    );
     res.status(201).json({ message: "Session created successfully" });
   } catch (error) {
     next(error);
@@ -27,20 +40,35 @@ async function addSession(req: Request, res: Response, next: NextFunction) {
 /**
  * @desc Get all sessions from the data file
  * @route GET /sessions
- * @route GET /sessions?gameName=gameName
+ * @route GET /sessions/gameName
  */
 async function getSessions(req: Request, res: Response, next: NextFunction) {
   try {
-    const validGameNames = Object.values(GameName);
-    const gameName = req.query.gameName as string;
 
-    if (gameName && !validGameNames.includes(gameName.toUpperCase() as GameName)) {
+    const { sessions, stats } = await getSessionsData(req.user);
+    res.status(200).json({ message: "Sessions retrieved successfully", data: { sessions, stats } });
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
+ * @desc Get all sessions from the data file
+ * @route GET /sessions/:gameName
+ */
+async function getSessionsByGameName(req: Request, res: Response, next: NextFunction) {
+  try {
+    const validGameNames = Object.values(GameName);
+    let gameName = req.params.gameName as string;
+    gameName = gameName.split("-").join("_").toUpperCase(); // Convert the game name to uppercase and replace hyphens with spaces to match the enum values
+
+    if (gameName && !validGameNames.includes(gameName as GameName)) {
       const err: HttpError = new Error("Invalid game name");
       err.status = 400;
       return next(err);
     }
 
-    const { sessions, stats } = await getSessionsData(req.user, gameName.toUpperCase() as GameName);
+    const { sessions, stats } = await getSessionsDataByGameName(req.user, gameName.toUpperCase() as GameName);
     res.status(200).json({ message: "Sessions retrieved successfully", data: { sessions, stats } });
   } catch (error) {
     next(error);
@@ -68,5 +96,6 @@ async function getSession(req: Request, res: Response, next: NextFunction) {
 module.exports = {
   addSession,
   getSessions,
-  getSession
+  getSession,
+  getSessionsByGameName
 };
