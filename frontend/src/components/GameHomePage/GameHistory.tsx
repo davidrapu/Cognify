@@ -35,7 +35,7 @@ export default function GameHistory({ history }: GameHistoryProps) {
                 Accuracy
               </TableHead>
               <TableHead className="pr-6 text-right text-xs uppercase tracking-wider text-muted-foreground">
-                Avg Reaction Time <span className="lowercase">(ms)</span>
+                Avg Reaction Time <span className="lowercase">(s)</span>
               </TableHead>
             </TableRow>
           </TableHeader>
