@@ -80,7 +80,7 @@ export default function PerformanceChart({ data = testData }: PerformanceChartPr
                 color: "var(--foreground)",
                 fontSize: "13px",
               }}
-              labelFormatter={(label) => `Session ${label}`}
+              labelFormatter={(label) => `Session ${label + 1}`}
             />
             <Area
               type="monotone"
