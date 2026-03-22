@@ -24,6 +24,7 @@ type GameHomePageProps = {
 };
 
 export function GameHomePage(props : GameHomePageProps) {
+  const historyCopy = props.history ? [...props.history] : undefined;
   return (
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
@@ -64,7 +65,7 @@ export function GameHomePage(props : GameHomePageProps) {
         {/* Chart + About */}
         <section className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-5">
           <div className="lg:col-span-3">
-            <PerformanceChart data={props.history?.map((game, index) => ({ session: index, score: game.score })) || []} />
+            <PerformanceChart data={historyCopy?.reverse().map((game, index) => ({ session: index+1, score: game.score })) || []} />
           </div>
           <div className="lg:col-span-2">
             <Card className="h-full border-border/50 bg-card flex flex-col">
