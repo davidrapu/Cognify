@@ -25,7 +25,6 @@ export type CardMatchState = {
   totalTime: { time: number; correct: boolean }[];
   totalCorrect: number;
   totalIncorrect: number;
-  totalAllowedTries: number;
   averageScore: number;
   averageAccuracy: number;
   highScore: number;
