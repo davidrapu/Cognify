@@ -1,10 +1,8 @@
-import { AnimatedButton } from "@/components/Button";
-import CardMatch from "./CardMatch";
 import { useCardMatchReducer } from "@/hooks/useCardMatchReducer";
-import { ChevronRight } from "lucide-react";
-import { AnimatePresence } from "framer-motion";
-import Summary from "./Summary";
-import Intro from "./Intro";
+import Intro from "./states/Intro";
+import Active from "./states/Active/Active";
+import { GameHomePage } from "@/components/GameHomePage/GameHomePage";
+import EmptyPage from "@/components/EmptyPage";
 
 const difficultyConfig = {
   easy: { pairs: 8, cols: 4 },
@@ -18,58 +16,25 @@ export default function CardMatchGame() {
   return (
     <>
       {/* Intro, Active, and Complete should all use the same box */}
-      <main>{state.gameState === "intro" && <Intro />}</main>
-      {state.gameState !== "intro" && (
-        <main className="flex flex-1 justify-center items-center">
-          <div
-            className="p-2 gap-y-1 drop-shadow-xl/30 bg-secondary rounded-2xl aspect-auto min-w-300 animate-in zoom-in-0 duration-300 "
-          >
-            {state.gameState === "active" && (
-              <div className="flex flex-col items-center gap-y-5 p-3">
-                <div className="flex flex-col">
-                  <h1 className="text-4xl font-bold leading-normal tracking-[0.2em] font-(family-name:--headings)">
-                    Card Matching
-                  </h1>
-                  <div className="flex justify-between text-[17px] w-full">
-                    <p className="bg-card text-secondary-foreground rounded-2xl p-3">
-                      Matches: {state.matchedCards} /{" "}
-                      {difficultyConfig[s].pairs}
-                    </p>
-                    <p className="bg-card text-secondary-foreground rounded-2xl p-3">
-                      Attempts: {state.totalAttempts}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex flex-col relative gap-y-4 w-auto justify-center">
-                  <CardMatch pairs={pairs} cols={cols} dispatch={dispatch} />
-                </div>
-                {state.matchedCards === difficultyConfig[s].pairs && (
-                  <AnimatedButton
-                    onClick={() =>
-                      dispatch({
-                        type: "setGameState",
-                        payload: "completed",
-                      })
-                    }
-                    className="w-fit px-8 py-2 self-end animate-in fade-in slide-in-from-top-20 duration-300"
-                  >
-                    <ChevronRight
-                      absoluteStrokeWidth={false}
-                      size={25}
-                      strokeWidth={3}
-                    />
-                  </AnimatedButton>
-                )}
-              </div>
-            )}
-            {state.gameState === "completed" && (
-              <AnimatePresence>
-                <Summary />
-              </AnimatePresence>
-            )}
-          </div>
-        </main>
-      )}
+      <main>
+        {state.gameState === "home" && <GameHomePage
+          title="Card Match" averageAccuracy={20} averageScore={20} highScore={20}
+          description="Test your memory and concentration skills with Card Match! Flip over pairs of cards to find matches, but be careful - the more attempts you make, the lower your score. Can you beat your high score and become a Card Match master?"
+          instructions={[
+            { step: 1, title: "Choose Difficulty", desc: "Select a difficulty level to start the game. The higher the difficulty, the more pairs of cards you'll need to match." },
+            { step: 2, title: "Memorize the Cards", desc: "Take a moment to memorize the positions of the cards before they are flipped back over." },
+            { step: 3, title: "Find Matches", desc: "Click on two cards to flip them over. If they match, they will stay face up. If not, they will flip back down. Try to find all the matches with as few attempts as possible!" },
+          ]}
+          onStartGame={() => dispatch({ type: "setGameState", payload: "intro" })}
+        />}
+        {state.gameState === "intro" && <Intro dispatch={dispatch} />}
+        {state.gameState === "active" && (
+          <Active state={state} pairs={pairs} cols={cols} dispatch={dispatch} />
+        )}
+        {state.gameState === "completed" && (
+          <EmptyPage />
+        )}
+      </main>
     </>
   );
 }
