@@ -4,8 +4,8 @@ import { useReducer } from "react";
 const initialState = {
     matchedCards: 0,
     totalAttempts: 0,
-    gameLevel: "easy", // can be "easy", "medium", or "hard"
-    gameState: "active", // can be "active", intro, or "completed"
+    gameLevel: "easy" as const, // can be "easy", "medium", or "hard"
+    gameState: "home" as const, // can be "active", intro, or "completed"
     // Sent to the db after game completion
     totalTime: [], // array to store time taken for each attempt (time taken to recall sequence) {time, correct:boolean}
     totalCorrect: 0,
@@ -20,8 +20,8 @@ const initialState = {
 export type CardMatchState = {
   matchedCards: number;
   totalAttempts: number;
-  gameLevel: string;
-  gameState: string;
+  gameLevel: "easy" | "medium" | "hard";
+  gameState: "intro" | "active" | "completed" | "home";
   totalTime: { time: number; correct: boolean }[];
   totalCorrect: number;
   totalIncorrect: number;
@@ -35,14 +35,17 @@ export type CardMatchAction =
     | { type: "increaseMatchedCards" }
     | { type: "reset" } | { type: "increaseAttempts" }
     | { type: "setGameLevel", payload: "easy" | "medium" | "hard" }
-    | { type: "setGameState", payload: "active" | "intro" | "completed" }
+    | { type: "setGameState", payload: "active" | "intro" | "completed" | "home" }
+    | { type: "playGame"}
 
-function reducer(state: CardMatchState, action: CardMatchAction) {
+function reducer(state: CardMatchState, action: CardMatchAction) : CardMatchState {
     switch (action.type) {
         case "increaseMatchedCards":
             return { ...state, matchedCards: state.matchedCards + 1 };
         case "reset":
             return initialState;
+        case "playGame":
+            return { ...state, gameState: "active", matchedCards: 0, totalAttempts: 0 };
         case "increaseAttempts":
             return { ...state, totalAttempts: state.totalAttempts + 1 };
         case "setGameLevel":
