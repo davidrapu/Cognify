@@ -28,6 +28,7 @@ export {
   Moon,
   Sun,
   ChevronsUpDown,
+  ChevronRight,
   LogOut,
   User
 } from "lucide-react";
