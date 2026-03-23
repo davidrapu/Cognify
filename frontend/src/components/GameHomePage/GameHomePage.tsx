@@ -20,7 +20,7 @@ type GameHomePageProps = {
   averageScore: number;
   averageAccuracy: number;
   instructions: { step: number; title: string; desc: string }[];
-  history: {id:number, date: Date; score: number, accuracy: number, reaction: number }[] | undefined;
+  history?: {id:number, date: Date; score: number, accuracy: number, reaction: number }[] | undefined;
 };
 
 export function GameHomePage(props : GameHomePageProps) {

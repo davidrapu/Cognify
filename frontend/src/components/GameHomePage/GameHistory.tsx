@@ -10,7 +10,7 @@ import {
 
 
 type GameHistoryProps = {
-  history: { id: number; date: Date; score: number, accuracy: number, reaction: number }[] | undefined;
+  history?: { id: number; date: Date; score: number, accuracy: number, reaction: number }[] | undefined;
 };
 
 export default function GameHistory({ history }: GameHistoryProps) {
