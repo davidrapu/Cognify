@@ -9,7 +9,7 @@ type CardProps = {
   allFlipped?: boolean;
 };
 
-export default function Card({
+export default function ObjectCard({
   cardObj,
   choiceOne,
   choiceTwo,
