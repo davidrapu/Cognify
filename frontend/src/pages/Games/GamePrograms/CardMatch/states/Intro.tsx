@@ -1,13 +1,24 @@
 import GameLayout from "@/components/GameLayout";
 import { Play } from "@/components/icons";
-import { type CardMatchAction } from "@/hooks/useCardMatchReducer";
+import { type CardMatchAction, type CardMatchState } from "@/hooks/useCardMatchReducer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+
+const buttonStyles = "duration-300 ease-in-out";
+
 
 export default function Intro({
   dispatch,
+  state
 }: {
   dispatch: React.Dispatch<CardMatchAction>;
+  state: CardMatchState;
 }) {
+  const setGameLevel = (level: "easy" | "medium" | "hard") => {
+    dispatch({ type: "setGameLevel", payload: level });
+  }
   return (
     <GameLayout>
       <div className="flex-2 bg-primary rounded-2xl flex items-center justify-center">
@@ -61,7 +72,7 @@ export default function Intro({
             </ul>
           </CardContent>
         </Card>
-        <div className="flex items-center justify-center">
+        <div className="flex gap-y-4 flex-col items-center justify-around">
           <span
             onClick={() => {
               dispatch({ type: "playGame" });
@@ -74,6 +85,17 @@ export default function Intro({
               className="text-primary-foreground"
             />
           </span>
+          <div className="flex gap-x-4">
+            <Button  onClick={() => setGameLevel('easy')} className={cn(buttonStyles, state.gameLevel === "easy" && "scale-120")} >
+              Easy
+            </Button>
+            <Button onClick={() => setGameLevel('medium')}  className={cn(buttonStyles, state.gameLevel === "medium" && "scale-120")} >
+              Medium
+            </Button>
+            <Button onClick={() => setGameLevel('hard')}  className={cn(buttonStyles, state.gameLevel === "hard" && "scale-120")} >
+              Hard
+            </Button>
+          </div>
         </div>
       </div>
     </GameLayout>
