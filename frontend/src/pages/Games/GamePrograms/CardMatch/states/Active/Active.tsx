@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Card from "./Card";
+import ObjectCard from "./Card";
 import {
   type CardMatchAction,
   type CardMatchState,
@@ -8,6 +8,7 @@ import { generateCards } from "@/utils/generateCards";
 import { cn } from "@/lib/utils";
 import { AnimatedButton } from "@/components/Button";
 import { ChevronRight } from "@/components/icons";
+import { Card } from "@/components/ui/card";
 
 type CardMatchProps = {
   dispatch: React.Dispatch<CardMatchAction>;
@@ -26,7 +27,9 @@ export default function Active({
 
   const [choiceOne, setChoiceOne] = useState<number | null>(null);
   const [choiceTwo, setChoiceTwo] = useState<number | null>(null);
+  const [matchTime, setMatchTime] = useState<number>(0);
   const [allFlipped, setAllFlipped] = useState(true);
+  const [streak, setStreak] = useState<number>(0);
 
   const handleChoice = (id: number) => {
     if (choiceTwo !== null) return; // Prevent selecting more than two cards
@@ -41,6 +44,44 @@ export default function Active({
     setChoiceOne(null);
     setChoiceTwo(null);
   };
+
+  // for the time take to find matches, we want to start the timer when a card is flipped
+  // and stop it when second card is flipped, regardless of whether it's a match or not.
+  // This way, we can accurately measure the time taken for each attempt, regardless of whether it was successful or not.
+  useEffect(() => {
+    const verifyMatch = (card1Id: number, card2Id: number) => {
+      const [firstCard, secondCard] = [
+        cards.find((card) => card.id === card1Id),
+        cards.find((card) => card.id === card2Id),
+      ];
+
+      if (!firstCard || !secondCard) return false;
+
+      return firstCard.value === secondCard.value;
+    };
+
+
+    if (choiceOne === null) return;
+
+
+    if (choiceTwo !== null) {
+      dispatch({
+        type: "updateTotalTime",
+        payload: {
+          time: matchTime,
+          correct: verifyMatch(choiceOne, choiceTwo),
+        },
+      });
+      setMatchTime(0); // eslint-disable-line
+      return; // don't start timer if choiceTwo is already set
+    }
+
+    const timer = setInterval(() => {
+      setMatchTime((prev) => prev + 10);
+    }, 10);
+
+    return () => clearInterval(timer); // this correctly stops the timer
+  }, [choiceOne, choiceTwo, dispatch, matchTime, cards]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -72,10 +113,21 @@ export default function Active({
       });
       reset();
       setTimeout(() => dispatch({ type: "increaseMatchedCards" }), 250);
+      dispatch({type: "increaseTotalCorrect" });
+
+      setStreak((prev) => prev + 1);
+
+      if (streak + 1 > state.highestConsecutiveCorrect) {
+        // If the new streak is greater than the current highest consecutive correct, update it in the state
+        dispatch({ type: "updateHighestConsecutiveCorrect", payload: streak + 1 });
+      }
+
     } else {
+      dispatch({type: "increaseTotalIncorrect" });
+      setStreak(0);
       setTimeout(() => reset(), 600);
     }
-  }, [choiceOne, choiceTwo, cards, dispatch]);
+  }, [choiceOne, choiceTwo, cards, dispatch, state.highestConsecutiveCorrect, streak]);
   const handleFlip = (id: number) => {
     handleChoice(id);
   };
@@ -83,19 +135,19 @@ export default function Active({
   return (
     <div className="flex flex-col items-center gap-y-5 p-3">
       <div className="flex flex-col">
-        <h1 className="text-4xl font-bold leading-normal tracking-[0.2em] font-(family-name:--headings)">
+        <h1 className="text-4xl font-bold leading-normal tracking-[0.2em] font-family-heading">
           Card Matching
         </h1>
         <div className="flex justify-between text-[17px] w-full">
-          <p className="bg-card text-secondary-foreground rounded-2xl p-3">
+          <Card className="bg-card text-secondary-foreground rounded-2xl p-3">
             Matches: {state.matchedCards} / {pairs}
-          </p>
-          <p className="bg-card text-secondary-foreground rounded-2xl p-3">
+          </Card>
+          <Card className="bg-card text-secondary-foreground rounded-2xl p-3">
             Attempts: {state.totalAttempts}
-          </p>
+          </Card>
         </div>
       </div>
-      <div className="flex flex-col gap-y-4 px-5 pt-10 pb-7 rounded-[30px] bg-card backdrop-blur-sm">
+      <Card className="flex flex-col gap-y-4 px-5 pt-10 pb-7 rounded-[30px] bg-card/40 backdrop-blur-sm">
         <div
           className={cn("grid gap-5 w-fit justify-items-center mx-auto")}
           style={{
@@ -103,7 +155,7 @@ export default function Active({
           }}
         >
           {cards.map((card) => (
-            <Card
+            <ObjectCard
               key={card.id}
               cardObj={card}
               choiceOne={choiceOne}
@@ -131,7 +183,7 @@ export default function Active({
             />
           </AnimatedButton>
         )}
-      </div>
+      </Card>
     </div>
   );
 }
