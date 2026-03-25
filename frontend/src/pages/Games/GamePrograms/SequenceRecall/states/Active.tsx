@@ -1,33 +1,64 @@
 import ClusteredNumbers from "@/components/ClusteredNumbers";
 import GameLayout from "@/components/GameLayout";
+import HeartDisplay from "@/components/HeartDisplay";
 import { Button } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import type { SpanGameAction, SpanGameState } from "@/hooks/useSpanGameReducer";
 import { generateRandomDigits } from "@/utils/generateRandomDigits";
 import { useEffect, useRef, useState } from "react";
 
 const getSequence = (length: number): string[] => {
-  return generateRandomDigits(length).split("");
+  const sequence = generateRandomDigits(length).split("");
+  const newSequence = sequence.join(" ").split("");
+  return newSequence;
 };
 
-export default function Active() {
-  const [numberList, setNumberList] = useState<string[]>(getSequence(3));
+export default function Active({
+  state,
+  dispatch,
+}: {
+  state: SpanGameState;
+  dispatch: React.Dispatch<SpanGameAction>;
+}) {
+  const [difficulty, setDifficulty] = useState<number>(3);
+  const [numberList, setNumberList] = useState<string[]>(getSequence(difficulty));
   const [displayedNumberIndex, setDisplayedNumberIndex] = useState(0);
+  const [display, setDisplay] = useState(true);
   const [userInput, setUserInput] = useState<string | null>(null);
+  const [streak, setStreak] = useState(0);
+  const [lossStreak, setLossStreak] = useState(0);
+  const [reaction, setReaction] = useState<number>(0); // measured in ms
   const inputRef = useRef<HTMLInputElement>(null);
 
   const submit = () => {
-    if (userInput === numberList.join("")) {
-      console.log("Correct!");
+    const correct: boolean = userInput === numberList.join("").split(" ").join("");
+    dispatch({type: "increaseAttempts"})
+    dispatch({type: "addTimeTaken", payload: {time: reaction, correct}})
+    if (correct) {
+      dispatch({type: "incrementCorrect" })
+      setStreak((prev) => prev + 1);
+      setLossStreak(0);
+      if ((streak + 1) % 4 === 0) { // every 4 consecutive correct answers, increase the difficulty
+        setDifficulty((prev) => prev + 1);
+      }
+      if (streak + 1 > state.highestConsecutiveCorrect) {
+        dispatch({ type: "setHighestConsecutiveCorrect", payload: streak + 1 });
+      }
       reset();
     } else {
-      console.log("Incorrect. The correct sequence was:", numberList.join(""));
-      console.log("User input was:", userInput);
+      dispatch({type: "incrementIncorrect" })
+      dispatch({type: "reduceAllowedTries" })
+      setStreak(0);
+      setLossStreak((prev) => prev + 1);
+      if ((lossStreak + 1) % 3 === 0) { // every 3 consecutive incorrect answers, decrease the difficulty
+        setDifficulty((prev) => Math.max(3, prev - 1));
+      }
       reset();
     }
   };
   const reset = () => {
-    setNumberList(getSequence(3));
+    setNumberList(getSequence(difficulty));
     setDisplayedNumberIndex(0);
     setUserInput(null);
   };
@@ -42,18 +73,44 @@ export default function Active() {
   useEffect(() => {
     inputRef.current?.focus();
     // Display each number for 1 second, then move to the next
-    if (displayedNumberIndex < numberList.length) {
+    if (displayedNumberIndex >= numberList.length) return; // so you dont go past the end of the array
+
+    if (display) { // display the number for 1 second, then hide it for 300ms before showing the next number
       const timer = setTimeout(() => {
         setDisplayedNumberIndex((prev) => prev + 1);
+        setDisplay(false);
       }, 1000);
       return () => clearTimeout(timer);
+    } else {
+      const timer = setTimeout(() => {
+        setDisplayedNumberIndex((prev) => prev + 1);
+        setDisplay(true);
+      }, 300);
+      return () => clearTimeout(timer);
     }
-    console.log("All numbers displayed");
-  }, [displayedNumberIndex, numberList.length]);
+  }, [displayedNumberIndex, numberList.length, display]);
+
+  // watching for when the user runs out of tries or completes the game
+  useEffect(() => {
+    if (state.totalAllowedTries === 0) {
+      dispatch({ type: "endGame" });
+    }
+  }, [state.totalAllowedTries, dispatch]);
+
+  // for watching users reaction time
+  useEffect(() => {
+    if (displayedNumberIndex < numberList.length) return // only start the timer once the full sequence has been displayed
+
+    const timer = setInterval(() => {
+      setReaction((prev) => prev + 10);
+    }, 10)
+
+    return () => clearInterval(timer);
+  })
 
   return (
     <GameLayout>
-      <div className=" flex-1 flex font-(family-name: --headings) rounded-lg text-primary-foreground bg-primary">
+      <div className=" flex-1 p-2 flex font-(family-name: --headings) rounded-lg text-primary-foreground bg-primary">
         <div className="flex-1"></div>
         <div className="flex-1 flex flex-col justify-center items-center">
           {displayedNumberIndex < numberList.length ? (
@@ -94,7 +151,16 @@ export default function Active() {
             </div>
           )}
         </div>
-        <div className="flex-1"></div>
+        <div className="flex-1 flex justify-end ">
+          <div className="flex gap-x-2 flex-row-reverse">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <HeartDisplay
+                key={index}
+                filled={index < 6 - state.totalIncorrect}
+              />
+            ))}
+          </div>
+        </div>
       </div>
       <div className="flex-1 flex items-center justify-center">
         <ClusteredNumbers
