@@ -1,5 +1,4 @@
 import { useCardMatchReducer } from "@/hooks/useCardMatchReducer";
-import Intro from "./states/Intro";
 import Active from "./states/Active/Active";
 import { GameHomePage } from "@/components/GameHomePage/GameHomePage";
 import { useEffect, useState } from "react";
@@ -8,6 +7,7 @@ import { useApiFetch } from "@/hooks/useApiFetch";
 import { Domain } from "@/enums/domain";
 import { GameName } from "@/enums/gameName";
 import type { SessionsResponse } from "@/types/session.fetched";
+import GameIntroPage from "@/components/GameIntroPage";
 
 const difficultyConfig = {
   easy: { pairs: 8, cols: 4 },
@@ -20,15 +20,15 @@ export default function CardMatchGame() {
   const s = state.gameLevel as keyof typeof difficultyConfig;
   const { pairs, cols } = difficultyConfig[s];
   const apiFetch = useApiFetch();
-    const [history, setHistory] = useState<
-      {
-        id: number;
-        date: Date;
-        score: number;
-        accuracy: number;
-        reaction: number;
-      }[]
-    >();
+  const [history, setHistory] = useState<
+    {
+      id: number;
+      date: Date;
+      score: number;
+      accuracy: number;
+      reaction: number;
+    }[]
+  >();
 
   const playAgain = async () => {
     // send data to db
@@ -78,7 +78,7 @@ export default function CardMatchGame() {
 
   // Load data into the game state when the component mounts
   useEffect(() => {
-    if (state.gameState !== "home") return
+    if (state.gameState !== "home") return;
     // fetch user performance data from the API and dispatch to the reducer
     const fetchData = async () => {
       const response = await apiFetch("/sessions/card-match/", {
@@ -122,6 +122,10 @@ export default function CardMatchGame() {
     }
   }, [state.matchedCards, pairs, dispatch]);
 
+  const setGameLevel = (level: "easy" | "medium" | "hard") => {
+    dispatch({ type: "setGameLevel", payload: level });
+  };
+
   return (
     <>
       {/* Intro, Active, and Complete should all use the same box */}
@@ -157,7 +161,17 @@ export default function CardMatchGame() {
           />
         )}
         {state.gameState === "intro" && (
-          <Intro dispatch={dispatch} state={state} />
+          <GameIntroPage
+            includeLevelSelector
+            setGameLevel={setGameLevel}
+            gameLevel={state.gameLevel}
+            playGame={() => dispatch({ type: "playGame" })}
+            instructions={[
+              "All cards will be revealed for a few seconds. Watch carefully and memorize their positions.",
+              "Once the cards are flipped back, click on them in the correct order. The more attempts you take, the lower your score.",
+              "The game ends when you complete the sequence or exceed the maximum number of attempts.",
+            ]}
+          />
         )}
         {state.gameState === "active" && (
           <Active state={state} pairs={pairs} cols={cols} dispatch={dispatch} />

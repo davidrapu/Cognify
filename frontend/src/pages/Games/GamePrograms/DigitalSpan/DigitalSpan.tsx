@@ -1,6 +1,5 @@
 import Active from "./states/Active";
 import { useSpanGameReducer } from "@/hooks/useSpanGameReducer";
-import Intro from "./states/Intro";
 import { GameHomePage } from "@/components/GameHomePage/GameHomePage";
 import Completed from "@/components/CompletedGameSession";
 import { useApiFetch } from "@/hooks/useApiFetch";
@@ -8,6 +7,7 @@ import { useEffect, useState } from "react";
 import type { SessionsResponse } from "@/types/session.fetched";
 import { GameName } from "@/enums/gameName";
 import { Domain } from "@/enums/domain";
+import GameIntroPage from "@/components/GameIntroPage";
 
 export default function DigitalSpan() {
   const [state, dispatch] = useSpanGameReducer();
@@ -69,6 +69,8 @@ export default function DigitalSpan() {
 
   // Load data into the game state when the component mounts
   useEffect(() => {
+    if (state.gameState !== "home") return;
+
     // fetch user performance data from the API and dispatch to the reducer
     const fetchData = async () => {
       const response = await apiFetch("/sessions/digital-span/", {
@@ -100,7 +102,7 @@ export default function DigitalSpan() {
       setHistory(historyData);
     };
     fetchData();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [state.gameState]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -144,7 +146,17 @@ export default function DigitalSpan() {
           history={history}
         />
       )}
-      {state.gameState === "intro" && <Intro dispatch={dispatch} />}
+      {state.gameState === "intro" && (
+        <GameIntroPage
+          instructions={[
+            "A sequence of numbers will appear on the screen. Watch carefully and memorize the exact order.",
+            "Once the sequence disappears, enter the numbers in the correct order. Longer sequences increase the challenge and your score.",
+            "You have 6 attempts to achieve your highest score. Stay focused and see how far you can go!",
+          ]}
+
+          playGame={() => dispatch({ type: "playGame" })}
+        />
+      )}
       {state.gameState === "active" && (
         <Active state={state} dispatch={dispatch} />
       )}
