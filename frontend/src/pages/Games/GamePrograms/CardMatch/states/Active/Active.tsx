@@ -86,9 +86,9 @@ export default function Active({
   useEffect(() => {
     const timer = setTimeout(() => {
       setAllFlipped(false);
-    }, 3000);
+    }, pairs === 8 ? 3000 : pairs === 12 ? 5000 : 7000); // Adjust time based on difficulty
     return () => clearTimeout(timer);
-  }, []);
+  }, [pairs]);
 
   useEffect(() => {
     if (choiceOne === null || choiceTwo === null) return;
