@@ -178,9 +178,9 @@ export default function CardMatchGame() {
         )}
         {state.gameState === "completed" && (
           <Completed
-            goHome={home}
+            goHome={() => home()}
             highestConsecutiveCorrect={state.highestConsecutiveCorrect}
-            playAgain={playAgain}
+            playAgain={() => playAgain()}
             totalAttempts={state.totalAttempts}
             totalCorrect={state.totalCorrect}
             totalIncorrect={state.totalIncorrect}

@@ -150,7 +150,7 @@ export default function SequenceRecall() {
       {state.gameState === "active" && (
         <Active state={state} dispatch={dispatch} />
       )}
-      {state.gameState === "completed" && <Completed highestConsecutiveCorrect={state.highestConsecutiveCorrect} playAgain={playAgain} goHome={returnHome} totalAttempts={state.totalAttempts} totalCorrect={state.totalCorrect} totalIncorrect={state.totalIncorrect} totalTime={state.totalTime} />}
+      {state.gameState === "completed" && <Completed highestConsecutiveCorrect={state.highestConsecutiveCorrect} playAgain={() => {playAgain()}} goHome={() => {returnHome()}} totalAttempts={state.totalAttempts} totalCorrect={state.totalCorrect} totalIncorrect={state.totalIncorrect} totalTime={state.totalTime} />}
     </>
   );
 }

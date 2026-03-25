@@ -162,8 +162,8 @@ export default function DigitalSpan() {
       )}
       {state.gameState === "completed" && (
         <Completed
-          goHome={returnHome}
-          playAgain={playAgain}
+          goHome={() => returnHome()}
+          playAgain={() => playAgain()}
           totalTime={state.totalTime}
           totalAttempts={state.totalAttempts}
           totalCorrect={state.totalCorrect}
