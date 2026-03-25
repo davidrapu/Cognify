@@ -1,10 +1,10 @@
 import { useReducer } from "react";
 
 const initialState = {
+  gameState: "home" as const, // can be "active", intro, or "completed"
   matchedCards: 0,
   totalAttempts: 0,
   gameLevel: "easy" as const, // can be "easy", "medium", or "hard"
-  gameState: "home" as const, // can be "active", intro, or "completed"
   // Sent to the db after game completion
   totalTime: [], // array to store time taken for each attempt (time taken to recall sequence) {time, correct:boolean}
   totalCorrect: 0,
