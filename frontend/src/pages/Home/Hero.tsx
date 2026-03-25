@@ -17,7 +17,7 @@ export default function Hero() {
           </p>
       </div>
         <AnimatedButton
-          onClick={() => navigate(loggedIn ? "/dashboard" : "/quiz")}
+          onClick={() => navigate(loggedIn ? "/dashboard" : "/signup")}
           className="
           self-center
           text-xl
