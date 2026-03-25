@@ -10,7 +10,7 @@ import {
 } from "@/hooks/useSpanGameReducer";
 import { generateRandomDigits } from "@/utils/generateRandomDigits";
 import { useRef, useState, useEffect } from "react";
-import {Heart} from '@/components/icons'
+import HeartDisplay from "@/components/HeartDisplay";
 
 export default function Active({
   state,
@@ -189,12 +189,5 @@ export default function Active({
         />
       </div>
     </GameLayout>
-  );
-}
-
-function HeartDisplay({ filled }: { filled: boolean }) {
-  return (
-    <Heart className='size-7' fill={filled ? "var(--primary-foreground)" : "none"} stroke="var(--primary-foreground)" strokeWidth={2}
-    />
   );
 }
