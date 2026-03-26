@@ -58,7 +58,7 @@ export default function Active() {
     if (displayedState === "wait") {
       const timer = setTimeout(() => {
         setDisplayedState(getRandomArrow());
-      }, 100);
+      }, 200);
       return () => clearTimeout(timer);
     }
   }, [displayedState]);
