@@ -1,4 +1,3 @@
-import { useCardMatchReducer } from "@/hooks/useCardMatchReducer";
 import Active from "./states/Active/Active";
 import { GameHomePage } from "@/components/GameHomePage/GameHomePage";
 import { useEffect, useState } from "react";
@@ -8,6 +7,8 @@ import { Domain } from "@/enums/domain";
 import { GameName } from "@/enums/gameName";
 import type { SessionsResponse } from "@/types/session.fetched";
 import GameIntroPage from "@/components/GameIntroPage";
+import { useLeveledGameReducer } from "@/hooks/useLeveledGameReducer";
+import type { GameHistoryEntry } from "@/types/gameHistory";
 
 const difficultyConfig = {
   easy: { pairs: 8, cols: 4 },
@@ -16,19 +17,11 @@ const difficultyConfig = {
 } as const;
 
 export default function CardMatchGame() {
-  const [state, dispatch] = useCardMatchReducer();
+  const [state, dispatch] = useLeveledGameReducer();
   const s = state.gameLevel as keyof typeof difficultyConfig;
   const { pairs, cols } = difficultyConfig[s];
   const apiFetch = useApiFetch();
-  const [history, setHistory] = useState<
-    {
-      id: number;
-      date: Date;
-      score: number;
-      accuracy: number;
-      reaction: number;
-    }[]
-  >();
+  const [history, setHistory] = useState<GameHistoryEntry>([] as GameHistoryEntry);
 
   const playAgain = async () => {
     // send data to db
@@ -50,7 +43,7 @@ export default function CardMatchGame() {
 
     // reset game
     // start new game
-    dispatch({ type: "startGame" });
+    dispatch({ type: "resetGame" });
   };
 
   const home = async () => {

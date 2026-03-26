@@ -1,5 +1,4 @@
 import Active from "./states/Active";
-import { useSpanGameReducer } from "@/hooks/useSpanGameReducer";
 import { GameHomePage } from "@/components/GameHomePage/GameHomePage";
 import Completed from "@/components/CompletedGameSession";
 import { useApiFetch } from "@/hooks/useApiFetch";
@@ -8,19 +7,13 @@ import type { SessionsResponse } from "@/types/session.fetched";
 import { GameName } from "@/enums/gameName";
 import { Domain } from "@/enums/domain";
 import GameIntroPage from "@/components/GameIntroPage";
+import { useGameReducer } from "@/hooks/useGameReducer";
+import { type GameHistoryEntry } from "@/types/gameHistory";
 
 export default function DigitalSpan() {
-  const [state, dispatch] = useSpanGameReducer();
+  const [state, dispatch] = useGameReducer();
   const apiFetch = useApiFetch();
-  const [history, setHistory] = useState<
-    {
-      id: number;
-      date: Date;
-      score: number;
-      accuracy: number;
-      reaction: number;
-    }[]
-  >();
+  const [history, setHistory] = useState<GameHistoryEntry>([] as GameHistoryEntry);
 
   const playAgain = async () => {
     // send data to db

@@ -1,4 +1,3 @@
-import { useSpanGameReducer } from "@/hooks/useSpanGameReducer";
 import Active from "./states/Active";
 import { GameHomePage } from "@/components/GameHomePage/GameHomePage";
 import GameIntroPage from "@/components/GameIntroPage";
@@ -8,19 +7,13 @@ import { useApiFetch } from "@/hooks/useApiFetch";
 import type { SessionsResponse } from "@/types/session.fetched";
 import { Domain } from "@/enums/domain";
 import { GameName } from "@/enums/gameName";
+import { useGameReducer } from "@/hooks/useGameReducer";
+import type { GameHistoryEntry } from "@/types/gameHistory";
 
 export default function SequenceRecall() {
-  const [state, dispatch] = useSpanGameReducer();
+  const [state, dispatch] = useGameReducer();
   const apiFetch = useApiFetch();
-  const [history, setHistory] = useState<
-    {
-      id: number;
-      date: Date;
-      score: number;
-      accuracy: number;
-      reaction: number;
-    }[]
-  >();
+  const [history, setHistory] = useState<GameHistoryEntry>([] as GameHistoryEntry);
 
   const playAgain = async () => {
     // send data to db
@@ -46,7 +39,7 @@ export default function SequenceRecall() {
   };
   const returnHome = async () => {
     // send data to db
-    const response = await apiFetch("/sessions/", {
+    const response = await apiFetch("/sessions", {
       method: "POST",
       body: JSON.stringify({
         gameName: GameName.SEQUENCE_RECALL,
@@ -66,8 +59,8 @@ export default function SequenceRecall() {
     // start new game
     dispatch({ type: "home" });
   };
-  // loading all data upon home page render
 
+  // loading all data upon home page render
   useEffect(() => {
     if (state.gameState !== "home") return;
 
