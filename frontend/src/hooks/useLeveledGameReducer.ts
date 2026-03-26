@@ -1,9 +1,12 @@
+// for games that use levels (easy, medium, hard)
+
 import { useReducer } from "react";
 
 const initialState = {
   gameState: "home" as const, // can be "active", intro, or "completed"
   matchedCards: 0,
   totalAttempts: 0,
+  totalAllowedAttempts: 6,
   gameLevel: "easy" as const, // can be "easy", "medium", or "hard"
   // Sent to the db after game completion
   totalTime: [], // array to store time taken for each attempt (time taken to recall sequence) {time, correct:boolean}
@@ -16,13 +19,14 @@ const initialState = {
   highScore: 0, // gotten from backend upon render of game home page
 };
 
-export type CardMatchState = {
+export type LeveledGameState = {
   matchedCards: number;
   totalAttempts: number;
   gameLevel: "easy" | "medium" | "hard";
   gameState: "intro" | "active" | "completed" | "home";
   totalTime: { time: number; correct: boolean }[];
   totalCorrect: number;
+  totalAllowedAttempts: number;
   totalIncorrect: number;
   averageScore: number;
   averageAccuracy: number;
@@ -30,8 +34,8 @@ export type CardMatchState = {
   highestConsecutiveCorrect: number;
 };
 
-export type CardMatchAction =
-  | { type: "reset" }
+export type LeveledGameAction =
+  | { type: "resetGame" }
   | { type: "increaseAttempts" }
   | { type: "setGameLevel"; payload: "easy" | "medium" | "hard" }
   | { type: "setGameState"; payload: "active" | "intro" | "completed" | "home" }
@@ -44,6 +48,7 @@ export type CardMatchAction =
   | { type: "increaseMatchedCards" }
   | { type: "increaseTotalCorrect" }
   | { type: "increaseTotalIncorrect" }
+  | { type: "reduceTotalAllowedAttempts" }
   | { type: "updateHighestConsecutiveCorrect"; payload: number }
   | { type: "playGame" }
   | { type: "startGame" }
@@ -51,14 +56,22 @@ export type CardMatchAction =
   | { type: "home" };
 
 function reducer(
-  state: CardMatchState,
-  action: CardMatchAction,
-): CardMatchState {
+  state: LeveledGameState,
+  action: LeveledGameAction,
+): LeveledGameState {
   switch (action.type) {
     case "increaseMatchedCards":
       return { ...state, matchedCards: state.matchedCards + 1 };
-    case "reset":
-      return initialState;
+    case "resetGame":
+      return {
+        ...state,
+        totalAttempts: 0,
+        totalTime: [],
+        totalCorrect: 0,
+        totalIncorrect: 0,
+        highestConsecutiveCorrect: 0,
+        gameState: "intro",
+      };
     case "playGame":
       return {
         ...state,
@@ -106,9 +119,9 @@ function reducer(
   }
 }
 
-export function useCardMatchReducer(): [
-  CardMatchState,
-  React.Dispatch<CardMatchAction>,
+export function useLeveledGameReducer(): [
+  LeveledGameState,
+  React.Dispatch<LeveledGameAction>,
 ] {
   const [state, dispatch] = useReducer(reducer, initialState);
   return [state, dispatch];

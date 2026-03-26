@@ -1,6 +1,8 @@
+// for games that dont use levels
+
 import { useReducer } from "react";
 
-const initialState: SpanGameState = {
+const initialState: GameState = {
     gameState: "home",
     totalAllowedTries: 6,
     totalAttempts: 0,
@@ -14,7 +16,7 @@ const initialState: SpanGameState = {
     averageAccuracy: 0, // gotten from backend upon render of game home page
     highScore: 0, // gotten from backend upon render of game home page
 }
-export type SpanGameState = {
+export type GameState = {
     gameState: "intro" | "active" | "completed" | "home";
     totalAttempts: number;
     totalTime: { time: number; correct: boolean }[];
@@ -26,21 +28,20 @@ export type SpanGameState = {
     highScore: number;
     highestConsecutiveCorrect: number;
 }
-export type SpanGameAction =
+export type GameAction =
     | { type: "startGame" } // Set the game state to "intro"
     | {type: "playGame"} // Set the game state to "active"
     | { type: "endGame"} // Set the game state to "completed"
     | { type: "home"} // Set the game state to "home"
     | { type: "increaseAttempts" } // Increment the total attempts by 1
     | { type: "addTimeTaken", payload: { time: number; correct: boolean } } // add the time taken for an attempt to the totalTime array
-    | { type: "reduceAllowedTries" } // reduce the total allowed tries by 1
     | { type: "incrementCorrect" } // increment total correct by 1
     | { type: "incrementIncorrect" } // increment total incorrect by 1
     | { type: "setHighestConsecutiveCorrect", payload: number } // set the highest consecutive correct count
     | { type: "setAverages", payload: { averageScore: number; averageAccuracy: number } } // set the average score and accuracy
     | { type: "setHighScore", payload: number } // set the high score
     | { type: "resetGame" } // reset the game to initial state but keep gameState as "active"
-function reducer (state: SpanGameState, action: SpanGameAction): SpanGameState {
+function reducer (state: GameState, action: GameAction): GameState {
     switch (action.type) {
         case "startGame":
             return { ...state, gameState: "intro" };
@@ -56,8 +57,6 @@ function reducer (state: SpanGameState, action: SpanGameAction): SpanGameState {
             return { ...state, totalAttempts: state.totalAttempts + 1 };
         case "addTimeTaken":
             return { ...state, totalTime: [...state.totalTime, { time: action.payload.time, correct: action.payload.correct }] };
-        case "reduceAllowedTries":
-            return { ...state, totalAllowedTries: state.totalAllowedTries - 1 };
         case "incrementCorrect":
             return { ...state, totalCorrect: state.totalCorrect + 1 };
         case "incrementIncorrect":
@@ -73,7 +72,7 @@ function reducer (state: SpanGameState, action: SpanGameAction): SpanGameState {
     }
 }
 
-export function useSpanGameReducer() : [SpanGameState, React.Dispatch<SpanGameAction>] {
+export function useGameReducer() : [GameState, React.Dispatch<GameAction>] {
     const [state, dispatch] = useReducer(reducer, initialState);
     return [state, dispatch]
 }
