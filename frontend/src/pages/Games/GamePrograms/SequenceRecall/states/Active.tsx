@@ -4,7 +4,7 @@ import HeartDisplay from "@/components/HeartDisplay";
 import { Button } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import type { SpanGameAction, SpanGameState } from "@/hooks/useSpanGameReducer";
+import type { GameAction, GameState } from "@/hooks/useGameReducer";
 import { generateRandomDigits } from "@/utils/generateRandomDigits";
 import { useEffect, useRef, useState } from "react";
 
@@ -18,11 +18,13 @@ export default function Active({
   state,
   dispatch,
 }: {
-  state: SpanGameState;
-  dispatch: React.Dispatch<SpanGameAction>;
+  state: GameState;
+  dispatch: React.Dispatch<GameAction>;
 }) {
   const [difficulty, setDifficulty] = useState<number>(3);
-  const [numberList, setNumberList] = useState<string[]>(getSequence(difficulty));
+  const [numberList, setNumberList] = useState<string[]>(
+    getSequence(difficulty),
+  );
   const [displayedNumberIndex, setDisplayedNumberIndex] = useState(0);
   const [display, setDisplay] = useState(true);
   const [userInput, setUserInput] = useState<string | null>(null);
@@ -32,14 +34,16 @@ export default function Active({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const submit = () => {
-    const correct: boolean = userInput === numberList.join("").split(" ").join("");
-    dispatch({type: "increaseAttempts"})
-    dispatch({type: "addTimeTaken", payload: {time: reaction, correct}})
+    const correct: boolean =
+      userInput === numberList.join("").split(" ").join("");
+    dispatch({ type: "increaseAttempts" });
+    dispatch({ type: "addTimeTaken", payload: { time: reaction, correct } });
     if (correct) {
-      dispatch({type: "incrementCorrect" })
+      dispatch({ type: "incrementCorrect" });
       setStreak((prev) => prev + 1);
       setLossStreak(0);
-      if ((streak + 1) % 4 === 0) { // every 4 consecutive correct answers, increase the difficulty
+      if ((streak + 1) % 4 === 0) {
+        // every 4 consecutive correct answers, increase the difficulty
         setDifficulty((prev) => prev + 1);
       }
       if (streak + 1 > state.highestConsecutiveCorrect) {
@@ -47,11 +51,11 @@ export default function Active({
       }
       reset();
     } else {
-      dispatch({type: "incrementIncorrect" })
-      dispatch({type: "reduceAllowedTries" })
+      dispatch({ type: "incrementIncorrect" });
       setStreak(0);
       setLossStreak((prev) => prev + 1);
-      if ((lossStreak + 1) % 3 === 0) { // every 3 consecutive incorrect answers, decrease the difficulty
+      if ((lossStreak + 1) % 3 === 0) {
+        // every 3 consecutive incorrect answers, decrease the difficulty
         setDifficulty((prev) => Math.max(3, prev - 1));
       }
       reset();
@@ -75,7 +79,8 @@ export default function Active({
     // Display each number for 1 second, then move to the next
     if (displayedNumberIndex >= numberList.length) return; // so you dont go past the end of the array
 
-    if (display) { // display the number for 1 second, then hide it for 300ms before showing the next number
+    if (display) {
+      // display the number for 1 second, then hide it for 300ms before showing the next number
       const timer = setTimeout(() => {
         setDisplayedNumberIndex((prev) => prev + 1);
         setDisplay(false);
@@ -92,21 +97,21 @@ export default function Active({
 
   // watching for when the user runs out of tries or completes the game
   useEffect(() => {
-    if (state.totalAllowedTries === 0) {
+    if (state.totalAllowedTries - state.totalIncorrect <= 0) {
       dispatch({ type: "endGame" });
     }
-  }, [state.totalAllowedTries, dispatch]);
+  }, [state.totalAllowedTries, state.totalIncorrect, dispatch]);
 
   // for watching users reaction time
   useEffect(() => {
-    if (displayedNumberIndex < numberList.length) return // only start the timer once the full sequence has been displayed
+    if (displayedNumberIndex < numberList.length) return; // only start the timer once the full sequence has been displayed
 
     const timer = setInterval(() => {
       setReaction((prev) => prev + 10);
-    }, 10)
+    }, 10);
 
     return () => clearInterval(timer);
-  })
+  });
 
   return (
     <GameLayout>
@@ -152,14 +157,12 @@ export default function Active({
           )}
         </div>
         <div className="flex-1 flex justify-end ">
-          <div className="flex gap-x-2 flex-row-reverse">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <HeartDisplay
-                key={index}
-                filled={index < 6 - state.totalIncorrect}
-              />
-            ))}
-          </div>
+          <HeartDisplay
+            numberOfFilledHearts={state.totalAllowedTries - state.totalIncorrect}
+            innerColor="var(--destructive)"
+            outerColor="var(--destructive)"
+            length={state.totalAllowedTries}
+          />
         </div>
       </div>
       <div className="flex-1 flex items-center justify-center">

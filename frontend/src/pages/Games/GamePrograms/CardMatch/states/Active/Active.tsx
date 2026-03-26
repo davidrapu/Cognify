@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import ObjectCard from "./Card";
 import {
-  type CardMatchAction,
-  type CardMatchState,
-} from "@/hooks/useCardMatchReducer";
+  type LeveledGameAction,
+  type LeveledGameState,
+} from "@/hooks/useLeveledGameReducer";
 import { generateCards } from "@/utils/generateCards";
 import { cn } from "@/lib/utils";
 import { AnimatedButton } from "@/components/Button";
@@ -11,8 +11,8 @@ import { ChevronRight } from "@/components/icons";
 import { Card } from "@/components/ui/card";
 
 type CardMatchProps = {
-  dispatch: React.Dispatch<CardMatchAction>;
-  state: CardMatchState;
+  dispatch: React.Dispatch<LeveledGameAction>;
+  state: LeveledGameState;
   pairs: number;
   cols: number;
 };

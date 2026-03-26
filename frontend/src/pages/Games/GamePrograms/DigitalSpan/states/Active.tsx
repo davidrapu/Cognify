@@ -5,9 +5,9 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import {
-  type SpanGameAction,
-  type SpanGameState,
-} from "@/hooks/useSpanGameReducer";
+  type GameAction,
+  type GameState,
+} from "@/hooks/useGameReducer";
 import { generateRandomDigits } from "@/utils/generateRandomDigits";
 import { useRef, useState, useEffect } from "react";
 import HeartDisplay from "@/components/HeartDisplay";
@@ -16,8 +16,8 @@ export default function Active({
   state,
   dispatch,
 }: {
-  state: SpanGameState;
-  dispatch: React.Dispatch<SpanGameAction>;
+  state: GameState;
+  dispatch: React.Dispatch<GameAction>;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [countDownTimeSpent, setCountDownTimeSpent] = useState<number>(0);
@@ -75,7 +75,6 @@ export default function Active({
       console.log("Correct!");
     } else {
       // If the user is incorrect, reduce the total allowed tries by 1, increment total incorrect by 1, add the time taken for this attempt to the totalTime array with correct: false, reset the refresh consecutive correct count and consecutive correct count, and generate new digits.
-      dispatch({ type: "reduceAllowedTries" });
       dispatch({ type: "incrementIncorrect" });
       dispatch({ type: "addTimeTaken", payload: { time: timeTaken, correct: false } }); // Add the time taken for this attempt to the totalTime array with correct: false
       setRefreshConsecutiveCorrect(0);
@@ -95,10 +94,10 @@ export default function Active({
 
   // Watch for when total allowed tries reaches 0 and end the game
   useEffect(() => {
-    if (state.totalAllowedTries <= 0) {
+    if (state.totalAllowedTries - state.totalIncorrect <= 0) {
       dispatch({ type: "endGame" });
     }
-  }, [state.totalAllowedTries, dispatch, state]);
+  }, [state.totalAllowedTries, state.totalIncorrect, dispatch, state]);
 
   // Start the timer when the digits are displayed and focus the input field
   useEffect(() => {
@@ -175,11 +174,7 @@ export default function Active({
           )}
         </div>
         <div className="flex-1 flex justify-end ">
-          <div className="flex gap-x-2 flex-row-reverse">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <HeartDisplay key={index} filled={index < 6 - state.totalIncorrect} />
-            ))}
-          </div>
+          <HeartDisplay numberOfFilledHearts={state.totalAllowedTries - state.totalIncorrect} innerColor="var(--destructive)" outerColor="var(--destructive)" length={state.totalAllowedTries} />
         </div>
       </div>
       <div className="flex-1 flex items-center justify-center">
