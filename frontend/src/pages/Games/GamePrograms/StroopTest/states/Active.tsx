@@ -1,6 +1,7 @@
 import GameLayout from "@/components/GameLayout";
 import { Button } from "@/components/Button";
 import { useEffect, useState } from "react";
+import type { GameAction, GameState } from "@/hooks/useGameReducer";
 
 const statsContainerStyle =
   "bg-card p-2 rounded-2xl flex flex-col items-center justify-center gap-y-1 shadow-md";
@@ -38,50 +39,62 @@ const buttons = [
 ];
 
 const generateTextColor = () => {
-    const colorId = Math.floor(Math.random() * 5) + 1;
-    const textColorId = Math.floor(Math.random() * 5) + 1;
-    return {textColorId, colorId};
-}
+  const colorId = Math.floor(Math.random() * 5) + 1;
+  const textColorId = Math.floor(Math.random() * 5) + 1;
+  return { textColorId, colorId };
+};
 
-export default function Active() {
-    const [colorObject, setColorObject] = useState(generateTextColor());
-    const [score, setScore] = useState(0);
-    // const [correct, setCorrect] = useState<boolean | null>(null);
-    const [attempts, setAttempts] = useState(0);
-    const [timeLeft, setTimeLeft] = useState(60);
-    const accuracy = (score / attempts) * 100 || 0; 
+type ActiveProps = {
+  state: GameState;
+  dispatch: React.Dispatch<GameAction>;
+};
+export default function Active({ state, dispatch }: ActiveProps) {
+  const [colorObject, setColorObject] = useState(generateTextColor());
+  const [timeLeft, setTimeLeft] = useState<number>(60);
+  const [streak, setStreak] = useState<number>(0);
+  const [reactionTime, setReactionTime] = useState<number>(0);
+  const accuracy: number = (state.totalCorrect / state.totalAttempts) * 100 || 0;
 
-    const handleButtonClick = (id: number) => {
-        if (id === colorObject.colorId) {
-            setScore((prev) => prev + 1);
-            setColorObject(generateTextColor());
-            setAttempts((prev) => prev + 1);
-        } else {
-            setColorObject(generateTextColor());
-            setAttempts((prev) => prev + 1);
-        }
+  const handleButtonClick = (id: number) => {
+    dispatch({type: "increaseAttempts"})
+    dispatch({type: "addTimeTaken", payload: {time: reactionTime, correct: id === colorObject.colorId}})
+    setReactionTime(0)
+    if (id === colorObject.colorId) {
+      dispatch({type: "incrementCorrect"})
+      setColorObject(generateTextColor());
+      setStreak((prev) => prev + 1);
+      if (streak + 1 > state.highestConsecutiveCorrect) {
+        dispatch({type: "setHighestConsecutiveCorrect", payload: streak + 1})
+      }
+    } else {
+      setColorObject(generateTextColor());
+      dispatch({type: "incrementIncorrect"})
+      setStreak(0);
     }
-    const handleReset = () => {
-        setScore(0);
-        setAttempts(0);
-        setTimeLeft(60);
-        setColorObject(generateTextColor());
+  };
+
+  useEffect(() => { // timer for game
+    if (timeLeft === 0) return 
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000)
+
+    return () => clearInterval(timer);
+  }, [timeLeft]);
+
+  useEffect(() => { // get reaction time
+    const timer = setInterval(() => {
+      setReactionTime((prev) => prev + 10)
+    }, 10)
+    return () => clearInterval(timer)
+  }, [colorObject])
+
+  useEffect(() => { // end game when time runs out
+    if (timeLeft === 0) {
+      dispatch({type: "endGame"})
     }
-
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setTimeLeft((prev) => {
-                if (prev > 0) {
-                    return prev - 1;
-                } else {
-                    clearInterval(timer);
-                    return 0;
-                }
-            });
-        }, 1000);
-
-        return () => clearInterval(timer);
-    }, [timeLeft]);
+  }, [timeLeft, dispatch])
 
   return (
     <GameLayout>
@@ -95,7 +108,7 @@ export default function Active() {
         </div>
         <div className={statsContainerStyle}>
           <p className={statsHeaderStyle}>Score</p>
-          <p className={statsStyle}>{score}</p>
+          <p className={statsStyle}>{state.totalCorrect}</p>
         </div>
         <div className={statsContainerStyle}>
           <p className={statsHeaderStyle}>Accuracy</p>
@@ -119,11 +132,6 @@ export default function Active() {
           </Button>
         ))}
       </div>
-      {timeLeft === 0 && (
-        <Button onClick={handleReset} className="w-fit self-end px-8 animate-in fade-in slide-in-from-bottom-30 transition-transform duration-300">
-          Reset
-        </Button>
-      )}
     </GameLayout>
   );
 }
