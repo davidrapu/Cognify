@@ -10,34 +10,54 @@ const getRandomBoolean = () => {
     return randomValues[Math.floor(Math.random() * randomValues.length)];
 };
 export default function Active({ state, dispatch } : {state: GameState, dispatch: React.Dispatch<GameAction>}) {
+  
   const [selectionState, setSelectionState] = useState<"go" | "wait" | "noGo">("wait");
+  const [reactionTime, setReactionTime] = useState<number>(0);
+  const [streak, setStreak] = useState<number>(0);
+  
+  const gameStateRef = useRef(state)
   const stateRef = useRef(selectionState)
-
+  
+  useEffect(() => {
+    gameStateRef.current = state
+  }, [state])
+  
   useEffect(() => {
     stateRef.current = selectionState;
   })
 
   // Window-level spacebar listener
   useEffect(() => {
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key !== " " && event.key !== "Space") return
 
       event.preventDefault();
-
+      const reaction = reactionTime
       dispatch({type: "increaseAttempts"})
+      dispatch({type: "addTimeTaken", payload: {time: reaction, correct: stateRef.current === "go"}})
+      setReactionTime(0)
 
       if (stateRef.current === "go") {
         dispatch({type: "incrementCorrect"})
+        setStreak((prev) => prev + 1);
+        if (streak + 1 > gameStateRef.current.highestConsecutiveCorrect) {
+          dispatch({type: "setHighScore", payload: streak + 1})
+        }
         setSelectionState("wait");
       } else if (stateRef.current === "noGo") {
         dispatch({type: "incrementIncorrect"})
+        setStreak(0);
         setSelectionState("wait");
+      } else if (stateRef.current === "wait") {
+        dispatch({type: "incrementIncorrect"})
+        setStreak(0);
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [dispatch]); // Re-attach when selectionState changes
+  }, [dispatch, reactionTime, streak]); // Re-attach when selectionState changes
 
   useEffect(() => {
     if (selectionState === "go") return
@@ -50,11 +70,27 @@ export default function Active({ state, dispatch } : {state: GameState, dispatch
       return () => clearTimeout(timer);
     } else if (selectionState === "noGo") {
       const timer = setTimeout(() => {
+        setReactionTime(0)
         setSelectionState("wait");
       }, Math.random() * 2000 + 1000); // Random delay between 1-3 seconds
       return () => clearTimeout(timer);
     }
   }, [selectionState]);
+
+  useEffect(() => {
+    if (state.totalIncorrect >= state.totalAllowedTries) {
+      dispatch({type: "endGame"})
+    }
+  })
+
+  useEffect(() => { // getting reaction time
+    if (selectionState === "wait") return
+
+    const timer = setInterval(() => {
+      setReactionTime((prev) => prev + 1);
+    }, 1);
+    return () => clearInterval(timer);
+  }, [selectionState])
 
   return (
     <GameLayout>
