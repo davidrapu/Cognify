@@ -1,6 +1,7 @@
 import GameLayout from "@/components/GameLayout";
-import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import HeartDisplay from "@/components/HeartDisplay";
+import type { GameAction, GameState } from "@/hooks/useGameReducer";
+import { useEffect, useRef, useState } from "react";
 
 const getRandomBoolean = () => {
 
@@ -8,53 +9,49 @@ const getRandomBoolean = () => {
 
     return randomValues[Math.floor(Math.random() * randomValues.length)];
 };
+export default function Active({ state, dispatch } : {state: GameState, dispatch: React.Dispatch<GameAction>}) {
+  const [selectionState, setSelectionState] = useState<"go" | "wait" | "noGo">("wait");
+  const stateRef = useRef(selectionState)
 
-export default function Active() {
-  const [selectionState, setSelectionState] = useState<"go" | "wait" | "noGo" | "reset">("wait");
-  const [score, setScore] = useState<number>(0);
+  useEffect(() => {
+    stateRef.current = selectionState;
+  })
 
   // Window-level spacebar listener
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === " " || event.key === "Space") {
-        event.preventDefault();
-        if (selectionState === "go") {
-          setScore((prev) => prev + 1);
-          setSelectionState("wait");
-        } else if (selectionState === "noGo") {
-          console.log("You clicked when you shouldn't have!");
-          setScore(0);
-          setSelectionState("reset");
-        }
+      if (event.key !== " " && event.key !== "Space") return
+
+      event.preventDefault();
+
+      dispatch({type: "increaseAttempts"})
+
+      if (stateRef.current === "go") {
+        dispatch({type: "incrementCorrect"})
+        setSelectionState("wait");
+      } else if (stateRef.current === "noGo") {
+        dispatch({type: "incrementIncorrect"})
+        setSelectionState("wait");
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectionState]); // Re-attach when selectionState changes
-
-  const handleReset = () => {
-    setScore(0);
-    setSelectionState("wait");
-  };
+  }, [dispatch]); // Re-attach when selectionState changes
 
   useEffect(() => {
+    if (selectionState === "go") return
+
     if (selectionState === "wait") {
       const timer = setTimeout(() => {
         const newIsGo = getRandomBoolean();
         setSelectionState(newIsGo ? "go" : "noGo");
-      }, 500);
+      }, 200);
       return () => clearTimeout(timer);
     } else if (selectionState === "noGo") {
       const timer = setTimeout(() => {
         setSelectionState("wait");
-      }, 1000);
-      return () => clearTimeout(timer);
-    } else if (selectionState === "go") {
-      const timer = setTimeout(() => {
-        setSelectionState("reset");
-        console.log("You didn't click in time!");
-      }, 3000);
+      }, Math.random() * 2000 + 1000); // Random delay between 1-3 seconds
       return () => clearTimeout(timer);
     }
   }, [selectionState]);
@@ -63,18 +60,7 @@ export default function Active() {
     <GameLayout>
       <div className="relative flex-1 border-2 border-primary rounded-2xl bg-card flex items-center justify-center">
         <div className="absolute right-5 top-5 text-center space-y-3">
-          <p className="text-2xl font-medium">
-            Score: <span className="text-primary">{score}</span>
-          </p>
-          {selectionState === "reset" && (
-            <Button
-              variant="destructive"
-              className="animate-in fade-in slide-in-from-right-30 duration-300"
-              onClick={handleReset}
-            >
-              Reset
-            </Button>
-          )}
+          <HeartDisplay numberOfFilledHearts={state.totalAllowedTries - state.totalIncorrect} innerColor="var(--destructive)" outerColor="var(--destructive)" length={state.totalAllowedTries} />
         </div>
         {selectionState === "go" && (
           <div className="h-50 aspect-video bg-acceptive rounded-2xl flex items-center justify-center flex-col text-acceptive-foreground">
