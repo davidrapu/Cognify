@@ -1,11 +1,14 @@
 import GameLayout from "@/components/GameLayout";
+import HeartDisplay from "@/components/HeartDisplay";
 import { Button } from "@/components/ui/button";
+import type { LeveledGameAction, LeveledGameState } from "@/hooks/useLeveledGameReducer";
 import { cn } from "@/lib/utils";
 import { generateSimilarColors } from "@/utils/generateSimilarColors";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type ActiveProps = {
-  difficulty?: "easy" | "medium" | "hard";
+  state: LeveledGameState;
+  dispatch: React.Dispatch<LeveledGameAction>;
 };
 
 const difficultyConfig = {
@@ -26,47 +29,74 @@ const difficultyConfig = {
   },
 };
 
-export default function Active({ difficulty = "medium" }: ActiveProps) {
-  const config = difficultyConfig[difficulty];
+export default function Active({ state, dispatch }: ActiveProps) {
+const config = difficultyConfig[state.gameLevel];
 
-  const generateNewColors = () => {
+  const generateNewColors = useCallback(() => {
     return generateSimilarColors({
       count: config.count,
       lightnessShift: config.lightnessShift,
     });
-  };
+  }, [config.count, config.lightnessShift]);
 
-  const [colorData, setColorData] = useState(() => generateNewColors());
-  // const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const [score, setScore] = useState(0);
-  const [failed, setFailed] = useState(false);
-
-    const handleReset = () => {
-      setScore(0);
-      setFailed(false);
-      setColorData(generateNewColors());
-    };
+  const [colorData, setColorData] = useState(generateNewColors());
+  const [failed, setFailed] = useState<boolean>(false);
+  const [streak , setStreak] = useState<number>(0);
+  const [reaction, setReaction] = useState<number>(0);
 
   const handleClick = (index: number) => {
+    dispatch({ type: "increaseAttempts" });
+    const reactionTime = reaction;
+    // set reaction time for current round and reset timer
+    dispatch({
+      type: "updateTotalTime",
+      payload: { time: reactionTime, correct: index === colorData.oddIndex },
+    });
+    setReaction(0);
     // Keep generating new colors until user clicks the wrong one
-    // setSelectedIndex(index);
     if (index === colorData.oddIndex) {
-      console.log("Correct!");
       // Generate new colors for next round
       setColorData(generateNewColors());
-      // setSelectedIndex(null);
-
+      setFailed(false);
       // Increment score
-      setScore((prev) => prev + 1);
+      dispatch({ type: "increaseTotalCorrect" });
+      setReaction(0);
+      setStreak((prev) => prev + 1);
+      if (streak + 1 > state.highestConsecutiveCorrect) {
+        dispatch({
+          type: "updateHighestConsecutiveCorrect",
+          payload: streak + 1,
+        });
+      }
     } else {
-      console.log("Wrong!");
-      // Optionally regenerate or keep same colors
-      // setColorData(generateNewColors());
-      // setSelectedIndex(null);
+      dispatch({ type: "increaseTotalIncorrect" });
       setFailed(true);
-
+      setStreak(0);
+      // when user chances are up, end game and show results
+      if (state.totalAllowedAttempts - (state.totalIncorrect + 1) <= 0) {
+        const timer = setTimeout(() => {
+          dispatch({ type: "endGame" });
+        }, 1000);
+        return () => clearTimeout(timer);
+      }
     }
-  };
+  };;
+
+  useEffect(() => { // Reset failed state and generate new colors after a short delay when user clicks the wrong one
+    if (!failed) return 
+    const timeout = setTimeout(() => {
+      setFailed(false);
+      setColorData(generateNewColors());
+    }, 1000);
+    return () => clearTimeout(timeout);
+  }, [failed, generateNewColors]);
+
+  useEffect(() => { // Start reaction timer when new colors are generated
+    const timer = setInterval(() => {
+      setReaction((prev) => prev + 10);
+    }, 10)
+    return () => clearInterval(timer);
+  }, [colorData])
 
   return (
     <GameLayout>
@@ -84,10 +114,9 @@ export default function Active({ difficulty = "medium" }: ActiveProps) {
           ))}
         </div>
       <div className="absolute top-5 right-5">
-        <p className="text-xl">Score: <span className="font-semibold text-primary">{score}</span></p>
-        {failed &&
-          <Button variant="destructive" size="sm" onClick={handleReset} className="mt-2 animate-in slide-in-from-bottom-20 fade-in duration-300">Reset</Button>
-        }
+        <div className="flex-1 flex justify-end ">
+                    <HeartDisplay numberOfFilledHearts={state.totalAllowedAttempts - state.totalIncorrect} innerColor="var(--destructive)" outerColor="var(--destructive)" length={state.totalAllowedAttempts} />
+        </div>
       </div>
       </div>
     </GameLayout>
