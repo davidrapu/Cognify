@@ -12,7 +12,7 @@ const getRandomBoolean = () => {
 export default function Active({ state, dispatch } : {state: GameState, dispatch: React.Dispatch<GameAction>}) {
   
   const [selectionState, setSelectionState] = useState<"go" | "wait" | "noGo">("wait");
-  const [reactionTime, setReactionTime] = useState<number>(0);
+  const reactionTimeRef = useRef<number>(0);
   const [streak, setStreak] = useState<number>(0);
   
   const gameStateRef = useRef(state)
@@ -33,10 +33,9 @@ export default function Active({ state, dispatch } : {state: GameState, dispatch
       if (event.key !== " " && event.key !== "Space") return
 
       event.preventDefault();
-      const reaction = reactionTime
       dispatch({type: "increaseAttempts"})
-      dispatch({type: "addTimeTaken", payload: {time: reaction, correct: stateRef.current === "go"}})
-      setReactionTime(0)
+      dispatch({type: "addTimeTaken", payload: {time: reactionTimeRef.current, correct: stateRef.current === "go"}})
+      reactionTimeRef.current = 0;
 
       if (stateRef.current === "go") {
         dispatch({type: "incrementCorrect"})
@@ -57,7 +56,7 @@ export default function Active({ state, dispatch } : {state: GameState, dispatch
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [dispatch, reactionTime, streak]); // Re-attach when selectionState changes
+  }, [dispatch, streak]); // Re-attach when selectionState changes
 
   useEffect(() => {
     if (selectionState === "go") return
@@ -70,7 +69,7 @@ export default function Active({ state, dispatch } : {state: GameState, dispatch
       return () => clearTimeout(timer);
     } else if (selectionState === "noGo") {
       const timer = setTimeout(() => {
-        setReactionTime(0)
+        reactionTimeRef.current = 0;
         setSelectionState("wait");
       }, Math.random() * 2000 + 1000); // Random delay between 1-3 seconds
       return () => clearTimeout(timer);
@@ -87,7 +86,7 @@ export default function Active({ state, dispatch } : {state: GameState, dispatch
     if (selectionState === "wait") return
 
     const timer = setInterval(() => {
-      setReactionTime((prev) => prev + 1);
+      reactionTimeRef.current += 1;
     }, 1);
     return () => clearInterval(timer);
   }, [selectionState])

@@ -6,9 +6,9 @@ import { GameHomePage } from "@/components/GameHomePage/GameHomePage";
 import Completed from "@/components/CompletedGameSession";
 import { Domain } from "@/enums/domain";
 import { GameName } from "@/enums/gameName";
-import { useApiFetch } from "@/hooks/useApiFetch";
 import type { GameHistoryEntry } from "@/types/gameHistory";
 import type { SessionsResponse } from "@/types/session.fetched";
+import { useApiFetch } from "@/hooks/useApiFetch";
 
 export default function GoNoGo() {
   const [state, dispatch] = useGameReducer();
