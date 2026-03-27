@@ -1,7 +1,8 @@
 import GameLayout from "@/components/GameLayout";
+import HeartDisplay from "@/components/HeartDisplay";
 import { ArrowBigLeft, ArrowBigRight } from "@/components/icons";
-import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import type { GameAction, GameState } from "@/hooks/useGameReducer";
+import { useEffect, useRef, useState } from "react";
 
 const getRandomArrow = (): "left" | "right" => {
   const randomArrows = Array.from({ length: 10 }, () =>
@@ -10,75 +11,120 @@ const getRandomArrow = (): "left" | "right" => {
   return randomArrows[Math.floor(Math.random() * randomArrows.length)];
 };
 
-export default function Active() {
+export default function Active({
+  state,
+  dispatch,
+}: {
+  state: GameState;
+  dispatch: React.Dispatch<GameAction>;
+}) {
   const [displayedState, setDisplayedState] = useState<
-    "left" | "wait" | "right" | "reset"
+    "left" | "wait" | "right"
   >("wait");
-  const [score, setScore] = useState<number>(0);
+  const streakRef = useRef<number>(0);
+  const reactionTimeRef = useRef<number>(0);
+  const gameStateRef = useRef<GameState>(state);
+
+  useEffect(() => {
+    gameStateRef.current = state;
+  }, [state]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "q" || event.key === "Q") {
-        event.preventDefault();
-        console.log("Q pressed - Left");
-        // Handle left arrow press
-        if (displayedState === "left") {
-          setScore((prev) => prev + 1);
-          setDisplayedState("wait");
-        } else if (displayedState === "right") {
-          console.log("Wrong key!");
-          setScore(0);
-          setDisplayedState("reset");
+      event.preventDefault();
+
+      const keyPressed = event.key.toUpperCase();
+
+      if (keyPressed !== "Q" && keyPressed !== "E") return;
+      if (displayedState === "wait") return;
+      
+
+      dispatch({ type: "increaseAttempts" });
+
+
+      if (displayedState === "left") {
+
+        dispatch({ type: "addTimeTaken", payload: { time: reactionTimeRef.current, correct: keyPressed === "Q" } })
+
+        if (keyPressed === "Q") {
+          dispatch({ type: "incrementCorrect" });
+          streakRef.current += 1;
+          if (streakRef.current > gameStateRef.current.highestConsecutiveCorrect) {
+            dispatch({ type: "setHighestConsecutiveCorrect", payload: streakRef.current });
+          }
+        } else if (keyPressed === "E") {
+          dispatch({ type: "incrementIncorrect" });
+          streakRef.current = 0;
         }
-      } else if (event.key === "e" || event.key === "E") {
-        event.preventDefault();
-        console.log("E pressed - Right");
-        // Handle right arrow press
-        if (displayedState === "right") {
-          setScore((prev) => prev + 1);
-          setDisplayedState("wait");
-        } else if (displayedState === "left") {
-          console.log("Wrong key!");
-          setScore(0);
-          setDisplayedState("reset");
+      } else if (displayedState === "right") {
+        dispatch({ type: "addTimeTaken", payload: { time: reactionTimeRef.current, correct: keyPressed === "E" } })
+        if (keyPressed === "E") {
+          dispatch({ type: "incrementCorrect" });
+          streakRef.current += 1;
+          if (streakRef.current > gameStateRef.current.highestConsecutiveCorrect) {
+            dispatch({ type: "setHighestConsecutiveCorrect", payload: streakRef.current });
+          }
+        } else if (keyPressed === "Q") {
+          dispatch({ type: "incrementIncorrect" });
+          streakRef.current = 0;
         }
+      }else {
+        dispatch({ type: "addTimeTaken", payload: { time: reactionTimeRef.current, correct: false } });
+        dispatch({ type: "incrementIncorrect" });
+        streakRef.current = 0;
       }
+      reactionTimeRef.current = 0;
+      setDisplayedState("wait");
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [displayedState]);
-
-  const handleReset = () => {
-    setScore(0);
-    setDisplayedState("wait");
-  }
+  }, [displayedState, dispatch]);
 
   useEffect(() => {
-    if (displayedState === "wait") {
-      const timer = setTimeout(() => {
-        setDisplayedState(getRandomArrow());
-      }, 200);
-      return () => clearTimeout(timer);
+    if (state.totalIncorrect >= state.totalAllowedTries) {
+      dispatch({ type: "endGame" });
     }
+  }, [state.totalIncorrect, state.totalAllowedTries, dispatch]);
+
+  useEffect(() => { // reaction time
+    if (displayedState === "wait") return
+
+    const timer = setInterval(() => {
+      reactionTimeRef.current += 1;
+    }, 1)
+
+    return () => clearInterval(timer);
+  }, [displayedState])
+
+  useEffect(() => {
+    if (displayedState !== "wait") return
+
+    const timer = setTimeout(() => {
+      setDisplayedState(getRandomArrow());
+    }, 200);
+
+    return () => clearTimeout(timer);
   }, [displayedState]);
+
+  useEffect(() => {
+    if (state.totalIncorrect >= state.totalAllowedTries) {
+      dispatch({ type: "endGame" });
+    }
+  }, [state.totalIncorrect, state.totalAllowedTries, dispatch]);
 
   return (
     <GameLayout>
       <div className="relative flex-1 bg-card border-2 border-primary rounded-2xl flex justify-center items-center">
-        <div className="absolute top-6 right-6 text-2xl flex flex-col items-center gap-y-3">
-          <p className="font-semibold">
-            Score: <span className="text-primary">{score}</span>
-          </p>
-          {displayedState === "reset" && (
-            <Button
-              className="animate-in fade-in-20 slide-in-from-right-20"
-              variant="destructive"
-              onClick={handleReset}
-            >
-              Reset
-            </Button>
-          )}
+        <div className="absolute right-5 top-5 text-center space-y-3">
+          <HeartDisplay
+            numberOfFilledHearts={
+              state.totalAllowedTries - state.totalIncorrect
+            }
+            innerColor="var(--destructive)"
+            outerColor="var(--destructive)"
+            length={state.totalAllowedTries}
+          />
         </div>
         {displayedState === "left" && (
           <ArrowBigLeft
