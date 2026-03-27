@@ -21,7 +21,7 @@ export default function Active({
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [countDownTimeSpent, setCountDownTimeSpent] = useState<number>(0);
-  const [timeTaken, setTimeTaken] = useState<number>(0);
+  const timeTakenRef = useRef<number>(0);
   const [currentDigits, setCurrentDigits] = useState<string>(
     generateRandomDigits(3),
   );
@@ -34,17 +34,17 @@ export default function Active({
   const reset = () => {
     setCountDownTimeSpent(0);
     setUserInput(null);
-    setTimeTaken(0);
   };
 
   const submit = () => {
     dispatch({ type: "increaseAttempts" });
+    const reaction = Date.now() - timeTakenRef.current;
 
     if (userInput === currentDigits) {
       dispatch({ type: "incrementCorrect" }); // Increment total correct answers
       dispatch({
         type: "addTimeTaken",
-        payload: { time: timeTaken, correct: true },
+        payload: { time: reaction, correct: true },
       }); // Add the time taken for this attempt to the totalTime array with correct: true
 
       // Get the current consecutive correct count and refresh consecutive correct count from state
@@ -76,7 +76,7 @@ export default function Active({
     } else {
       // If the user is incorrect, reduce the total allowed tries by 1, increment total incorrect by 1, add the time taken for this attempt to the totalTime array with correct: false, reset the refresh consecutive correct count and consecutive correct count, and generate new digits.
       dispatch({ type: "incrementIncorrect" });
-      dispatch({ type: "addTimeTaken", payload: { time: timeTaken, correct: false } }); // Add the time taken for this attempt to the totalTime array with correct: false
+      dispatch({ type: "addTimeTaken", payload: { time: reaction, correct: false } }); // Add the time taken for this attempt to the totalTime array with correct: false
       setRefreshConsecutiveCorrect(0);
       setConsecutiveCorrectValue(0);
       setCurrentDigits(generateRandomDigits(digitsToRemember));
@@ -103,11 +103,9 @@ export default function Active({
   useEffect(() => {
     if (countDownTimeSpent >= 101) {
       inputRef.current?.focus();
-      const timer = setInterval(() => {
-        setTimeTaken((prev) => prev + 10);
-      }, 10);
 
-      return () => clearInterval(timer);
+      timeTakenRef.current = Date.now()
+
     }
   }, [countDownTimeSpent]);
 

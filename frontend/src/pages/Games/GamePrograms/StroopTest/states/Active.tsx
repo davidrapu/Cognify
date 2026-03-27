@@ -1,6 +1,6 @@
 import GameLayout from "@/components/GameLayout";
 import { Button } from "@/components/Button";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { GameAction, GameState } from "@/hooks/useGameReducer";
 
 const statsContainerStyle =
@@ -52,13 +52,13 @@ export default function Active({ state, dispatch }: ActiveProps) {
   const [colorObject, setColorObject] = useState(generateTextColor());
   const [timeLeft, setTimeLeft] = useState<number>(60);
   const [streak, setStreak] = useState<number>(0);
-  const [reactionTime, setReactionTime] = useState<number>(0);
+  const reactionTimeRef = useRef<number>(0);
   const accuracy: number = (state.totalCorrect / state.totalAttempts) * 100 || 0;
 
   const handleButtonClick = (id: number) => {
+    const reactionTime = Date.now() - reactionTimeRef.current; // eslint-disable-line
     dispatch({type: "increaseAttempts"})
     dispatch({type: "addTimeTaken", payload: {time: reactionTime, correct: id === colorObject.colorId}})
-    setReactionTime(0)
     if (id === colorObject.colorId) {
       dispatch({type: "incrementCorrect"})
       setColorObject(generateTextColor());
@@ -84,10 +84,9 @@ export default function Active({ state, dispatch }: ActiveProps) {
   }, [timeLeft]);
 
   useEffect(() => { // get reaction time
-    const timer = setInterval(() => {
-      setReactionTime((prev) => prev + 10)
-    }, 10)
-    return () => clearInterval(timer)
+
+    reactionTimeRef.current = Date.now();
+
   }, [colorObject])
 
   useEffect(() => { // end game when time runs out

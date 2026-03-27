@@ -33,9 +33,9 @@ export default function Active({ state, dispatch } : {state: GameState, dispatch
       if (event.key !== " " && event.key !== "Space") return
 
       event.preventDefault();
+      const reaction = Date.now() - reactionTimeRef.current;
       dispatch({type: "increaseAttempts"})
-      dispatch({type: "addTimeTaken", payload: {time: reactionTimeRef.current, correct: stateRef.current === "go"}})
-      reactionTimeRef.current = 0;
+      dispatch({type: "addTimeTaken", payload: {time: reaction, correct: stateRef.current === "go"}})
 
       if (stateRef.current === "go") {
         dispatch({type: "incrementCorrect"})
@@ -68,10 +68,11 @@ export default function Active({ state, dispatch } : {state: GameState, dispatch
       }, 200);
       return () => clearTimeout(timer);
     } else if (selectionState === "noGo") {
+
       const timer = setTimeout(() => {
-        reactionTimeRef.current = 0;
         setSelectionState("wait");
       }, Math.random() * 2000 + 1000); // Random delay between 1-3 seconds
+
       return () => clearTimeout(timer);
     }
   }, [selectionState]);
@@ -85,10 +86,8 @@ export default function Active({ state, dispatch } : {state: GameState, dispatch
   useEffect(() => { // getting reaction time
     if (selectionState === "wait") return
 
-    const timer = setInterval(() => {
-      reactionTimeRef.current += 1;
-    }, 1);
-    return () => clearInterval(timer);
+    reactionTimeRef.current = Date.now()
+
   }, [selectionState])
 
   return (

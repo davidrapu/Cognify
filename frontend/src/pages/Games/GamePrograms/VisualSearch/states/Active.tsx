@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import type { LeveledGameAction, LeveledGameState } from "@/hooks/useLeveledGameReducer";
 import { cn } from "@/lib/utils";
 import { generateSimilarColors } from "@/utils/generateSimilarColors";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type ActiveProps = {
   state: LeveledGameState;
@@ -42,17 +42,16 @@ const config = difficultyConfig[state.gameLevel];
   const [colorData, setColorData] = useState(generateNewColors());
   const [failed, setFailed] = useState<boolean>(false);
   const [streak , setStreak] = useState<number>(0);
-  const [reaction, setReaction] = useState<number>(0);
+  const reactonTimeRef = useRef<number>(0)
 
   const handleClick = (index: number) => {
     dispatch({ type: "increaseAttempts" });
-    const reactionTime = reaction;
+    const reactionTime = Date.now() - reactonTimeRef.current; // eslint-disable-line
     // set reaction time for current round and reset timer
     dispatch({
       type: "updateTotalTime",
       payload: { time: reactionTime, correct: index === colorData.oddIndex },
     });
-    setReaction(0);
     // Keep generating new colors until user clicks the wrong one
     if (index === colorData.oddIndex) {
       // Generate new colors for next round
@@ -60,7 +59,6 @@ const config = difficultyConfig[state.gameLevel];
       setFailed(false);
       // Increment score
       dispatch({ type: "increaseTotalCorrect" });
-      setReaction(0);
       setStreak((prev) => prev + 1);
       if (streak + 1 > state.highestConsecutiveCorrect) {
         dispatch({
@@ -92,10 +90,9 @@ const config = difficultyConfig[state.gameLevel];
   }, [failed, generateNewColors]);
 
   useEffect(() => { // Start reaction timer when new colors are generated
-    const timer = setInterval(() => {
-      setReaction((prev) => prev + 10);
-    }, 10)
-    return () => clearInterval(timer);
+
+    reactonTimeRef.current = Date.now();
+
   }, [colorData])
 
   return (

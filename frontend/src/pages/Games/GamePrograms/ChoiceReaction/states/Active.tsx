@@ -22,7 +22,7 @@ export default function Active({
     "left" | "wait" | "right"
   >("wait");
   const streakRef = useRef<number>(0);
-  const reactionTimeRef = useRef<number>(0);
+  const startTimeRef = useRef<number>(0);
   const gameStateRef = useRef<GameState>(state);
 
   useEffect(() => {
@@ -40,11 +40,11 @@ export default function Active({
       
 
       dispatch({ type: "increaseAttempts" });
-
+      const reaction = Date.now() - startTimeRef.current;
 
       if (displayedState === "left") {
 
-        dispatch({ type: "addTimeTaken", payload: { time: reactionTimeRef.current, correct: keyPressed === "Q" } })
+        dispatch({ type: "addTimeTaken", payload: { time: reaction, correct: keyPressed === "Q" } })
 
         if (keyPressed === "Q") {
           dispatch({ type: "incrementCorrect" });
@@ -57,7 +57,7 @@ export default function Active({
           streakRef.current = 0;
         }
       } else if (displayedState === "right") {
-        dispatch({ type: "addTimeTaken", payload: { time: reactionTimeRef.current, correct: keyPressed === "E" } })
+        dispatch({ type: "addTimeTaken", payload: { time: reaction, correct: keyPressed === "E" } })
         if (keyPressed === "E") {
           dispatch({ type: "incrementCorrect" });
           streakRef.current += 1;
@@ -69,11 +69,10 @@ export default function Active({
           streakRef.current = 0;
         }
       }else {
-        dispatch({ type: "addTimeTaken", payload: { time: reactionTimeRef.current, correct: false } });
+        dispatch({ type: "addTimeTaken", payload: { time: reaction, correct: false } });
         dispatch({ type: "incrementIncorrect" });
         streakRef.current = 0;
       }
-      reactionTimeRef.current = 0;
       setDisplayedState("wait");
     };
 
@@ -90,11 +89,9 @@ export default function Active({
   useEffect(() => { // reaction time
     if (displayedState === "wait") return
 
-    const timer = setInterval(() => {
-      reactionTimeRef.current += 1;
-    }, 1)
+    startTimeRef.current = Date.now();
 
-    return () => clearInterval(timer);
+
   }, [displayedState])
 
   useEffect(() => {

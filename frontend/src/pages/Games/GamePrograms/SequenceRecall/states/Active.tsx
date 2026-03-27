@@ -30,12 +30,14 @@ export default function Active({
   const [userInput, setUserInput] = useState<string | null>(null);
   const [streak, setStreak] = useState(0);
   const [lossStreak, setLossStreak] = useState(0);
-  const [reaction, setReaction] = useState<number>(0); // measured in ms
+  const reactionTimeRef = useRef<number>(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const submit = () => {
-    const correct: boolean =
-      userInput === numberList.join("").split(" ").join("");
+    const correct: boolean = userInput === numberList.join("").split(" ").join("");
+
+    const reaction = Date.now() - reactionTimeRef.current; //eslint-disable-line
+
     dispatch({ type: "increaseAttempts" });
     dispatch({ type: "addTimeTaken", payload: { time: reaction, correct } });
     if (correct) {
@@ -106,11 +108,8 @@ export default function Active({
   useEffect(() => {
     if (displayedNumberIndex < numberList.length) return; // only start the timer once the full sequence has been displayed
 
-    const timer = setInterval(() => {
-      setReaction((prev) => prev + 10);
-    }, 10);
+    reactionTimeRef.current = Date.now();
 
-    return () => clearInterval(timer);
   });
 
   return (
