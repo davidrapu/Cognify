@@ -1,7 +1,10 @@
 import GameLayout from "@/components/GameLayout";
 import HeartDisplay from "@/components/HeartDisplay";
 import { Button } from "@/components/ui/button";
-import type { LeveledGameAction, LeveledGameState } from "@/hooks/useLeveledGameReducer";
+import type {
+  LeveledGameAction,
+  LeveledGameState,
+} from "@/hooks/useLeveledGameReducer";
 import { cn } from "@/lib/utils";
 import { generateSimilarColors } from "@/utils/generateSimilarColors";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -30,7 +33,7 @@ const difficultyConfig = {
 };
 
 export default function Active({ state, dispatch }: ActiveProps) {
-const config = difficultyConfig[state.gameLevel];
+  const config = difficultyConfig[state.gameLevel];
 
   const generateNewColors = useCallback(() => {
     return generateSimilarColors({
@@ -41,8 +44,8 @@ const config = difficultyConfig[state.gameLevel];
 
   const [colorData, setColorData] = useState(generateNewColors());
   const [failed, setFailed] = useState<boolean>(false);
-  const [streak , setStreak] = useState<number>(0);
-  const reactonTimeRef = useRef<number>(0)
+  const [streak, setStreak] = useState<number>(0);
+  const reactonTimeRef = useRef<number>(0);
 
   const handleClick = (index: number) => {
     dispatch({ type: "increaseAttempts" });
@@ -78,10 +81,11 @@ const config = difficultyConfig[state.gameLevel];
         return () => clearTimeout(timer);
       }
     }
-  };;
+  };
 
-  useEffect(() => { // Reset failed state and generate new colors after a short delay when user clicks the wrong one
-    if (!failed) return 
+  useEffect(() => {
+    // Reset failed state and generate new colors after a short delay when user clicks the wrong one
+    if (!failed) return;
     const timeout = setTimeout(() => {
       setFailed(false);
       setColorData(generateNewColors());
@@ -89,11 +93,11 @@ const config = difficultyConfig[state.gameLevel];
     return () => clearTimeout(timeout);
   }, [failed, generateNewColors]);
 
-  useEffect(() => { // Start reaction timer when new colors are generated
+  useEffect(() => {
+    // Start reaction timer when new colors are generated
 
     reactonTimeRef.current = Date.now();
-
-  }, [colorData])
+  }, [colorData]);
 
   return (
     <GameLayout>
@@ -102,19 +106,36 @@ const config = difficultyConfig[state.gameLevel];
           {colorData.colors.map((color, i) => (
             <Button
               key={i}
-              className={cn("size-10 rounded-md transition-transform active:scale-95")}
-              style={!failed ? { backgroundColor: color } : i === colorData.oddIndex ? { border: "2px solid var(--destructive)", scale: "0.95", backgroundColor: color } : { backgroundColor: color }}
+              className={cn(
+                "size-10 rounded-md transition-transform active:scale-95",
+              )}
+              style={
+                !failed
+                  ? { backgroundColor: color }
+                  : i === colorData.oddIndex
+                    ? {
+                        border: "2px solid var(--destructive)",
+                        scale: "0.95",
+                        backgroundColor: color,
+                      }
+                    : { backgroundColor: color }
+              }
               onClick={() => handleClick(i)}
               aria-label={`Color box ${i + 1}`}
               disabled={failed}
             />
           ))}
         </div>
-      <div className="absolute top-5 right-5">
-        <div className="flex-1 flex justify-end ">
-                    <HeartDisplay numberOfFilledHearts={state.totalAllowedAttempts - state.totalIncorrect} innerColor="var(--destructive)" outerColor="var(--destructive)" length={state.totalAllowedAttempts} />
+        <div className="absolute top-5 right-5">
+            <HeartDisplay
+              numberOfFilledHearts={
+                state.totalAllowedAttempts - state.totalIncorrect
+              }
+              innerColor="var(--destructive)"
+              outerColor="var(--destructive)"
+              length={state.totalAllowedAttempts}
+            />
         </div>
-      </div>
       </div>
     </GameLayout>
   );

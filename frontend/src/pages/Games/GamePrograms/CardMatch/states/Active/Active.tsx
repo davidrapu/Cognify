@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ObjectCard from "./Card";
 import {
   type LeveledGameAction,
   type LeveledGameState,
 } from "@/hooks/useLeveledGameReducer";
-import { generateCards } from "@/utils/generateCards";
+import { generateCards, type CardType } from "@/utils/generateCards";
 import { cn } from "@/lib/utils";
 import { AnimatedButton } from "@/components/Button";
 import { ChevronRight } from "@/components/icons";
@@ -17,6 +17,17 @@ type CardMatchProps = {
   cols: number;
 };
 
+    const verifyMatch = (cards: CardType[], card1Id: number, card2Id: number) => {
+      const [firstCard, secondCard] = [
+        cards.find((card) => card.id === card1Id),
+        cards.find((card) => card.id === card2Id),
+      ];
+
+      if (!firstCard || !secondCard) return false;
+
+      return firstCard.value === secondCard.value;
+    };
+
 export default function Active({
   dispatch,
   state,
@@ -27,9 +38,9 @@ export default function Active({
 
   const [choiceOne, setChoiceOne] = useState<number | null>(null);
   const [choiceTwo, setChoiceTwo] = useState<number | null>(null);
-  const [matchTime, setMatchTime] = useState<number>(0);
   const [allFlipped, setAllFlipped] = useState(true);
   const [streak, setStreak] = useState<number>(0);
+  const reactionTimeRef = useRef<number>(0)
 
   const handleChoice = (id: number) => {
     if (choiceTwo !== null) return; // Prevent selecting more than two cards
@@ -49,39 +60,26 @@ export default function Active({
   // and stop it when second card is flipped, regardless of whether it's a match or not.
   // This way, we can accurately measure the time taken for each attempt, regardless of whether it was successful or not.
   useEffect(() => {
-    const verifyMatch = (card1Id: number, card2Id: number) => {
-      const [firstCard, secondCard] = [
-        cards.find((card) => card.id === card1Id),
-        cards.find((card) => card.id === card2Id),
-      ];
-
-      if (!firstCard || !secondCard) return false;
-
-      return firstCard.value === secondCard.value;
-    };
 
 
     if (choiceOne === null) return;
 
 
     if (choiceTwo !== null) {
+      const reaction = Date.now() - reactionTimeRef.current;
       dispatch({
         type: "updateTotalTime",
         payload: {
-          time: matchTime,
-          correct: verifyMatch(choiceOne, choiceTwo),
+          time: reaction,
+          correct: verifyMatch(cards, choiceOne, choiceTwo),
         },
       });
-      setMatchTime(0); // eslint-disable-line
       return; // don't start timer if choiceTwo is already set
     }
 
-    const timer = setInterval(() => {
-      setMatchTime((prev) => prev + 10);
-    }, 10);
-
-    return () => clearInterval(timer); // this correctly stops the timer
-  }, [choiceOne, choiceTwo, dispatch, matchTime, cards]);
+    reactionTimeRef.current = Date.now(); // start timer when first card is flipped
+    
+  }, [choiceOne, choiceTwo, dispatch, cards]);
 
   useEffect(() => {
     const timer = setTimeout(() => {

@@ -1,5 +1,5 @@
 import GameLayout from "@/components/GameLayout";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Clock8 } from "@/components/icons";
 
 const getWaitTime = () => Math.floor(Math.random() * 5000) + 2000;
@@ -7,7 +7,7 @@ export default function Active() {
   const [boxState, setBoxState] = useState<
     "waiting" | "listening" | "clicked" | "earlyClicked"
   >("waiting");
-  const [waitTime, setWaitTime] = useState(getWaitTime);
+  const waitTime = useRef<number>(getWaitTime());
   const [reactionTime, setReactionTime] = useState<number>(0);
 
 
@@ -15,15 +15,11 @@ export default function Active() {
     if (boxState === "waiting") {
       const timer = setTimeout(() => {
         setBoxState("listening");
-      }, waitTime);
+      }, waitTime.current);
 
       return () => clearTimeout(timer);
     }else if (boxState === "listening") {
-        const userTimer = setInterval(() => {
-            setReactionTime(prev => prev + 10);
-        }, 10);
-
-        return () => clearInterval(userTimer);
+      setReactionTime(Date.now()); // eslint-disable-line
     }
   }, [boxState, waitTime]);
 
@@ -32,10 +28,10 @@ export default function Active() {
       setBoxState("earlyClicked");
     }else if (boxState === "listening") {
         setBoxState("clicked");
+        setReactionTime(prev => Date.now() - prev);
     } else {
         setBoxState("waiting");
-        setWaitTime(getWaitTime());
-        setReactionTime(0);
+        waitTime.current = getWaitTime();
     }
   };
 
