@@ -13,8 +13,8 @@ export function useApiFetch() {
         ...options.headers,
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
-        credentials: "include",
       },
+      credentials: "include",
     });
 
     // access token expired
@@ -29,8 +29,8 @@ export function useApiFetch() {
             ...options.headers,
             "Content-Type": "application/json",
             Authorization: `Bearer ${newToken}`,
-            credentials: "include",
           },
+          credentials: "include",
         });
       } else {
         // refresh failed — redirect to login
