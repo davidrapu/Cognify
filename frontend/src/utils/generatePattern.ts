@@ -10,8 +10,9 @@ function generateColorPatternAdvanced(length = 6) {
 
   const COLORS = ["red", "green", "yellow", "orange", "purple", "pink"];
 
-    const type = Math.floor(Math.random() * 3);
-//   const type = 2;
+  const type = Math.floor(Math.random() * 6);
+  // console.log(`Generated pattern type: ${type}`); // For debugging: logs the generated pattern type
+  // const type = 5;
 
   const getRandomColor = () =>
     COLORS[Math.floor(Math.random() * COLORS.length)];
@@ -53,6 +54,70 @@ function generateColorPatternAdvanced(length = 6) {
 
     for (let i = 0; i < length; i++) {
       pattern.push(i % 4 < 2 ? a : b);
+    }
+  }
+
+  if (type === 3) {
+    const a = getRandomColor();
+    let b;
+    do {
+      b = getRandomColor();
+    } while (b === a);
+
+    pattern = [];
+    let count = 1;
+
+    while (pattern.length < length) {
+      for (let i = 0; i < count && pattern.length < length; i++) {
+        pattern.push(a);
+      }
+      for (let i = 0; i < count && pattern.length < length; i++) {
+        pattern.push(b);
+      }
+      count++;
+    }
+  }
+
+  if (type === 4) {
+    const colors: string[] = [];
+    while (colors.length < 3) {
+      const c = getRandomColor();
+      if (!colors.includes(c)) colors.push(c);
+    }
+
+    pattern = [];
+
+    for (let i = 0; i < length; i++) {
+      const cycleIndex = Math.floor(i / 3);
+      const rotated = [
+        colors[(0 + cycleIndex) % 3],
+        colors[(1 + cycleIndex) % 3],
+        colors[(2 + cycleIndex) % 3],
+      ];
+
+      pattern.push(rotated[i % 3]);
+    }
+  }
+
+  if (type === 5) {
+    const a = getRandomColor();
+
+    const others: string[] = [];
+    while (others.length < 2) {
+      const c = getRandomColor();
+      if (c !== a && !others.includes(c)) others.push(c);
+    }
+
+    const [b, c] = others;
+
+    pattern = [];
+
+    for (let i = 0; i < length; i++) {
+      if (i % 2 === 0) {
+        pattern.push(a); // constant anchor
+      } else {
+        pattern.push(Math.floor(i / 2) % 2 === 0 ? b : c);
+      }
     }
   }
 
