@@ -5,6 +5,11 @@ const {
   verifyRefreshToken,
 } = require("../services/auth.service");
 import type { HttpError } from "../types/errorsType";
+const { configDotenv } = require("dotenv");
+if (process.env.ENV !== "production") {
+  configDotenv({ path: "../../../.env" });
+}
+
 
 // Store all refresh tokens in a db when db integrated
 
@@ -26,9 +31,10 @@ async function login(req: Request, res: Response, next: NextFunction) {
     );
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: process.env.ENV === "production",
+      sameSite: process.env.ENV === "production" ? "strict" : "lax",
       maxAge: 7 * 24 * 3600000, // 7 days
+      path: "/"
     });
     res.status(200).json({ message: "Login successful", user, accessToken });
   } catch (error: any) {
@@ -52,9 +58,10 @@ async function register(req: Request, res: Response, next: NextFunction) {
     );
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: process.env.ENV === "production",
+      sameSite: process.env.ENV === "production" ? "strict" : "lax",
       maxAge: 7 * 24 * 3600000, // 7 days
+      path: "/"
     });
     return res
       .status(201)
@@ -77,8 +84,9 @@ async function logout(req: Request, res: Response, next: NextFunction) {
     // clear refresh token cookie
     res.clearCookie("refreshToken", {
       httpOnly: true,
-      secure: true,
-      sameSite: "strict",
+      secure: process.env.ENV === "production",
+      sameSite: process.env.ENV === "production" ? "strict" : "lax",
+      path: "/"
     });
 
     res.status(200).json({ message: "Logout successful" });
@@ -89,6 +97,7 @@ async function logout(req: Request, res: Response, next: NextFunction) {
 
 async function refreshToken(req: Request, res: Response, next: NextFunction) {
   try {
+    console.log(req.cookies.refreshToken)
     const {accessToken, user} = await verifyRefreshToken(req.cookies.refreshToken);
     res.status(200).json({ message: "Access token refreshed", accessToken, user });
   } catch (error) {
