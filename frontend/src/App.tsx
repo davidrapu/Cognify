@@ -10,7 +10,9 @@ import PageLoader from "./components/PageLoader";
 const Login = lazy(() => import("./pages/Login/Login"));
 const Signup = lazy(() => import("./pages/Signup/Signup"));
 const Games = lazy(() => import("./pages/Games/Games"));
-const GamesHome = lazy(() => import("./pages/Games/GamesHomepage/GamesHome"));
+const GamesHome = lazy(
+  () => import("./pages/Games/GamesHomepage/GamesHome")
+);
 const CardMatchGame = lazy(
   () => import("./pages/Games/GamePrograms/CardMatch/CardMatchGame"),
 );
