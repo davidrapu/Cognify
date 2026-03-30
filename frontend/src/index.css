@@ -7,6 +7,8 @@
 
 @theme inline {
   --font-family-heading : var(--headings);
+  --font-family-manrope : var(--manrope);
+  --font-family-pub-sans : var(--pub-sans);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -64,6 +66,9 @@
   font-style: normal;
   
   --headings: "Bungee", sans-serif;
+  --manrope : "Manrope", sans-serif;
+  --pub-sans: "Public Sans", sans-serif;
+
   /* Light theme — clean warm slate with teal accents */
   --background: oklch(0.98 0.004 250);
   --foreground: oklch(0.15 0.015 255);
@@ -71,7 +76,7 @@
   --card-foreground: oklch(0.15 0.015 255);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.15 0.015 255);
-  --primary: oklch(0.55 0.16 215);
+  --primary: #006778;
   --primary-foreground: oklch(0.98 0.004 250);
   --secondary: oklch(0.94 0.01 250);
   --secondary-foreground: oklch(0.20 0.015 255);
