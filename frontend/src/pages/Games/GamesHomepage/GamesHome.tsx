@@ -25,9 +25,9 @@ const games = [
     category: "Reaction Time",
     icon: Zap,
     games: [
-      { name: "Simple Reaction Time", path: "simple-reaction-time" },
+      // { name: "Simple Reaction Time", path: "simple-reaction-time" },
       { name: "Go/No-Go", path: "go-no-go" },
-      { name: "Complex Reaction Time", path: "complex-reaction-time" },
+      { name: "Choice Reaction Time", path: "choice-reaction-time" },
     ],
   },
   {

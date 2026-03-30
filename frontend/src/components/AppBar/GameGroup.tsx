@@ -7,7 +7,6 @@ import {
   ListOrdered,
   Search,
   Palette,
-  Zap,
   Play,
   GitBranch,
   Puzzle,
@@ -41,11 +40,11 @@ const games = [
     icon: Palette,
     location: "/games/stroop-test",
   },
-  {
-    name: "Reaction Time Test",
-    icon: Zap,
-    location: "/games/reaction-time-test",
-  },
+  // {
+  //   name: "Reaction Time Test",
+  //   icon: Zap,
+  //   location: "/games/reaction-time-test",
+  // },
   {
     name: "Go / No Go Task",
     icon: Play,
