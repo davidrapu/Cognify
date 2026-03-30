@@ -1,70 +1,43 @@
+import { Badge } from "@/components/ui/badge";
+import GameRowSection from "./GameRowSection";
+import gamesInfo from "@/data/gamesinfo.json";
 
-import { Brain, Eye, Zap, Puzzle } from "@/components/icons";
-import image from "@/assets/images/Pop-up-rafiki.svg";
-import GameCardRow from "./GameRow";
-
-const games = [
-  {
-    category: "Memory",
-    icon: Brain,
-    games: [
-      { name: "Card Match", path: "card-match" },
-      { name: "Digital Span", path: "digital-span" },
-      { name: "Sequence Recall", path: "sequence-recall" },
-    ],
-  },
-  {
-    category: "Attention",
-    icon: Eye,
-    games: [
-      { name: "Visual Search", path: "visual-search" },
-      { name: "Stroop Test", path: "stroop-test" },
-    ],
-  },
-  {
-    category: "Reaction Time",
-    icon: Zap,
-    games: [
-      // { name: "Simple Reaction Time", path: "simple-reaction-time" },
-      { name: "Go/No-Go", path: "go-no-go" },
-      { name: "Choice Reaction Time", path: "choice-reaction-time" },
-    ],
-  },
-  {
-    category: "Problem Solving",
-    icon: Puzzle,
-    games: [
-      { name: "Pattern Puzzle", path: "pattern-puzzle" },
-      { name: "Arithmetic Puzzle", path: "arithmetic-puzzle" },
-    ],
-  },
-];
-
-export default function GamesHome() {
-  // const navigate = useNavigate()
+export default function GamesHome2() {
   return (
-    <div className="flex-1 flex flex-col h-full px-5 py-2 gap-y-5">
-      <div className="bg-primary/70 w-full rounded-2xl flex justify-center p-3">
-
-        <div className="flex gap-y-2 max-w-2xl flex-col justify-center text-center">
-          <h1 className="text-6xl font-bold tracking-wide text-primary-foreground font-family-heading">Train Your Mind</h1>
-
-          <p className="text-accent text-sm sm:text-base font-medium">
-            Strengthen memory, sharpen focus, improve reaction speed, and
-            enhance problem-solving through structured cognitive challenges.
-          </p>
-        </div>
-
-        <img
-          src={image}
-          alt="Deep Work Illustration"
-          className="max-w-sm rounded-2xl"
+    <main className="mx-auto max-w-6xl min-h-full pt-2 space-y-20">
+      <div>
+        <Badge
+          variant="default"
+          className=" text-xs uppercase bg-primary/10 text-primary py-1 tracking-widest"
+        >
+          COGNITIVE ASSESSMENT MODULE
+        </Badge>
+        <h1 className="text-4xl font-family-manrope font-extrabold my-3 tracking-wide">
+          Cognitive Excercise Library
+        </h1>
+        <p className=" text-[17px] max-w-2xl text-muted-foreground leading-relaxed">
+          Scientifically validated neuro-exercises designed to map, measure, and
+          enhance specific cognitive domains through immersive digital therapy.
+        </p>
+      </div>
+      <div className="space-y-10">
+        <GameRowSection
+          games={gamesInfo.filter((game) => game.domain === "Memory")}
+          domain="Memory"
+        />
+        <GameRowSection
+          games={gamesInfo.filter((game) => game.domain === "Attention")}
+          domain="Attention"
+        />
+        <GameRowSection
+          games={gamesInfo.filter((game) => game.domain === "Reaction")}
+          domain="Reaction"
+        />
+        <GameRowSection
+          games={gamesInfo.filter((game) => game.domain === "Problem Solving")}
+          domain="Problem Solving"
         />
       </div>
-
-      {games.map((gameCategory, index) => (
-        <GameCardRow key={index} rowDataObject={gameCategory} />
-      ))}
-    </div>
+    </main>
   );
 }
