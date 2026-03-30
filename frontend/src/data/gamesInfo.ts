@@ -1,4 +1,4 @@
-[
+export const gamesInfo = [
     {
         "title": "Card Match",
         "description": "A game designed to enhance working memory and attention by challenging players to remember and match pairs of cards.",

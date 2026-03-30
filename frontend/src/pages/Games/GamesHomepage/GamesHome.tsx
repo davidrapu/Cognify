@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import GameRowSection from "./GameRowSection";
-import gamesInfo from "@/data/gamesinfo.json";
+import {gamesInfo} from "@/data/gamesInfo";
 
 type GameInfo = {
   title: string;
