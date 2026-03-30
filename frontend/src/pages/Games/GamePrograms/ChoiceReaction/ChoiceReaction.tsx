@@ -101,7 +101,7 @@ export default function ChoiceReaction() {
       {state.gameState === "home" && (
         <GameHomePage
           averageAccuracy={state.averageAccuracy}
-          averageScore={state.averageAccuracy}
+          averageScore={state.averageScore}
           description="Test your reaction speed and decision-making with Choice Reaction Time. Respond to different signals with the correct input - how quickly and accurately can you react?"
           highScore={state.highScore}
           history={history}
