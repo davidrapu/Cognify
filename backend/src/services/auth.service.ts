@@ -38,7 +38,7 @@ async function userRegister(
 async function userLogin(email: string, password: string) {
   // Find user by email
   const user = await getUserByEmail(email);
-  console.log("User found:", user);
+  // console.log("User found:", user);
 
   if (user === undefined) {
     const err: HttpError = new Error("Invalid email");
