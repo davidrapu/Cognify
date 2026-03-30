@@ -17,7 +17,7 @@ export default function Games() {
             <SidebarTrigger className="m-1 text-foreground" />
             <UserAvatar size={9} />
           </div>
-          <div className="flex-1 overflow-y-hidden">
+          <div className="flex-1">
             <Outlet />
           </div>
         </SidebarInset>
