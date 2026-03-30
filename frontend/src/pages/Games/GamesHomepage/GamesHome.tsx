@@ -2,6 +2,14 @@ import { Badge } from "@/components/ui/badge";
 import GameRowSection from "./GameRowSection";
 import gamesInfo from "@/data/gamesinfo.json";
 
+type GameInfo = {
+  title: string;
+  description: string;
+  domain: string;
+  imgLink: string;
+  gameLocation: string;
+};
+
 export default function GamesHome2() {
   return (
     <main className="mx-auto max-w-6xl min-h-full pt-2 space-y-20">
@@ -22,19 +30,19 @@ export default function GamesHome2() {
       </div>
       <div className="space-y-10">
         <GameRowSection
-          games={gamesInfo.filter((game) => game.domain === "Memory")}
+          games={gamesInfo.filter((game: GameInfo) => game.domain === "Memory")}
           domain="Memory"
         />
         <GameRowSection
-          games={gamesInfo.filter((game) => game.domain === "Attention")}
+          games={gamesInfo.filter((game: GameInfo) => game.domain === "Attention")}
           domain="Attention"
         />
         <GameRowSection
-          games={gamesInfo.filter((game) => game.domain === "Reaction")}
+          games={gamesInfo.filter((game: GameInfo) => game.domain === "Reaction")}
           domain="Reaction"
         />
         <GameRowSection
-          games={gamesInfo.filter((game) => game.domain === "Problem Solving")}
+          games={gamesInfo.filter((game: GameInfo) => game.domain === "Problem Solving")}
           domain="Problem Solving"
         />
       </div>
