@@ -30,6 +30,9 @@ model GameSession {
   gameName        GameName
   correct         Int
   incorrect       Int
+  accuracy        Float
+  gameScore      Float
+  reactionScore   Float
   reactionTimeAvg Float
   reactionTimeStd Float
   duration        Float
@@ -67,7 +70,6 @@ enum GameName {
   SEQUENCE_RECALL
   VISUAL_SEARCH
   STROOP_TEST
-  REACTION_TIME
   GO_NO_GO
   CHOICE_REACTION_TIME
   PATTERN_RECOGNITION
