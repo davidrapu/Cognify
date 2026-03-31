@@ -44,7 +44,6 @@ async function addSession(req: Request, res: Response, next: NextFunction) {
  */
 async function getSessions(req: Request, res: Response, next: NextFunction) {
   try {
-
     const { sessions, stats } = await getSessionsData(req.user);
     res.status(200).json({ message: "Sessions retrieved successfully", data: { sessions, stats } });
   } catch (error) {
@@ -82,7 +81,7 @@ async function getSessionsByGameName(req: Request, res: Response, next: NextFunc
 async function getSession(req: Request, res: Response, next: NextFunction) {
   // Call the service to get all the sessions based of the user ID and session ID from the request parameters
   try {
-    const userId = req.user.id;
+    const userId = req.user;
     const sessionId = parseInt(req.params?.id as string);
     const session = await getSessionDataById(userId, sessionId);
     res
