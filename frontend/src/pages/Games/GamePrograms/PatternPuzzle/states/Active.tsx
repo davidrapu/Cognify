@@ -15,7 +15,7 @@ export default function Active({
   dispatch: React.Dispatch<GameAction>;
 }) {
   const [userInput, setUserInput] = useState<string | null>(null);
-  const [difficulty, setDifficulty] = useState<number>(6); // 6 - 20
+  const [difficulty, setDifficulty] = useState<number>(12); // 6 - 12 decreasing the number will increase the difficulty, as there will be more colors in the pattern and more possible answers for the missing color
   const [patternData, SetPatternData] = useState(() =>
     generatePatternQuestion(difficulty)
   );
@@ -37,7 +37,7 @@ export default function Active({
       setStreak((prev) => prev + 1);
       console.log(`Current streak: ${streak + 1}, Difficulty: ${difficulty}`); // For debugging: logs the current streak and difficulty
       if ((streak + 1) % 3 === 0) {
-        setDifficulty((prev) => Math.min(prev + 1, 20)); // Increase difficulty, max 20
+        setDifficulty((prev) => Math.max(prev - 1, 6)); // Increase difficulty, min 6
       }
       if (streak + 1 > state.highestConsecutiveCorrect)
         dispatch({ type: "setHighestConsecutiveCorrect", payload: streak + 1 });
