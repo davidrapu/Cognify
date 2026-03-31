@@ -87,7 +87,7 @@ export default function Active({
               <div
                 key={index}
                 className={
-                  "w-20 h-30 rounded-2xl shadow-lg/20 bg-muted flex items-center justify-center text-2xl font-semibold text-muted-foreground" 
+                  "w-20 h-30 px-15 rounded-2xl shadow-lg/20 bg-muted flex flex-wrap items-center justify-center text-2xl font-semibold text-muted-foreground" 
                 }
               >
                 {number === -1 ? "?" : number}
