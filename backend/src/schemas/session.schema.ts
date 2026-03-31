@@ -7,13 +7,15 @@ const SessionSchema = z.object({
     "SEQUENCE_RECALL",
     "VISUAL_SEARCH",
     "STROOP_TEST",
-    "REACTION_TIME",
     "GO_NO_GO",
     "CHOICE_REACTION_TIME",
     "PATTERN_RECOGNITION",
     "ARITHMETIC_PATTERN_RECOGNITION"
   ]),
   correct: z.number(),
+  accuracy: z.number(), // normalised scores
+  gameScore: z.number(), // normalised scores
+  reactionScore: z.number(), // normalised scores
   incorrect: z.number(),
   reactionTimeAvg: z.number(),
   reactionTimeStd: z.number(),

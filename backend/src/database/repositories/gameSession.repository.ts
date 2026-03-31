@@ -5,12 +5,17 @@ const { prisma }: { prisma: PrismaClient } = require("../lib/prisma");
 
 // Create a new game session
 async function createGameSession(sessionData: SessionDataType, userId: string) {
+  // console.log(sessionData)
+      
   return prisma.gameSession.create({
     data: {
       userId: userId,
       gameName: sessionData.gameName,
       correct: sessionData.correct,
       incorrect: sessionData.incorrect,
+      accuracy: sessionData.accuracy,
+      gameScore: sessionData.gameScore,
+      reactionScore: sessionData.reactionScore,
       reactionTimeAvg: sessionData.reactionTimeAvg,
       reactionTimeStd: sessionData.reactionTimeStd,
       duration: sessionData.duration,

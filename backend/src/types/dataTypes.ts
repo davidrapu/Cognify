@@ -8,6 +8,9 @@ export interface SessionDataType {
   gameName: GameName;
   correct: number;
   incorrect: number;
+  accuracy: number;
+  gameScore: number;
+  reactionScore: number;
   reactionTimeAvg: number;
   reactionTimeStd: number;
   duration: number;
