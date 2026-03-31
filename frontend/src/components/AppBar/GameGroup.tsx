@@ -53,7 +53,7 @@ const games = [
   {
     name: "Choice Reaction Time",
     icon: GitBranch,
-    location: "/games/choice-reaction-time-test",
+    location: "/games/choice-reaction-time",
   },
   {
     name: "Pattern Puzzle",
