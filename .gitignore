@@ -19,6 +19,7 @@ dist-ssr
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+__pychache__/
 .idea
 .DS_Store
 *.suo
@@ -34,3 +35,8 @@ dist-ssr
 
 # Design folder 
 design/
+
+# AI model
+cognify_model.pkl
+.ipynb_checkpoints/
+model_testing.ipynb
