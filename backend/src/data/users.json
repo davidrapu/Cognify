@@ -1,14 +1,6 @@
-[
-    {
-        "firstName": "Test",
-        "lastName": "User",
-        "email": "testuser@example.com",
-        "password": "hashedpassword123"
-    },
-    {
-        "firstName": "Admin",
-        "lastName": "User",
-        "email": "admin@example.com",
-        "password": "admin"
-    }
-]
+{
+  "firstName": "Admin",
+  "lastName": "User",
+  "email": "admin@example.com",
+  "password": "admin"
+}

@@ -1,16 +1,12 @@
 {
-    "sessions": [
-        {
-            "id": 1,
-            "userId": 2,
-            "gameName" : "game1",
-            "correct": 5,
-            "incorrect": 3,
-            "reactionTimeAvg": 1.5,
-            "reactionTimeStd": 0.5,
-            "duration": 60,
-            "domain": "memory",
-            "date": "2024-06-01T12:00:00Z"
-        }
-        ]
+  "gameName": "DIGITAL_SPAN",
+  "correct": 9,
+  "incorrect": 3,
+  "totalTime": [
+    { "time": 1200, "correct": true },
+    { "time": 1500, "correct": true },
+    { "time": 1800, "correct": false },
+    { "time": 1100, "correct": true }
+  ],
+  "domain": "MEMORY"
 }
