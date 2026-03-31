@@ -57,7 +57,7 @@ export default function GameRowSection({
                   </div>
                   <Button
                     onClick={() => navigate(game.gameLocation)}
-                    className="rounded-full bg-secondary text-secondary-foreground tracking-wide group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300 ease-in"
+                    className="rounded-full bg-secondary text-secondary-foreground tracking-wide group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300 cursor-pointer "
                   >
                     View Game
                   </Button>
