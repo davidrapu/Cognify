@@ -2,6 +2,8 @@ import { HttpError } from "../types/errorsType";
 import type dataTypes = require("../types/dataTypes");
 import type errorsType = require("../types/errorsType");
 import { Domain, GameName } from "../database/generated/prisma/enums";
+import { getReactionScore } from "../utils/getReactionScore";
+
 const {
   createGameSession,
   getGameSessions,
@@ -38,6 +40,7 @@ async function getSessionsData(userId: string) {
     stats: { ...statistics, averageScore: Math.round(averageScore * 10) / 10 },
   };
 }
+
 async function getSessionsDataByGameName(userId: string, gameName: GameName) {
   const [sessions, statistics] = await Promise.all([
     // If a game name is provided, get the sessions and statistics for that game type, otherwise get all sessions and statistics for the user
@@ -96,24 +99,46 @@ async function addNewSession(
   userId: string,
 ) {
 
-  if (!gameName || correct === undefined || incorrect === undefined || !totalTime || !domain) {
+  if (
+    !gameName ||
+    correct === undefined ||
+    incorrect === undefined ||
+    !totalTime ||
+    !domain
+  ) {
     const err: HttpError = new Error("Missing required session data");
     err.status = 400;
     throw err;
   }
 
   const totalDuration = totalTime.reduce((sum, item) => sum + item.time, 0);
+  const avgReactionTime =
+    totalTime.length > 0 ? totalDuration / totalTime.length : 0
+    ;
+  const accuracy = correct / (correct + incorrect);
+  const reactionScore = Math.max(
+    0,
+    Math.min(1, getReactionScore(gameName, avgReactionTime)),
+  );
+  const gameScore = Math.max(
+    0,
+    Math.min(1, accuracy * 0.6 + reactionScore * 0.4),
+  );
 
   const data: dataTypes.SessionDataType = {
     gameName,
     correct,
     incorrect,
-    reactionTimeAvg: totalDuration / totalTime.length,
+    accuracy,
+    gameScore,
+    reactionScore,
+    reactionTimeAvg: avgReactionTime,
     reactionTimeStd: standardDeviation(totalTime.map((item) => item.time)),
     duration: totalDuration,
     domain,
   };
   const validationResult = SessionSchema.safeParse(data);
+  
 
   if (!validationResult.success) {
     const err: HttpError = new Error("Invalid session data");
