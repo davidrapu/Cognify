@@ -36,6 +36,6 @@ app.use("/sessions", authentication, sessionsRouter);
 app.use(notFound);
 app.use(errorHandler);
 
-app.listen(5000, () => {
-  console.log("Server is running on port 5000");
+app.listen(5001, () => {
+  console.log("Server is running on port 5001");
 });
