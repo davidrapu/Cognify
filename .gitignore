@@ -40,3 +40,4 @@ design/
 cognify_model.pkl
 .ipynb_checkpoints/
 model_testing.ipynb
+*.pyc
