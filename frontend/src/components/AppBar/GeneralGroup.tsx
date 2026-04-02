@@ -1,4 +1,6 @@
-import { CircleGauge, Home, Gamepad2, Info, Mail } from '@/components/icons';
+import { CircleGauge, Home, Gamepad2, 
+  // Info, Mail
+} from '@/components/icons';
 import {
   SidebarGroup,
   SidebarGroupContent,
