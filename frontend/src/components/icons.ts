@@ -1,6 +1,7 @@
 export {
   Binary,
   Brain,
+  BrainCog,
   Eye,
   Star,
   LayoutGrid,
@@ -30,5 +31,7 @@ export {
   ChevronsUpDown,
   ChevronRight,
   LogOut,
-  User
+  User,
+  TrendingDown,
+  TrendingUp,
 } from "lucide-react";
