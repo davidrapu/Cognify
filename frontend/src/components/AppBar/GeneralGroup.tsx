@@ -39,7 +39,7 @@ export default function GeneralGroup() {
               </SidebarMenuButton>
             </Link>
           </SidebarMenuItem>
-          <SidebarMenuItem>
+          {/* <SidebarMenuItem>
             <Link to="/about">
               <SidebarMenuButton tooltip="About" className="cursor-pointer">
                 <Info className="text-sidebar-primary" />
@@ -54,7 +54,7 @@ export default function GeneralGroup() {
                 <span className="tracking-widest">Contact Us</span>
               </SidebarMenuButton>
             </Link>
-          </SidebarMenuItem>
+          </SidebarMenuItem> */}
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>

@@ -68,7 +68,7 @@ export default function Nav() {
                 </NavLink>
               </NavigationMenuItem>
 
-              <NavigationMenuItem>
+              {/* <NavigationMenuItem>
                 <NavLink
                   to="/about"
                   className={({ isActive }) =>
@@ -77,7 +77,7 @@ export default function Nav() {
                 >
                   About
                 </NavLink>
-              </NavigationMenuItem>
+              </NavigationMenuItem> */}
             </div>
           </div>
         </NavigationMenuList>
