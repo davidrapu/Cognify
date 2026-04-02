@@ -16,3 +16,16 @@ export interface SessionDataType {
   duration: number;
   domain: Domain;
 }
+
+export interface PredictionDataType {
+  reactionScore: number;
+  gameScore: number;
+  accuracy: number;
+  stroopErrorRate: number;
+  stroopAccuracy: number;
+  goNoGoAccuracy: number;
+  goNoGoErrorRate: number;
+  memoryScore: number;
+  attentionScore: number;
+  problemSolvingScore: number;
+}
