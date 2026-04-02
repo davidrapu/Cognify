@@ -8,7 +8,7 @@ type progressPropType = {
   className?: string
 }
 
-export default function Progress({value, max, bg, color, className}: progressPropType) {
+export default function CustomProgress({value, max, bg, color, className}: progressPropType) {
   return (
     <div
       role="progressbar"
