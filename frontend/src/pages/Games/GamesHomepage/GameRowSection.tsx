@@ -27,17 +27,17 @@ export default function GameRowSection({
   return (
     <section>
       <Carousel className="space-y-5">
-        <div className="flex gap-x-3">
-          <div className="w-1.5 h-8 bg-primary rounded-full"></div>
-          <h3 className="font-family-manrope font-bold text-primary tracking-wide text-2xl">
+        <div className="flex gap-x-3 items-center">
+          <div className="w-1.5 h-7 bg-primary rounded-full"></div>
+          <h3 className="font-family-manrope font-bold text-primary tracking-wide text-xl">
             {domain} Domain
           </h3>
         </div>
         <CarouselContent className="-ml-2 py-3">
           {games.map((game) => (
             <CarouselItem className="basis-auto" key={game.title}>
-              <Card className="group w-70 h-full pb-7 pt-0 gap-4 overflow-clip hover:border-primary/20 hover:drop-shadow-lg transition-transform duration-300">
-                <div className="relative max-h-40 flex contain-content items-center justify-center bg-primary">
+              <Card className="group w-65 h-full pb-7 pt-0 gap-4 overflow-clip hover:border-primary/20 hover:drop-shadow-lg transition-transform duration-300">
+                <div className="relative max-h-35 flex contain-content items-center justify-center bg-primary">
                   <img
                     className=" object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
                     src={game.imgLink}
@@ -48,7 +48,7 @@ export default function GameRowSection({
                 </div>
                 <div className="flex-2 px-6 flex flex-col justify-between">
                   <div className="space-y-2">
-                    <h4 className="text-xl font-bold tracking-wide font-family-manrope">
+                    <h4 className="text-lg font-bold tracking-wide font-family-manrope">
                       {game.title}
                     </h4>
                     <p className="text-sm mb-3 leading-normal tracking-[0.005em] text-muted-foreground">
