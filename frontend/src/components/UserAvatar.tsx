@@ -11,7 +11,7 @@ export default function UserAvatar({size = 8}: {size?: number}) {
         src={user.image}
         alt="user image"
       />
-      <AvatarFallback className="bg-sidebar-primary text-sidebar-primary-foreground cursor-default">
+      <AvatarFallback className="bg-sidebar-primary text-sidebar-primary-foreground cursor-default uppercase">
         {user.firstName?.charAt(0) + user.lastName?.charAt(0) || <User className="size-4" />}
       </AvatarFallback>
     </Avatar>
