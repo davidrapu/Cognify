@@ -11,7 +11,7 @@ const {
   getGameSessionsStatisticsByGameType,
   getGameSessionsByGameType,
 } = require("../database/repositories/gameSession.repository");
-const { SessionSchema } = require("../schemas/session.schema");
+const { SessionSchema } = require("../schemas/schemas");
 
 async function getSessionsData(userId: string) {
   const [sessions, statistics] = await Promise.all([
@@ -98,7 +98,6 @@ async function addNewSession(
   domain: Domain,
   userId: string,
 ) {
-
   if (
     !gameName ||
     correct === undefined ||
@@ -113,8 +112,7 @@ async function addNewSession(
 
   const totalDuration = totalTime.reduce((sum, item) => sum + item.time, 0);
   const avgReactionTime =
-    totalTime.length > 0 ? totalDuration / totalTime.length : 0
-    ;
+    totalTime.length > 0 ? totalDuration / totalTime.length : 0;
   const accuracy = correct / (correct + incorrect);
   const reactionScore = Math.max(
     0,
@@ -138,7 +136,6 @@ async function addNewSession(
     domain,
   };
   const validationResult = SessionSchema.safeParse(data);
-  
 
   if (!validationResult.success) {
     const err: HttpError = new Error("Invalid session data");

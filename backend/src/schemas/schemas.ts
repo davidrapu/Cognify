@@ -23,9 +23,8 @@ const SessionSchema = z.object({
   domain: z.enum([
     "MEMORY",
     "ATTENTION",
-    "PROCESSING_SPEED",
-    "EXECUTIVE_FUNCTIONS",
-    "REASONING",
+    "REACTION",
+    "PROBLEM_SOLVING"
   ]),
 });
 
