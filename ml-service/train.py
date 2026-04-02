@@ -15,7 +15,9 @@ high_count = len(df[df['risk_level'] == 'High'])
 
 
 # Splitting the data into labels and features
-X = df[['avg_reaction_time','reaction_time_std','memory_score','accuracy','stroop_error_rate','go_nogo_accuracy']].values
+X = df[['reaction_score', 'game_score', 'accuracy', 'stroop_error_rate',
+        'stroop_accuracy', 'go_nogo_accuracy', 'go_nogo_error_rate',
+        'memory_score', 'attention_score', 'problem_solving_score']].values
 y = df['risk_level']
 
 
