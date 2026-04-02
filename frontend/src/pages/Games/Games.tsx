@@ -9,7 +9,7 @@ import { Outlet } from "react-router";
 
 export default function Games() {
   return (
-    <div className="w-full min-h-screen overflow-x-hidden">
+    <div className="w-full min-h-screen">
       <SidebarProvider>
         <AppBar />
         <SidebarInset className="flex flex-col min-h-screen">
