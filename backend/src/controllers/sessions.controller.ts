@@ -29,7 +29,7 @@ async function addSession(req: Request, res: Response, next: NextFunction) {
       incorrect,
       totalTime,
       domain,
-      req.user
+      req.user,
     );
     res.status(201).json({ message: "Session created successfully" });
   } catch (error) {
@@ -45,7 +45,10 @@ async function addSession(req: Request, res: Response, next: NextFunction) {
 async function getSessions(req: Request, res: Response, next: NextFunction) {
   try {
     const { sessions, stats } = await getSessionsData(req.user);
-    res.status(200).json({ message: "Sessions retrieved successfully", data: { sessions, stats } });
+    res.status(200).json({
+      message: "Sessions retrieved successfully",
+      data: { sessions, stats },
+    });
   } catch (error) {
     next(error);
   }
@@ -55,7 +58,11 @@ async function getSessions(req: Request, res: Response, next: NextFunction) {
  * @desc Get all sessions from the data file
  * @route GET /sessions/:gameName
  */
-async function getSessionsByGameName(req: Request, res: Response, next: NextFunction) {
+async function getSessionsByGameName(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   try {
     const validGameNames = Object.values(GameName);
     let gameName = req.params.gameName as string;
@@ -67,8 +74,14 @@ async function getSessionsByGameName(req: Request, res: Response, next: NextFunc
       return next(err);
     }
 
-    const { sessions, stats } = await getSessionsDataByGameName(req.user, gameName.toUpperCase() as GameName);
-    res.status(200).json({ message: "Sessions retrieved successfully", data: { sessions, stats } });
+    const { sessions, stats } = await getSessionsDataByGameName(
+      req.user,
+      gameName.toUpperCase() as GameName,
+    );
+    res.status(200).json({
+      message: "Sessions retrieved successfully",
+      data: { sessions, stats },
+    });
   } catch (error) {
     next(error);
   }
@@ -96,5 +109,5 @@ module.exports = {
   addSession,
   getSessions,
   getSession,
-  getSessionsByGameName
+  getSessionsByGameName,
 };
