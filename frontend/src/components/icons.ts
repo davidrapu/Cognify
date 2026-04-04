@@ -31,7 +31,10 @@ export {
   ChevronsUpDown,
   ChevronRight,
   LogOut,
+  LogIn,
   User,
   TrendingDown,
   TrendingUp,
+  ShieldBan,
+  ShieldX
 } from "lucide-react";
