@@ -17,9 +17,15 @@ import {
   Play,
   Puzzle,
   Search,
+  ShieldX,
 } from "@/components/icons";
 import GameRecommendations from "./GameRecommendations";
 import DomainPerformanceChart from "./DomainPerformanceChart";
+import { Suspense, useEffect, useState } from "react";
+import { useApiFetch } from "@/hooks/useApiFetch";
+import type { SessionData } from "@/types/session.fetched";
+import PageLoader from "@/components/PageLoader";
+import { useAuth } from "@/contexts/AuthContext/AuthContext";
 
 const games = [
   {
@@ -32,7 +38,7 @@ const games = [
     colorClass: "bg-[#a3ecef] text-[#006778]",
   },
   {
-    name: "Card Matching",
+    name: "Card Match",
     description:
       "Flip cards and find matching pairs — challenges your short-term visual memory and concentration.",
     icon: LayoutGrid,
@@ -68,7 +74,7 @@ const games = [
     colorClass: "bg-[#ffc8c8] text-[#7a0000]",
   },
   {
-    name: "Go / No Go",
+    name: "Go No Go",
     description:
       "Press for targets, hold back for distractors — assesses impulse control and sustained attention under pressure.",
     icon: Play,
@@ -105,9 +111,93 @@ const games = [
   },
 ];
 
+type DomainScores = {
+  memory: number;
+  reactionScore: number;
+  attention: number;
+  problemSolving: number;
+};
+type DomainTrends = {
+  memory: SessionData[];
+  attention: SessionData[];
+  problemSolving: SessionData[];
+  reaction: SessionData[];
+};
+
+const determineSectionOfDay = () => {
+  const hour = new Date().getHours();
+  if (hour < 12) return "morning";
+  else if (hour < 18) return "afternoon";
+  else return "evening";
+};
+
 export default function Dashboard() {
-  const featuredGame = games[0]; // For now, just take the first game as featured. Can implement better logic later.
-  const otherGames = games.slice(3, 5); // Just take 2 other games for the "Daily Recommendations". Can implement better logic later.
+  const apiFetch = useApiFetch();
+
+  const [cognitiveScore, setCognitiveScore] = useState<number>(0);
+  const [level, setLevel] = useState<string>("");
+  const [domainScores, setDomainScores] = useState<DomainScores>(
+    {} as DomainScores,
+  );
+  const [domainTrends, setDomainTrends] = useState<DomainTrends>(
+    {} as DomainTrends,
+  );
+  const [progress, setProgress] = useState<number>(0);
+  const [trend, setTrend] = useState<number | null>(null);
+  const [comment, setComment] = useState<string>("");
+  const [recommended, setRecommended] = useState<{
+    featured: (typeof games)[0];
+    others: (typeof games)[0][];
+  }>({} as { featured: (typeof games)[0]; others: (typeof games)[0][] });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { user, loggedIn } = useAuth();
+  const convertToGameName = (name: string) => {
+    return name.split("_").join(" ").toLowerCase();
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const res = await apiFetch("/predictions");
+        const data = await res.json();
+
+        setCognitiveScore(data.data.cognitiveScore);
+        setLevel(data.data.riskLevel);
+        setDomainScores(data.data.domainScores);
+        setTrend(data.data.trend);
+        setDomainTrends(data.data.domainTrends);
+        setProgress(data.data.dailyGoal.progress);
+        setComment(data.data.comment);
+        setRecommended(data.data.recommended);
+
+        const featuredGameName = convertToGameName(
+          data.data.recommendations.featured,
+        );
+        const othersGameNames = data.data.recommendations.others.map(
+          (name: string) => convertToGameName(name),
+        );
+        const featuredGame = games.find(
+          (game) => game.name.toLowerCase() === featuredGameName,
+        );
+        const otherGames = games.filter((game) =>
+          othersGameNames.includes(game.name.toLowerCase()),
+        );
+        setRecommended({
+          featured: featuredGame ?? games[0],
+          others: otherGames,
+        });
+
+        // console.log("Fetched predictions:", data);
+      } catch (error) {
+        console.error("Error fetching predictions:", error);
+        setIsLoading(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []); // eslint-disable-line
 
   return (
     <div className="w-full min-h-screen">
@@ -118,54 +208,137 @@ export default function Dashboard() {
             <SidebarTrigger className="m-1 text-foreground" />
             <UserAvatar size={9} />
           </div>
-          <main className="flex-1 space-y-10 mx-10 min-h-full pt-2 mb-15 font-family-manrope ">
-            {/* Header */}
-            <div className="flex flex-col gap-y-3 mb-8">
-              <p className="uppercase font-family-manrope text-xs -tracking-tighter text-primary font-medium">
-                dashboard overview
-              </p>
-              <div className="w-full flex justify-between items-center h-max-content">
-                <h1 className="text-[32px] font-family-pub-sans font-bold text-primary">
-                  Good morning, Alex.
-                </h1>
-                <div className="text-right">
-                  <p className="text-xs font-medium text-muted-foreground">
-                    Cognitive Load Index
+          {loggedIn && (
+            <Suspense fallback={<PageLoader />}>
+              {isLoading ? (
+                <PageLoader />
+              ) : (
+                <main className="flex-1 space-y-10 mx-10 min-h-full pt-2 mb-15 font-family-manrope ">
+                  {/* Header */}
+                  <div className="flex flex-col gap-y-3 mb-8">
+                    <p className="uppercase font-family-manrope text-xs -tracking-tighter text-primary font-medium">
+                      dashboard overview
+                    </p>
+                    <div className="w-full flex justify-between items-center h-max-content">
+                      <h1 className="text-[32px] font-family-pub-sans font-bold text-primary">
+                        Good {determineSectionOfDay()},{" "}
+                        {user.firstName.charAt(0).toUpperCase() +
+                          user.firstName.slice(1)}
+                        .
+                      </h1>
+                      {/* <div className="text-right">
+                      <p className="text-xs font-medium text-muted-foreground">
+                        Cognitive Load Index
+                      </p>
+                      <p className="text-base font-extrabold text-primary ">
+                        Stable &bull; 104 bps
+                      </p>
+                    </div> */}
+                    </div>
+                  </div>
+                  <section>
+                    {/* Cognitive Scores */}
+                    <div className="flex gap-x-3">
+                      <CognitiveScore
+                        comment={comment}
+                        score={cognitiveScore * 1000}
+                        level={level}
+                        trend={trend}
+                        progress={progress}
+                      />
+                      <DomainScores scores={domainScores} />
+                    </div>
+                  </section>
+                  <section>
+                    {/* Domain Performance Chart */}
+                    <DomainPerformanceChart domainTrends={domainTrends} />
+                  </section>
+                  {/* Game Recommendations */}
+                  <section>
+                    <div>
+                      <div className="flex gap-x-3 items-center mb-6">
+                        <h2 className="w-fit text-2xl font-extrabold text-primary">
+                          Daily Recommendations
+                        </h2>
+                        <div className="h-0 border-2 flex-1" />
+                      </div>
+                      {/* The Games */}
+                      {recommended.featured && (
+                        <GameRecommendations
+                          featuredGame={recommended.featured}
+                          otherGames={recommended.others}
+                        />
+                      )}
+                    </div>
+                  </section>
+                </main>
+              )}
+            </Suspense>
+          )}
+          {!loggedIn && (
+            <main className="flex-1 relative">
+              <div className="flex-1 space-y-10 mx-10 min-h-full pt-2 mb-15 font-family-manrope blur-lg">
+                {/* Header */}
+                <div className="flex flex-col gap-y-3 mb-8">
+                  <p className="uppercase font-family-manrope text-xs -tracking-tighter text-primary font-medium">
+                    dashboard overview
                   </p>
-                  <p className="text-base font-extrabold text-primary ">
-                    Stable &bull; 104 bps
-                  </p>
+                  <div className="w-full flex justify-between items-center h-max-content">
+                    <h1 className="text-[32px] font-family-pub-sans font-bold text-primary">
+                      Good morning, Alex.
+                    </h1>
+                  </div>
                 </div>
+
+                <section>
+                  <div className="flex gap-x-3">
+                    <CognitiveScore
+                      comment="Loading..."
+                      score={750}
+                      level="Low"
+                      trend={12}
+                      progress={0.6}
+                    />
+                    <DomainScores
+                      scores={{
+                        memory: 0.7,
+                        attention: 0.8,
+                        problemSolving: 0.6,
+                        reactionScore: 0.75,
+                      }}
+                    />
+                  </div>
+                </section>
+
+                <section>
+                  <DomainPerformanceChart
+                    domainTrends={{
+                      memory: [],
+                      attention: [],
+                      problemSolving: [],
+                      reaction: [],
+                    }}
+                  />
+                </section>
+
+                <section>
+                  <div>
+                    <div className="flex gap-x-3 items-center mb-6">
+                      <h2 className="w-fit text-2xl font-extrabold text-primary">
+                        Daily Recommendations
+                      </h2>
+                      <div className="h-0 border-2 flex-1" />
+                    </div>
+                    <GameRecommendations
+                      featuredGame={games[0]}
+                      otherGames={games.slice(1, 3)}
+                    />
+                  </div>
+                </section>
               </div>
-            </div>
-            <section>
-              {/* Cognitive Scores */}
-              <div className="flex gap-x-3">
-                <CognitiveScore />
-                <DomainScores />
-              </div>
-            </section>
-            <section>
-              {/* Domain Performance Chart */}
-              <DomainPerformanceChart />
-            </section>
-            {/* Game Recommendations */}
-            <section>
-              <div>
-                <div className="flex gap-x-3 items-center mb-6">
-                  <h2 className="w-fit text-2xl font-extrabold text-primary">
-                    Daily Recommendations
-                  </h2>
-                  <div className="h-0 border flex-1" />
-                </div>
-                {/* The Games */}
-                <GameRecommendations
-                  featuredGame={featuredGame}
-                  otherGames={otherGames}
-                />
-              </div>
-            </section>
-          </main>
+              <ShieldX className="size-50 fixed left-[50%] top-[35%] text-primary" strokeWidth={1} fill="var(--destructive)" />
+            </main>
+          )}
         </SidebarInset>
       </SidebarProvider>
     </div>

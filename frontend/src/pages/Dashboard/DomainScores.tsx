@@ -1,9 +1,17 @@
-export default function DomainScores() {
+
+type DomainScores = {
+  memory: number;
+  reactionScore: number;
+  attention: number;
+  problemSolving: number;
+};
+
+export default function DomainScores({scores}: {scores: DomainScores}) {
   const domains = [
-    { name: "Memory", value: "75%", color: "bg-primary" },
-    { name: "Reaction", value: "60%", color: "bg-primary/90" },
-    { name: "Attention", value: "90%", color: "bg-primary/80" },
-    { name: "Problem Solving", value: "45%", color: "bg-primary/70" },
+    { name: "Memory", value: `${Math.round(scores.memory * 100)}%`, color: "bg-primary" },
+    { name: "Reaction", value: `${Math.round(scores.reactionScore * 100)}%`, color: "bg-primary/90" },
+    { name: "Attention", value: `${Math.round(scores.attention * 100)}%`, color: "bg-primary/80" },
+    { name: "Problem Solving", value: `${Math.round(scores.problemSolving * 100)}%`, color: "bg-primary/70" },
   ];
   return (
     <div className="flex-2 bg-muted rounded-sm px-6 pt-7 space-y-5">
