@@ -1,14 +1,32 @@
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
+
+import {
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from "@/components/ui/sidebar";
 import { useAuth } from "@/contexts/AuthContext/AuthContext";
 import UserAvatar from "../UserAvatar";
-import {ChevronsUpDown, LogOut, User} from "../icons";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { ChevronsUpDown, LogIn, LogOut } from "../icons";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useNavigate } from "react-router";
 
 export default function UserProfile() {
-  const { user, logout } = useAuth();
-  const {isMobile} = useSidebar()
+  const { user, logout, loggedIn } = useAuth();
+
+  const { isMobile } = useSidebar();
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   return (
     <SidebarMenu>
@@ -23,7 +41,7 @@ export default function UserProfile() {
               <UserAvatar />
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">
-                  {user.firstName} {user.lastName}
+                  {user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1)} {user.lastName.charAt(0).toUpperCase() + user.lastName.slice(1)}
                 </span>
                 <span className="truncate text-xs">{user.email}</span>
               </div>
@@ -36,15 +54,24 @@ export default function UserProfile() {
             align="end"
             sideOffset={4}
           >
-              <DropdownMenuItem onClick={() => navigate("/profile")}>
-                <User />
-                Profile
+            {loggedIn ? (
+              <>
+                {/* <DropdownMenuItem onClick={() => navigate("/profile")}>
+                  <User />
+                  Profile
+                </DropdownMenuItem> */}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout}>
+                  <LogOut />
+                  Log out
+                </DropdownMenuItem>
+              </>
+            ) : (
+              <DropdownMenuItem onClick={() => navigate("/login")}>
+                <LogIn />
+                Log in
               </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={logout}>
-              <LogOut />
-              Log out
-            </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
