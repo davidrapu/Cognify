@@ -1,4 +1,4 @@
-import { symbols } from "@/data/symbols";
+import { symbols } from "@/assets/data/symbols";
 
 // utils/generateCards.ts
 export type CardType = {
