@@ -1,12 +1,18 @@
+import type { Domain } from "@/enums/domain";
+import type { GameName } from "@/enums/gameName";
+
 export type SessionData = {
-  id: number;
-  gameName: string;
+  id: string;
+  gameName: GameName;
   correct: number;
   incorrect: number;
+  accuracy: number;
+  gameScore: number;
+  reactionScore: number;
   reactionTimeAvg: number;
   reactionTimeStd: number;
   duration: number;
-  domain: string;
+  domain: Domain;
   createdAt: Date;
 };
 
