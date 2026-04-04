@@ -1,7 +1,7 @@
 import { SignupForm } from "@/components/signup-form";
 import { useAuth } from "@/contexts/AuthContext/AuthContext";
 import { useNavigate } from "react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Logo } from "@/components/Logo";
 import image from "@/assets/images/Mobile login-amico.svg";
 import { useApiFetch } from "@/hooks/useApiFetch";
@@ -13,6 +13,7 @@ export default function Signup() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [error, setError] = useState<boolean>(false);
   const apiFetch = useApiFetch()
 
   const resetForm = () => {
@@ -27,29 +28,44 @@ export default function Signup() {
     
     if (password !== confirmPassword) {
       resetForm()
+      setError(true);
       return;
     }
+    try {
 
-    const res = await apiFetch("/auth/register", {
-      method: "POST",
-      body: JSON.stringify({
-        firstName: userName.split(" ")[0],
-        lastName: userName.split(" ")[1],
-        email: email,
-        password: password,
-      })
-    });
-
-    if (res.status === 409) {
-      resetForm()
-      console.log("User already exists");
-      return;
+      const res = await apiFetch("/auth/register", {
+        method: "POST",
+        body: JSON.stringify({
+          firstName: userName.split(" ")[0],
+          lastName: userName.split(" ")[1],
+          email: email,
+          password: password,
+        })
+      });
+  
+      if (res.status === 409) {
+        resetForm()
+        console.log("User already exists");
+        setError(true);
+        return;
+      }
+      const data = await res.json();
+      login(data.user)
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Error during signup:", error);
+      setError(true);
     }
-    const data = await res.json();
-    login(data.user)
-    navigate("/dashboard");
-
   }
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setError(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  })
+
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
@@ -59,6 +75,7 @@ export default function Signup() {
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
             <SignupForm
+              error={error}
               userName={userName}
               email={email}
               password={password}
