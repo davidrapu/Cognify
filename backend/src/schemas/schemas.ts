@@ -26,6 +26,7 @@ const SessionSchema = z.object({
     "REACTION",
     "PROBLEM_SOLVING"
   ]),
+  createdAt: z.date().optional()
 });
 
 module.exports = {

@@ -3,6 +3,7 @@ export interface UserData {
   id: number;
 };
 
+// for creating a session - no createdAt needed
 export interface SessionDataType {
   id?: string;
   gameName: GameName;
@@ -15,6 +16,11 @@ export interface SessionDataType {
   reactionTimeStd: number;
   duration: number;
   domain: Domain;
+}
+
+// for reading from db - createdAt always present
+export interface SessionDataTypeWithDate extends SessionDataType {
+  createdAt: Date;
 }
 
 export interface PredictionDataType {
