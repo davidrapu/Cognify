@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import quizInfo from "@/data/quizInfo.json";
+import quizInfo from "@/assets/data/quizInfo.json";
 import Progress from "@/components/CustomProgress";
 import { Question } from "../../Question/Question";
 import type { QuizState } from "../../../../hooks/useQuizReducer";

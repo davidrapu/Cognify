@@ -1,6 +1,6 @@
 import type { QuizAction } from "@/hooks/useQuizReducer";
 import type React from "react";
-import quizInfo from "@/data/quizInfo.json";
+import quizInfo from "@/assets/data/quizInfo.json";
 import {Button} from "@/components/Button";
 
 type IntroProp = {

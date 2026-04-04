@@ -3,7 +3,7 @@ import ScoreMeter from "@/components/ScoreMeter";
 import { type QuizState } from "@/hooks/useQuizReducer";
 import { useNavigate } from "react-router";
 import { getScoreInterpretation } from "../../../../utils/getScoreInterpretation";
-import quizInfo from '@/data/quizInfo.json';
+import quizInfo from '@/assets/data/quizInfo.json';
 
 type CategoryScore = {
   orientation: number;
