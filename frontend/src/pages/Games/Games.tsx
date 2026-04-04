@@ -1,10 +1,12 @@
 import AppBar from "@/components/AppBar/AppBar";
+import PageLoader from "@/components/PageLoader";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import UserAvatar from "@/components/UserAvatar";
+import { Suspense } from "react";
 import { Outlet } from "react-router";
 
 export default function Games() {
@@ -18,7 +20,9 @@ export default function Games() {
             <UserAvatar size={9} />
           </div>
           <div className="flex-1">
-            <Outlet />
+            <Suspense fallback={<PageLoader />}>
+              <Outlet />
+            </Suspense>
           </div>
         </SidebarInset>
       </SidebarProvider>
