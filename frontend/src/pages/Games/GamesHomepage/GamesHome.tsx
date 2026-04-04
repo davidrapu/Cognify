@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import GameRowSection from "./GameRowSection";
-import {gamesInfo} from "@/data/gamesInfo";
+import { gamesInfo } from "@/assets/data/gamesInfo";
 
 type GameInfo = {
   title: string;
@@ -34,15 +34,21 @@ export default function GamesHome2() {
           domain="Memory"
         />
         <GameRowSection
-          games={gamesInfo.filter((game: GameInfo) => game.domain === "Attention")}
+          games={gamesInfo.filter(
+            (game: GameInfo) => game.domain === "Attention",
+          )}
           domain="Attention"
         />
         <GameRowSection
-          games={gamesInfo.filter((game: GameInfo) => game.domain === "Reaction")}
+          games={gamesInfo.filter(
+            (game: GameInfo) => game.domain === "Reaction",
+          )}
           domain="Reaction"
         />
         <GameRowSection
-          games={gamesInfo.filter((game: GameInfo) => game.domain === "Problem Solving")}
+          games={gamesInfo.filter(
+            (game: GameInfo) => game.domain === "Problem Solving",
+          )}
           domain="Problem Solving"
         />
       </div>

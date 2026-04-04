@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import quizInfo from "../../../data/quizInfo.json";
-import type { QuizState, QuizAction } from "../../../hooks/useQuizReducer";
-import { verifyAnswer } from "../../../utils/VerifyAnswer";
+import quizInfo from "@/assets/data/quizInfo.json";
+import type { QuizState, QuizAction } from "@/hooks/useQuizReducer";
+import { verifyAnswer } from "@/utils/VerifyAnswer";
 import Intro from "./states/Intro";
 import Active from "./states/Active";
 import Finish from "./states/Finish";
@@ -28,7 +28,6 @@ interface QuizCardProps {
 }
 
 export default function QuizCard({ state, dispatch }: QuizCardProps) {
-
   const questionObj = quizInfo.questions.find(
     (question) => question.id === state.currentQuestion,
   );
@@ -97,10 +96,25 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
     <div className="container bg-card text-card-foreground w-210 p-10 rounded-4xl font-black border border-border ">
       {state.quizState === "intro" && <Intro dispatch={dispatch} />}
 
-      {state.quizState === "active" && <Active handleEnter={handleEnter} state={state} questionObj={questionObj} userInput={userInput} setUserInput={setUserInput} handleNext={handleNext} endQuiz={endQuiz} />}
+      {state.quizState === "active" && (
+        <Active
+          handleEnter={handleEnter}
+          state={state}
+          questionObj={questionObj}
+          userInput={userInput}
+          setUserInput={setUserInput}
+          handleNext={handleNext}
+          endQuiz={endQuiz}
+        />
+      )}
 
       {state.quizState === "finish" && (
-        <Finish state={state} resetQuiz={resetQuiz} score={state.totalPoints} categoryScore={categoryScore} />
+        <Finish
+          state={state}
+          resetQuiz={resetQuiz}
+          score={state.totalPoints}
+          categoryScore={categoryScore}
+        />
       )}
     </div>
   );
