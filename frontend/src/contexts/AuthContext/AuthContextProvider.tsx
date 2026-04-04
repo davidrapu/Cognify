@@ -26,7 +26,17 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     // fetch user data from backend and set it to state
     setUser(fetchedUser);
   };
-  const logout = () => setLoggedIn(false);
+  const logout = async () => {
+    const res = await fetch(`${API_URL}/auth/logout`, {
+      method: "POST",
+      credentials: "include"
+    });
+    if (res.status === 200) {
+      setLoggedIn(false);
+      setUser({} as User);
+      setAccessToken(null);
+    }
+  };
   
   const refresh = async () => {
     try {
@@ -55,7 +65,6 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
   };
 
   useEffect(() => {
-
     // call the refresh token endpoint to get a new access token and user data if the user is logged in
     // eslint-disable-next-line
     refresh();
