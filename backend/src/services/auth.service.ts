@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 import type { HttpError } from "../types/errorsType";
 
 function generateToken(userId: any) {
-  return jwt.sign({ id: userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30m" });
+  return jwt.sign({ id: userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "45m" });
 }
 
 async function generateRefreshToken(userId: any) {
