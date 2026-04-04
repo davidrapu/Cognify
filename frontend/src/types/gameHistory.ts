@@ -1,5 +1,5 @@
 export type GameHistoryEntry = {
-  id: number;
+  id: string;
   date: Date;
   score: number;
   accuracy: number;

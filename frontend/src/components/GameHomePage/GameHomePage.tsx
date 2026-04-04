@@ -10,6 +10,9 @@ import { Separator } from "@/components/ui/separator";
 import StatCard from "./StatCard";
 import PerformanceChart from "@/components/PerformanceChart";
 import GameHistory from "./GameHistory";
+import { useAuth } from "@/contexts/AuthContext/AuthContext";
+import { cn } from "@/lib/utils";
+import { ShieldX } from "@/components/icons";
 
 
 type GameHomePageProps = {
@@ -20,14 +23,15 @@ type GameHomePageProps = {
   averageScore: number;
   averageAccuracy: number;
   instructions: { step: number; title: string; desc: string }[];
-  history?: {id:number, date: Date; score: number, accuracy: number, reaction: number }[] | undefined;
+  history?: {id:string, date: Date; score: number, accuracy: number, reaction: number }[] | undefined;
 };
 
 export function GameHomePage(props : GameHomePageProps) {
   const historyCopy = props.history ? [...props.history] : undefined;
+  const {loggedIn} = useAuth()
   return (
-    <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="relative min-h-screen bg-background">
+      <main className={cn("mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8", !loggedIn && "blur-md")}>
         {/* Header */}
         <header className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex flex-col gap-2">
@@ -102,6 +106,7 @@ export function GameHomePage(props : GameHomePageProps) {
           <GameHistory history={props.history} />
         </section>
       </main>
+      <ShieldX className="size-50 fixed left-[50%] top-[35%] text-primary" strokeWidth={1} fill="var(--destructive)" />
     </div>
   );
 }
