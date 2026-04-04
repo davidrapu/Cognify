@@ -122,8 +122,8 @@ export default function DomainPerformanceChart({ domainTrends }: Props) {
                           fontSize: "12px",
                         }}
                         labelFormatter={(label) => `Session ${label}`}
-                        formatter={(value: number | undefined) => [
-                          value !== undefined
+                        formatter={(value: number | string | undefined) => [
+                          typeof value === "number"
                             ? `${(value * 100).toFixed(0)}%`
                             : "N/A",
                           domain.name,
