@@ -24,7 +24,7 @@ export default function PatternPuzzle() {
         correct: state.totalCorrect,
         incorrect: state.totalIncorrect,
         totalTime: state.totalTime,
-        domain: Domain.REASONING,
+        domain: Domain.PROBLEM_SOLVING,
       }),
     });
 
@@ -46,7 +46,7 @@ export default function PatternPuzzle() {
         correct: state.totalCorrect,
         incorrect: state.totalIncorrect,
         totalTime: state.totalTime,
-        domain: Domain.REASONING,
+        domain: Domain.PROBLEM_SOLVING,
       }),
     });
 

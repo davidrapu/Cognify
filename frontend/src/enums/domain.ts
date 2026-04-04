@@ -1,9 +1,8 @@
 export const Domain = {
   MEMORY: "MEMORY",
   ATTENTION: "ATTENTION",
-  PROCESSING_SPEED: "PROCESSING_SPEED",
-  EXECUTIVE_FUNCTIONS: "EXECUTIVE_FUNCTIONS",
-  REASONING: "REASONING",
+  REACTION: "REACTION",
+  PROBLEM_SOLVING: "PROBLEM_SOLVING",
 } as const;
 
 export type Domain = (typeof Domain)[keyof typeof Domain];

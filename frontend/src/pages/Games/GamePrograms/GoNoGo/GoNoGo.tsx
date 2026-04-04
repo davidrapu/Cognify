@@ -24,7 +24,7 @@ export default function GoNoGo() {
         correct: state.totalCorrect,
         incorrect: state.totalIncorrect,
         totalTime: state.totalTime,
-        domain: Domain.PROCESSING_SPEED,
+        domain: Domain.REACTION,
       }),
     });
 
@@ -46,7 +46,7 @@ export default function GoNoGo() {
         correct: state.totalCorrect,
         incorrect: state.totalIncorrect,
         totalTime: state.totalTime,
-        domain: Domain.PROCESSING_SPEED,
+        domain: Domain.REACTION,
       }),
     });
 

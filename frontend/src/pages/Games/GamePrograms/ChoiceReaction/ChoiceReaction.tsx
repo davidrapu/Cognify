@@ -12,7 +12,7 @@ import type { SessionsResponse } from "@/types/session.fetched";
 
 export default function ChoiceReaction() {
   const [state, dispatch] = useGameReducer()
-    const [history, setHistory] = useState<GameHistoryEntry>([] as GameHistoryEntry);
+    const [history, setHistory] = useState<GameHistoryEntry>([]);
   const apiFetch = useApiFetch()
 
   const playAgain = async () => {
@@ -24,7 +24,7 @@ export default function ChoiceReaction() {
         correct: state.totalCorrect,
         incorrect: state.totalIncorrect,
         totalTime: state.totalTime,
-        domain: Domain.PROCESSING_SPEED,
+        domain: Domain.REACTION,
       }),
     });
 
@@ -46,7 +46,7 @@ export default function ChoiceReaction() {
         correct: state.totalCorrect,
         incorrect: state.totalIncorrect,
         totalTime: state.totalTime,
-        domain: Domain.PROCESSING_SPEED,
+        domain: Domain.REACTION,
       }),
     });
 
