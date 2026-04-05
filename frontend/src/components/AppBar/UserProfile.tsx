@@ -1,4 +1,3 @@
-
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -12,7 +11,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useNavigate } from "react-router";
@@ -26,6 +24,7 @@ export default function UserProfile() {
   const handleLogout = () => {
     logout();
     navigate("/");
+    window.location.reload();
   };
 
   return (
@@ -40,10 +39,23 @@ export default function UserProfile() {
             >
               <UserAvatar />
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">
-                  {user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1)} {user.lastName.charAt(0).toUpperCase() + user.lastName.slice(1)}
-                </span>
-                <span className="truncate text-xs">{user.email}</span>
+                {loggedIn && (
+                  <>
+                    <span className="truncate font-medium">
+                      {user.firstName.charAt(0).toUpperCase() +
+                        user.firstName.slice(1)}{" "}
+                      {user.lastName.charAt(0).toUpperCase() +
+                        user.lastName.slice(1)}
+                    </span>
+                    <span className="truncate text-xs">{user.email}</span>
+                  </>
+                )}
+                {!loggedIn && (
+                  <>
+                  <p className="truncate font-medium">Guest</p>
+                  <p className="truncate text-sm">Please log in</p>
+                  </>
+                )}
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -59,8 +71,8 @@ export default function UserProfile() {
                 {/* <DropdownMenuItem onClick={() => navigate("/profile")}>
                   <User />
                   Profile
-                </DropdownMenuItem> */}
-                <DropdownMenuSeparator />
+                </DropdownMenuItem>
+                <DropdownMenuSeparator /> */}
                 <DropdownMenuItem onClick={handleLogout}>
                   <LogOut />
                   Log out
