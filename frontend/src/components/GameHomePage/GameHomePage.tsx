@@ -106,7 +106,10 @@ export function GameHomePage(props : GameHomePageProps) {
           <GameHistory history={props.history} />
         </section>
       </main>
+      {!loggedIn && (
+
       <ShieldX className="size-50 fixed left-[50%] top-[35%] text-primary" strokeWidth={1} fill="var(--destructive)" />
+      )}
     </div>
   );
 }
