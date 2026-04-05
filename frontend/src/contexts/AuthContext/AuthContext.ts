@@ -8,6 +8,8 @@ type AuthContextType = {
   refresh: () => Promise<string | null>;
   user: User;
   accessToken?: string | null;
+  setAcceptedCookies: (accepted: boolean) => void;
+  acceptedCookies: boolean;
 };
 type User = {
   firstName: string;
@@ -21,6 +23,8 @@ const defaultAuthContext: AuthContextType = {
   login: () => null,
   logout: () => null,
   refresh: () => Promise.resolve(null),
+  setAcceptedCookies: () => null,
+  acceptedCookies: false,
   user: {} as User,
   accessToken: null,
 };
