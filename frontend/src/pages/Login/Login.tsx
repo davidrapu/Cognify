@@ -5,9 +5,10 @@ import { useNavigate } from "react-router";
 import image from "@/assets/images/Mobile login-amico.svg";
 import { Logo } from "@/components/Logo";
 import { useApiFetch } from "@/hooks/useApiFetch";
+import CookieBanner from "@/components/CookieBanner";
 
 export default function Login() {
-  const { login } = useAuth();
+  const { login, acceptedCookies } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
@@ -32,7 +33,7 @@ export default function Login() {
   
       const data = await res.json();
       login(data.user);
-      navigate("/dashboard");
+      navigate("/");
     } catch (error){
       console.log(error)
       setError(true)
@@ -46,6 +47,10 @@ export default function Login() {
 
     return () => clearTimeout(timer);
   }, [error])
+
+  useEffect(() => {
+    console.log(acceptedCookies);
+  }, [])
   
   return (
     <>
@@ -75,6 +80,10 @@ export default function Login() {
           />
         </div>
       </div>
+      {!acceptedCookies && (
+        <CookieBanner />
+      )
+      }
     </>
   );
 }

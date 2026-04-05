@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/react";
 import Home from "./pages/Home/Home";
 import { ModeToggle } from "./components/ModeToggle";
 import PageLoader from "./components/PageLoader";
+import CookieBanner from "./components/CookieBanner";
 
 // Lazy load all routes
 const Login = lazy(() => import("./pages/Login/Login"));
@@ -53,6 +54,7 @@ function App() {
     <>
       <BrowserRouter>
         <Suspense fallback={<PageLoader />}>
+        <CookieBanner />
           <Routes>
             <Route index element={<Home />} />
             <Route path="/home" element={<Navigate to="/" replace />} />

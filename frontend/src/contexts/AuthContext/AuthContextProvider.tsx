@@ -20,6 +20,8 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState<User>({} as User);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const cookiesAccepted = localStorage.getItem("cookie-consent") === "accepted";
+  const [acceptedCookies, setAcceptedCookies] = useState(cookiesAccepted);
 
   const login = (fetchedUser: User) => {
     setLoggedIn(true);
@@ -29,7 +31,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
   const logout = async () => {
     const res = await fetch(`${API_URL}/auth/logout`, {
       method: "POST",
-      credentials: "include"
+      credentials: acceptedCookies ? "include" : "omit", // include cookies if user accepted cookies, otherwise omit them
     });
     if (res.status === 200) {
       setLoggedIn(false);
@@ -42,7 +44,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     try {
       const response = await fetch(`${API_URL}/auth/refresh`, {
         method: "POST",
-        credentials: "include", // include cookies
+        credentials: acceptedCookies ? "include" : "omit", // include cookies if user accepted cookies, otherwise omit them
       });
       if (response.status === 200) {
         const data = await response.json();
@@ -68,10 +70,10 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     // call the refresh token endpoint to get a new access token and user data if the user is logged in
     // eslint-disable-next-line
     refresh();
-  }, []);
+  }, []); // eslint-disable-line
 
   return (
-    <AuthContext.Provider value={{ loggedIn, login, logout, user, accessToken, refresh }}>
+    <AuthContext.Provider value={{ loggedIn, login, logout, user, accessToken, refresh, setAcceptedCookies, acceptedCookies }}>
       {props.children}
     </AuthContext.Provider>
   );
