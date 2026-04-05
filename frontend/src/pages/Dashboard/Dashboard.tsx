@@ -133,6 +133,7 @@ const determineSectionOfDay = () => {
 
 export default function Dashboard() {
   const apiFetch = useApiFetch();
+  const { user, loggedIn } = useAuth();
 
   const [cognitiveScore, setCognitiveScore] = useState<number>(0);
   const [level, setLevel] = useState<string>("");
@@ -150,7 +151,6 @@ export default function Dashboard() {
     others: (typeof games)[0][];
   }>({} as { featured: (typeof games)[0]; others: (typeof games)[0][] });
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { user, loggedIn } = useAuth();
   const convertToGameName = (name: string) => {
     return name.split("_").join(" ").toLowerCase();
   };
@@ -220,20 +220,22 @@ export default function Dashboard() {
                       dashboard overview
                     </p>
                     <div className="w-full flex justify-between items-center h-max-content">
-                      <h1 className="text-[32px] font-family-pub-sans font-bold text-primary">
-                        Good {determineSectionOfDay()},{" "}
-                        {user.firstName.charAt(0).toUpperCase() +
-                          user.firstName.slice(1)}
-                        .
-                      </h1>
-                      {/* <div className="text-right">
+                      {user && (
+                        <h1 className="text-[32px] font-family-pub-sans font-bold text-primary">
+                          Good {determineSectionOfDay()},{" "}
+                          {user.firstName.charAt(0).toUpperCase() +
+                            user.firstName.slice(1)}
+                          .
+                        </h1>
+                      )}
+                      <div className="text-right">
                       <p className="text-xs font-medium text-muted-foreground">
-                        Cognitive Load Index
+                        Cognitive MMSE Score
                       </p>
                       <p className="text-base font-extrabold text-primary ">
-                        Stable &bull; 104 bps
+                        High &bull; 27 / 30
                       </p>
-                    </div> */}
+                    </div>
                     </div>
                   </div>
                   <section>
@@ -336,7 +338,11 @@ export default function Dashboard() {
                   </div>
                 </section>
               </div>
-              <ShieldX className="size-50 fixed left-[50%] top-[35%] text-primary" strokeWidth={1} fill="var(--destructive)" />
+              <ShieldX
+                className="size-50 fixed left-[50%] top-[35%] text-primary"
+                strokeWidth={1}
+                fill="var(--destructive)"
+              />
             </main>
           )}
         </SidebarInset>
