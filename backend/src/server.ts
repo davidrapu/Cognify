@@ -7,6 +7,7 @@ const sessionsRouter = require("./routers/sessions.router");
 const authRouter = require("./routers/auth.router");
 const authentication = require("./middleware/authentication");
 const predictionsRouter = require("./routers/predictions.router");
+const quizRouter = require("./routers/quiz.router");
 
 const {configDotenv} = require("dotenv")
 if (process.env.ENV !== "production") {
@@ -33,6 +34,7 @@ app.use(cookieParser());
 app.use("/auth", authRouter);
 app.use("/sessions", authentication, sessionsRouter);
 app.use("/predictions", authentication, predictionsRouter);
+app.use("/quiz", quizRouter);
 
 
 app.use(notFound);
