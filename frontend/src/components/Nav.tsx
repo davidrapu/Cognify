@@ -3,19 +3,21 @@ import {
   NavigationMenuItem,
   NavigationMenuList,
 } from "./ui/navigation-menu";
-import { Link, NavLink, useNavigate } from "react-router";
+import { Link, NavLink } from "react-router";
 import { useAuth } from "../contexts/AuthContext/AuthContext";
 import { Logo } from "./Logo";
 import UserAvatar from "./UserAvatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
+  // DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuSeparator,
+  // DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { User, LogOut } from "./icons";
+import { 
+  // User,
+  LogOut } from "./icons";
 
 const activePageStyle: string =
   "bg-primary text-primary-foreground text-lg px-3 py-1 rounded-[0.3em] m-0 font-semibold";
@@ -24,7 +26,10 @@ const inactivePageStyle: string =
 
 export default function Nav() {
   const { loggedIn, logout } = useAuth();
-  const navigate = useNavigate();
+  const handleLogout = () => {
+    logout()
+    window.location.reload()
+  }
   return (
     <div className=" flex items-center justify-between px-10 py-4">
       <NavigationMenu className=" flex items-center">
@@ -89,14 +94,14 @@ export default function Nav() {
               <UserAvatar size={9} />
             </DropdownMenuTrigger>
             <DropdownMenuContent className=" rounded-lg min-w-26">
-              <DropdownMenuGroup>
+              {/* <DropdownMenuGroup>
                 <DropdownMenuItem onClick={() => navigate("/profile")}>
                   <User />
                   Profile
                 </DropdownMenuItem>
               </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={logout}>
+              <DropdownMenuSeparator /> */}
+              <DropdownMenuItem onClick={handleLogout}>
                 <LogOut />
                 Log out
               </DropdownMenuItem>
