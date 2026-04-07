@@ -35,3 +35,9 @@ export interface PredictionDataType {
   attentionScore: number;
   problemSolvingScore: number;
 }
+
+export interface QuizSessionDataType {
+  id?: number;
+  userId: string
+  score: number;
+}
