@@ -22,6 +22,7 @@ model User {
   role      Role     @default(USER)
   refreshTokens RefreshToken[]
   createdAt DateTime @default(now())
+  quizSessions QuizSession[]
 }
 
 model GameSession {
@@ -46,6 +47,15 @@ model RefreshToken {
   id        Int    @id @default(autoincrement())
   userId    String
   token     String @unique
+  createdAt DateTime @default(now())
+  // Define the relations to the User model
+  user      User   @relation(fields: [userId], references: [id])
+}
+
+model QuizSession {
+  id        Int @id @default(autoincrement())
+  userId    String
+  score     Float
   createdAt DateTime @default(now())
   // Define the relations to the User model
   user      User   @relation(fields: [userId], references: [id])
