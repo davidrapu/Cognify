@@ -69,6 +69,8 @@ export function verifyAnswer(
   points: number = 0,
   userInput: string,
   setCategoryScore: React.Dispatch<React.SetStateAction<CategoryScore>>,
+  wordSet?: string[],
+  answer?: string | string[],
 ): number {
   /**
    * Verifies users answer is correct
@@ -125,27 +127,52 @@ export function verifyAnswer(
       } else return 0;
     case "memory":
       try {
+        if (!wordSet) return 0;
+        // console.log('passed');
+
         const userValue = userInput
           .split(",")
           .map((v) => v.trim().toLocaleLowerCase());
 
-        if (userValue.join(" ") === "Apple Chair River") return points;
+        const [first, second, third] = wordSet.map((word) =>
+          word.toLocaleLowerCase(),
+        );
+
+        // console.log(userValue[0], first, userValue[0] === first);
+        const normalizedCategory = category?.toLowerCase().trim();
+
+        if (userValue.join(" ") === wordSet.join(" ").toLocaleLowerCase()) {
+          if (normalizedCategory === "registration") {
+            increaseCategory("registration", points);
+          } else if (normalizedCategory === "recall") {
+            increaseCategory("recall", points);
+          }
+          return points;
+        }
 
         let totalPoints = 0;
 
-        if (userValue[0] === "apple") totalPoints += 1;
-        else if (userValue.includes("apple")) totalPoints += 0.5;
+        // console.log(userValue[0], first, userValue[0] === first);
 
-        if (userValue[1] === "chair") totalPoints += 1;
-        else if (userValue.includes("chair")) totalPoints += 0.5;
+        if (userValue[0] === first) totalPoints += 1;
+        else if (userValue.includes(first)) totalPoints += 0.5;
 
-        if (userValue[2] === "river") totalPoints += 1;
-        else if (userValue.includes("river")) totalPoints += 0.5;
+        if (userValue[1] === second) totalPoints += 1;
+        else if (userValue.includes(second)) totalPoints += 0.5;
 
-        increaseCategory(
-          category && category === "registration" ? "registration" : "recall",
-          totalPoints,
-        );
+        if (userValue[2] === third) totalPoints += 1;
+        else if (userValue.includes(third)) totalPoints += 0.5;
+
+        // if (category) console.log(true);
+        // else console.log(false);
+        // console.log(category === "registration" ? "registration" : "recall");
+
+        if (normalizedCategory === "registration") {
+          increaseCategory("registration", totalPoints);
+        } else if (normalizedCategory === "recall") {
+          increaseCategory("recall", totalPoints);
+        }
+
         return totalPoints;
       } catch {
         return 0;
@@ -199,7 +226,9 @@ export function verifyAnswer(
       }
     }
     case "multiple_choice": {
-      if (userInput.trim().toLocaleLowerCase() === "apple") {
+      if (!answer || typeof answer !== "string") return 0;
+
+      if (userInput.trim().toLocaleLowerCase() === answer.toLocaleLowerCase()) {
         increaseCategory("language", points);
         return points;
       } else return 0;
