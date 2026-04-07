@@ -6,7 +6,7 @@ const cookieParser = require("cookie-parser");
 const sessionsRouter = require("./routers/sessions.router");
 const authRouter = require("./routers/auth.router");
 const authentication = require("./middleware/authentication");
-const predictionsRouter = require("./routers/predictions.router");
+const predictionsRouter = require("./routers/analytics.router");
 const quizRouter = require("./routers/quiz.router");
 
 const {configDotenv} = require("dotenv")
@@ -33,8 +33,8 @@ app.use(cookieParser());
 
 app.use("/auth", authRouter);
 app.use("/sessions", authentication, sessionsRouter);
-app.use("/predictions", authentication, predictionsRouter);
-app.use("/quiz", quizRouter);
+app.use("/analytics", authentication, predictionsRouter);
+app.use("/quiz", authentication, quizRouter);
 
 
 app.use(notFound);

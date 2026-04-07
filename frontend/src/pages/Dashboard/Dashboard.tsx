@@ -131,6 +131,11 @@ const determineSectionOfDay = () => {
   else return "evening";
 };
 
+const determineMMSEScoreLevel = (score: number) => {
+  if (score >= 24) return "Normal";
+  else if (score >= 18) return "Mild";
+  else return "Severe";
+};
 export default function Dashboard() {
   const apiFetch = useApiFetch();
   const { user, loggedIn } = useAuth();
@@ -150,7 +155,9 @@ export default function Dashboard() {
     featured: (typeof games)[0];
     others: (typeof games)[0][];
   }>({} as { featured: (typeof games)[0]; others: (typeof games)[0][] });
+  const [quizScore, setQuizScore] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const convertToGameName = (name: string) => {
     return name.split("_").join(" ").toLowerCase();
   };
@@ -159,9 +166,10 @@ export default function Dashboard() {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const res = await apiFetch("/predictions");
+        const res = await apiFetch("/analytics");
         const data = await res.json();
-
+        console.log(data);
+        
         setCognitiveScore(data.data.cognitiveScore);
         setLevel(data.data.riskLevel);
         setDomainScores(data.data.domainScores);
@@ -170,6 +178,7 @@ export default function Dashboard() {
         setProgress(data.data.dailyGoal.progress);
         setComment(data.data.comment);
         setRecommended(data.data.recommended);
+        setQuizScore(data.data.quizScore);
 
         const featuredGameName = convertToGameName(
           data.data.recommendations.featured,
@@ -233,7 +242,7 @@ export default function Dashboard() {
                         Cognitive MMSE Score
                       </p>
                       <p className="text-base font-extrabold text-primary ">
-                        High &bull; 27 / 30
+                        {determineMMSEScoreLevel(quizScore)} &bull; {quizScore} / 30
                       </p>
                     </div>
                     </div>

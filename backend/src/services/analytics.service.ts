@@ -1,10 +1,13 @@
-import { SessionDataTypeWithDate } from "@/types/dataTypes";
+import { QuizSessionDataType, SessionDataTypeWithDate } from "@/types/dataTypes";
 import { Domain, GameName } from "../database/generated/prisma/enums";
 import { HttpError } from "@/types/errorsType";
 
 const {
   getAllGameSessions,
 } = require("../database/repositories/gameSession.repository");
+const {
+  getQuizSessionsByUserId,
+} = require("../database/repositories/quizSession.repository");
 
 const commentMap: Record<string, string> = {
   Low: "Your cognitive performance is strong across all domains.",
@@ -128,12 +131,13 @@ function getDailyRecommendations(
     others: otherGameNames,
   };
 }
-async function getPredictionsData(userId: string) {
-  // Implementation for fetching predictions;
+async function getAnalyticsData(userId: string) {
+  // Implementation for fetching analytics data;
 
   // get all the data from the database for the user
-  const gameSessions: SessionDataTypeWithDate[] =
-    await getAllGameSessions(userId);
+  const [gameSessions, quizSessions] :  [SessionDataTypeWithDate[], QuizSessionDataType[]] = await Promise.all([getAllGameSessions(userId), getQuizSessionsByUserId(userId)]);
+
+  const bestQuizScore = quizSessions.length > 0 ? Math.max(...quizSessions.map((s) => s.score)) : 0;
 
   // filter the data by game type
   const memoryGameSessions = gameSessions.filter(
@@ -184,7 +188,8 @@ async function getPredictionsData(userId: string) {
       recommendations: {
         featured: 'CARD_MATCH',
         others: ['STROOP_TEST', 'CHOICE_REACTION_TIME']
-      }
+      }, 
+      quizScore: 0,
     }}
 
   //   "reaction_score","game_score","accuracy","stroop_error_rate","stroop_accuracy","go_nogo_accuracy","go_nogo_error_rate","memory_score","attention_score","problem_solving_score"
@@ -297,8 +302,8 @@ async function getPredictionsData(userId: string) {
 
   const recommendations = getDailyRecommendations(memoryScore, attentionScore, problemSolvingScore, reactionScore);
 
-  const resp = await fetch(
-    process.env.ML_SERVER_URL || "http://127.0.0.1:8000" + "/predict",
+  const mlURL = process.env.ML_SERVER_URL || "http://127.0.0.1:8000";
+  const resp = await fetch(`${mlURL}/predict`,
     {
       method: "POST",
       headers: {
@@ -354,9 +359,10 @@ async function getPredictionsData(userId: string) {
     },
     recommendations,
     trend: trend,
+    quizScore: bestQuizScore,
   };
 }
 
 module.exports = {
-  getPredictionsData,
+  getAnalyticsData,
 };
