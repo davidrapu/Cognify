@@ -1,6 +1,5 @@
 import type { QuizAction } from "@/hooks/useQuizReducer";
 import type React from "react";
-import quizInfo from "@/assets/data/quizInfo.json";
 import {Button} from "@/components/Button";
 
 type IntroProp = {
@@ -10,8 +9,10 @@ export default function Intro({ dispatch }: IntroProp) {
   return (
     <div className="container max-w-3xl space-y-5 ">
       <div className="space-y-2">
-        <h1 className="text-5xl font-black">{quizInfo.testName}</h1>
-        <p className=" font-medium text-xl text-secondary-text">{quizInfo.description}</p>
+        <h1 className="text-5xl font-black">Cognitive Screening Test</h1>
+        <p className=" font-medium text-xl text-secondary-text">
+          MMSE-inspired, non-clinical assessment
+        </p>
       </div>
 
       <div className="space-y-1 text-lg font-normal text-destructive">

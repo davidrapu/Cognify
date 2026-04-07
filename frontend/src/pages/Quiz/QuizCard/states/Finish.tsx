@@ -3,7 +3,7 @@ import ScoreMeter from "@/components/ScoreMeter";
 import { type QuizState } from "@/hooks/useQuizReducer";
 import { useNavigate } from "react-router";
 import { getScoreInterpretation } from "../../../../utils/getScoreInterpretation";
-import quizInfo from '@/assets/data/quizInfo.json';
+// import quizInfo from '@/assets/data/quizInfo.json';
 
 type CategoryScore = {
   orientation: number;
@@ -19,6 +19,14 @@ interface FinishProp {
   score: number;
   categoryScore: CategoryScore;
 }
+
+const categorySize = {
+    "orientation": 10,
+    "language": 9,
+    "registration": 3,
+    "calculation": 5,
+    "recall": 3
+  }
 
 export default function Finish({
   state,
@@ -59,7 +67,7 @@ export default function Finish({
                   {category.charAt(0).toUpperCase() + category.slice(1)}{" "}
                   <span className="font-normal space-x-2">
                     {" "}
-                    <ScoreMeter score={categoryScore[category]} max={quizInfo.categorySize[category]} className="size-3.5 rounded-[50%] " />{" "}
+                    <ScoreMeter score={categoryScore[category]} max={categorySize[category]} className="size-3.5 rounded-[50%] " />{" "}
                   </span>
                 </li>
               ),

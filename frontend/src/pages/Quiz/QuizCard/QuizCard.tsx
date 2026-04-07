@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import quizInfo from "@/assets/data/quizInfo.json";
+import React, { useEffect, useState } from "react";
 import type { QuizState, QuizAction } from "@/hooks/useQuizReducer";
 import { verifyAnswer } from "@/utils/VerifyAnswer";
 import Intro from "./states/Intro";
 import Active from "./states/Active";
 import Finish from "./states/Finish";
+import { useApiFetch } from "@/hooks/useApiFetch";
+import PageLoader from "@/components/PageLoader";
 
 const initialCategoryScores = {
   orientation: 0,
@@ -22,34 +23,52 @@ type CategoryScore = {
   recall: number;
 };
 
+type Question = {
+  category: string;
+  id: number;
+  inputType: string;
+  points: number;
+  question: string;
+  type: string;
+  answer?: string[]
+}
 interface QuizCardProps {
+  quizData: Question[];
+  wordSet?: string[];
   state: QuizState;
   dispatch: React.Dispatch<QuizAction>;
 }
 
-export default function QuizCard({ state, dispatch }: QuizCardProps) {
-  const questionObj = quizInfo.questions.find(
+export default function QuizCard({ state, dispatch, quizData, wordSet }: QuizCardProps) {
+  const questionObj : Question | undefined = quizData.find(
     (question) => question.id === state.currentQuestion,
   );
   const [userInput, setUserInput] = useState<string>("");
   const [categoryScore, setCategoryScore] = useState<CategoryScore>(
     initialCategoryScores,
   );
+  const apiFetch = useApiFetch()
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleNext = () => {
+    
+    const score =
+      verifyAnswer(
+        questionObj?.type,
+        questionObj?.category,
+        questionObj?.points,
+        userInput,
+        setCategoryScore,
+        wordSet,
+        questionObj?.answer,
+      ) || 0;
     dispatch({
       type: "increaseTotalPoints",
-      payload:
-        verifyAnswer(
-          questionObj?.type,
-          questionObj?.category,
-          questionObj?.points,
-          userInput,
-          setCategoryScore,
-        ) || 0,
+      payload: score,
     });
-    dispatch({ type: "next" });
-    setUserInput("");
+    console.log(categoryScore);
+    // dispatch({ type: "next" });
+    // setUserInput("");
   };
 
   const endQuiz = () => {
@@ -57,17 +76,20 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
     // Give them an option to try again or continue
     // Reset in both occasions. So dont reset at end but after end
 
+        const score =
+          verifyAnswer(
+            questionObj?.type,
+            questionObj?.category,
+            questionObj?.points,
+            userInput,
+            setCategoryScore,
+            wordSet,
+            questionObj?.answer,
+          ) || 0;
     // Increase total points
     dispatch({
       type: "increaseTotalPoints",
-      payload:
-        verifyAnswer(
-          questionObj?.type,
-          questionObj?.category,
-          questionObj?.points,
-          userInput,
-          setCategoryScore,
-        ) || 0,
+      payload: score
     });
 
     // End the quiz
@@ -90,13 +112,43 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
     dispatch({ type: "reset" });
   };
 
+  useEffect(() => {
+    if (state.quizState !== "finish") return
+
+    // send score to backend
+    // for now we just only send the score and not the categorical scores, but in the future we can send the categorical scores as well
+    // we can also send the users answers and the correct answers to the backend for more detailed analysis and feedback
+
+    const sendScore = async () => {
+      setIsLoading(true)
+      try {
+        const resp = await apiFetch("/quiz", {
+          method: "POST",
+          body: JSON.stringify({
+            score: state.totalPoints,
+          })
+        });
+        if (!resp.ok) {
+          throw new Error("Failed to submit score");
+        }
+      } catch (error) {
+        console.error("Error submitting score:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    sendScore();
+
+  }, [state.quizState]) // eslint-disable-line
+
   if (!questionObj) return null;
 
   return (
     <div className="container bg-card text-card-foreground w-210 p-10 rounded-4xl font-black border border-border ">
-      {state.quizState === "intro" && <Intro dispatch={dispatch} />}
+      {!isLoading && state.quizState === "intro" && <Intro dispatch={dispatch} />}
 
-      {state.quizState === "active" && (
+      {!isLoading && state.quizState === "active" && (
         <Active
           handleEnter={handleEnter}
           state={state}
@@ -108,7 +160,7 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
         />
       )}
 
-      {state.quizState === "finish" && (
+      {!isLoading && state.quizState === "finish" && (
         <Finish
           state={state}
           resetQuiz={resetQuiz}
@@ -116,6 +168,7 @@ export default function QuizCard({ state, dispatch }: QuizCardProps) {
           categoryScore={categoryScore}
         />
       )}
+      {isLoading && <PageLoader /> }
     </div>
   );
 }

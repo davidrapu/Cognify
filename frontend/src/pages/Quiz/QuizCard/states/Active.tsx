@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import quizInfo from "@/assets/data/quizInfo.json";
 import Progress from "@/components/CustomProgress";
 import { Question } from "../../Question/Question";
 import type { QuizState } from "../../../../hooks/useQuizReducer";
@@ -15,6 +14,7 @@ type QuestionData = {
   inputType: string;
   points?: number;
   options?: string[];
+  answer?: string | string[];
 };
 
 interface ActiveProps {
@@ -37,6 +37,7 @@ export default function Active({
   endQuiz,
 }: ActiveProps) {
   const [isAknowledged, setIsAknowledged] = useState<boolean>(false);
+
   return (
     <div
       className="container flex flex-col gap-y-7"
@@ -45,19 +46,19 @@ export default function Active({
     >
       <div className="flex flex-col gap-y-1">
         <h1 className="text-2xl tracking-wide font-black m-0 leading-tight">
-          {quizInfo.testName}
+          Cognitive Screening Test
         </h1>
         <p className="text-secondary-text font-medium">
-          {quizInfo.description}
+          MMSE-inspired, non-clinical assessment
         </p>
       </div>
       <div className="flex flex-col gap-y-2">
-        <Progress value={state.currentQuestion} max={quizInfo.totalQuestions} />
+        <Progress value={state.currentQuestion} max={16} />
         <div className="flex justify-between font-normal">
           <span>
             Question{" "}
-            <span className="text-primary">{state.currentQuestion}</span> of{" "}
-            <span className="">{quizInfo.totalQuestions}</span>
+            <span className="text-primary font-bold">{state.currentQuestion}</span> of{" "}
+            <span className="">16</span>
           </span>
         </div>
       </div>
