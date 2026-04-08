@@ -18,6 +18,8 @@ model User {
   lastName  String
   email     String   @unique
   hash      String   
+  city      String?
+  country   String?
   session   GameSession[]
   role      Role     @default(USER)
   refreshTokens RefreshToken[]
