@@ -101,7 +101,7 @@ const games = [
     colorClass: "bg-[#ffd7f0] text-[#7a0057]",
   },
   {
-    name: "Arithmetic Puzzle",
+    name: "Arithmetic Pattern Puzzle",
     description:
       "Solve mental arithmetic problems against the clock — builds numerical processing speed and working memory.",
     icon: Calculator,
@@ -132,9 +132,9 @@ const determineSectionOfDay = () => {
 };
 
 const determineMMSEScoreLevel = (score: number) => {
-  if (score >= 24) return "Normal";
-  else if (score >= 18) return "Mild";
-  else return "Severe";
+  if (score >= 24) return "Normal Cognition";
+  else if (score >= 18) return "Mild Cognitive Impairment";
+  else return "Severe Cognitive Impairment";
 };
 export default function Dashboard() {
   const apiFetch = useApiFetch();
@@ -168,7 +168,7 @@ export default function Dashboard() {
         setIsLoading(true);
         const res = await apiFetch("/analytics");
         const data = await res.json();
-        console.log(data);
+        // console.log(data);
         
         setCognitiveScore(data.data.cognitiveScore);
         setLevel(data.data.riskLevel);
