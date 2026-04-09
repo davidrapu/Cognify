@@ -19,7 +19,6 @@ const API_URL = import.meta.env.VITE_API_URL;
 export function AuthContextProvider(props: AuthContextProviderProps) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState<User>({} as User);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
   const cookiesAccepted = localStorage.getItem("cookie-consent") === "accepted";
   const [acceptedCookies, setAcceptedCookies] = useState(cookiesAccepted);
 
@@ -36,7 +35,6 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     if (res.status === 200) {
       setLoggedIn(false);
       setUser({} as User);
-      setAccessToken(null);
     }
   };
   
@@ -48,18 +46,15 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
       });
       if (response.status === 200) {
         const data = await response.json();
-        setAccessToken(data.accessToken);
         setUser(data.user);
         setLoggedIn(true);
         return data.accessToken;
       } else {
-        setAccessToken(null);
         setUser({} as User);
         setLoggedIn(false);
         return null
       }
     } catch {
-      setAccessToken(null);
       setUser({} as User);
       setLoggedIn(false);
       return null
@@ -73,7 +68,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
   }, []); // eslint-disable-line
 
   return (
-    <AuthContext.Provider value={{ loggedIn, login, logout, user, accessToken, refresh, setAcceptedCookies, acceptedCookies }}>
+    <AuthContext.Provider value={{ loggedIn, login, logout, user, refresh, setAcceptedCookies, acceptedCookies }}>
       {props.children}
     </AuthContext.Provider>
   );

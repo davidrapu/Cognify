@@ -3,7 +3,7 @@ import type errorsType = require("../types/errorsType");
 const jwt = require("jsonwebtoken");
 
 function authenticateToken(req: Request, res: Response, next: NextFunction) {
-  const token = req.headers.authorization?.split(" ")[1];
+  const token = req.cookies.accessToken
 
   if (token == undefined ) {
     const err: errorsType.HttpError = new Error("No token provided");

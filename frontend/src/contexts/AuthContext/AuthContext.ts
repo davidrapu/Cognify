@@ -7,7 +7,6 @@ type AuthContextType = {
   logout: () => void;
   refresh: () => Promise<string | null>;
   user: User;
-  accessToken?: string | null;
   setAcceptedCookies: (accepted: boolean) => void;
   acceptedCookies: boolean;
 };
@@ -26,7 +25,6 @@ const defaultAuthContext: AuthContextType = {
   setAcceptedCookies: () => null,
   acceptedCookies: false,
   user: {} as User,
-  accessToken: null,
 };
 
 export const AuthContext = createContext<AuthContextType>(defaultAuthContext);

@@ -5,7 +5,7 @@ async function getAnalytics(req: Request, res: Response, next: NextFunction) {
   // Implementation for fetching analytics data
   try{
       const {cognitiveScore, riskLevel, comment, domainScores, trend, domainTrends, dailyGoal, recommendations, quizScore} = await getAnalyticsData(req.user);
-      console.log(quizScore)
+      // console.log(quizScore)
       
       res.status(200).json({message: "Analytics retrieved successfully", data: {cognitiveScore, riskLevel, comment, domainScores, trend, domainTrends, dailyGoal, recommendations, quizScore}});
   } catch (error) {

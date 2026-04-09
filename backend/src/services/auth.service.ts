@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 import type { HttpError } from "../types/errorsType";
 
 function generateToken(userId: any) {
-  return jwt.sign({ id: userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "45m" });
+  return jwt.sign({ id: userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30m" });
 }
 
 async function generateRefreshToken(userId: any) {
@@ -18,14 +18,51 @@ async function encryptPassword(password: string) {
   return await bcrypt.hash(password, 10);
 }
 
+async function getLocationFromLatLng(latitude: number, longitude: number) {
+  try {
+    const resp = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
+      {
+        headers: {
+          "User-Agent": "Cognify/1.0 (daverapu47@yahoo.com)", // required
+        },
+      },
+    );
+
+    if (!resp.ok) throw new Error(`Nominatim fetch failed: ${resp.status}`);
+
+    const data = await resp.json();
+
+    const city =
+      data.address.city || data.address.town || data.address.village || null;
+    const country = data.address.country || null;
+
+    return { city, country };
+  } catch (err) {
+    console.error("Error fetching location:", err);
+    return { city: null, country: null }; // fail gracefully
+  }
+}
+
 async function userRegister(
   firstName: string,
   lastName: string,
   email: string,
   password: string,
+  latitude: number,
+  longitude: number
 ) {
+  // console.log(latitude, longitude);
   const encryptedPassword = await encryptPassword(password);
-  const userData = await createNewUser(firstName, lastName, email, encryptedPassword);
+  const { city, country } = await getLocationFromLatLng(latitude, longitude);
+  // console.log(city, country);
+  const existingUser = await getUserByEmail(email);
+  if (existingUser) {
+    const err: HttpError = new Error("Email already in use");
+    err.status = 409;
+    throw err;
+  }
+  const userData = await createNewUser(firstName, lastName, email, encryptedPassword, city, country);
   const accessToken = generateToken(userData.id);
   const refreshToken = await generateRefreshToken(userData.id);
   return {

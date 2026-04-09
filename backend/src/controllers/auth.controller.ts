@@ -10,9 +10,6 @@ if (process.env.ENV !== "production") {
   configDotenv({ path: "../../../.env" });
 }
 
-
-// Store all refresh tokens in a db when db integrated
-
 async function login(req: Request, res: Response, next: NextFunction) {
     if (
       !req.body ||
@@ -29,6 +26,7 @@ async function login(req: Request, res: Response, next: NextFunction) {
       req.body.email,
       req.body.password,
     );
+
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.ENV === "production",
@@ -36,14 +34,20 @@ async function login(req: Request, res: Response, next: NextFunction) {
       maxAge: 7 * 24 * 3600000, // 7 days
       path: "/"
     });
-    res.status(200).json({ message: "Login successful", user, accessToken });
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: process.env.ENV === "production",
+      sameSite: process.env.ENV === "production" ? "strict" : "lax",
+      maxAge: 7 * 24 * 3600000, // 7 days
+    })
+    res.status(200).json({ message: "Login successful", user });
   } catch (error: any) {
     next(error);
   }
 }
 
 async function register(req: Request, res: Response, next: NextFunction) {
-  if ( !req.body || !req.body.firstName || !req.body.lastName || !req.body.email || !req.body.password) {
+  if (!req.body.firstName || !req.body.lastName || !req.body.email || !req.body.password || !req.body.latitude || !req.body.longitude) {
     const err: HttpError = new Error("Missing required fields");
     err.status = 400;
     return next(err);
@@ -55,6 +59,8 @@ async function register(req: Request, res: Response, next: NextFunction) {
       req.body.lastName,
       req.body.email,
       req.body.password,
+      req.body.latitude,
+      req.body.longitude
     );
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
@@ -63,9 +69,16 @@ async function register(req: Request, res: Response, next: NextFunction) {
       maxAge: 7 * 24 * 3600000, // 7 days
       path: "/"
     });
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: process.env.ENV === "production",
+      sameSite: process.env.ENV === "production" ? "strict" : "lax",
+      maxAge: 7 * 24 * 3600000, // 7 days
+      path: "/"
+    });
     return res
       .status(201)
-      .json({ message: "User registered successfully", user, accessToken });
+      .json({ message: "User registered successfully", user });
   } catch (error) {
     next(error);
   }
@@ -81,13 +94,20 @@ async function logout(req: Request, res: Response, next: NextFunction) {
     }
     // Delete refresh token from db when db integrated
 
-    // clear refresh token cookie
+    // clear refresh token cookie and access token cookie
     res.clearCookie("refreshToken", {
       httpOnly: true,
       secure: process.env.ENV === "production",
       sameSite: process.env.ENV === "production" ? "strict" : "lax",
       path: "/"
     });
+    res.clearCookie("accessToken", {
+      httpOnly: true,
+      secure: process.env.ENV === "production",
+      sameSite: process.env.ENV === "production" ? "strict" : "lax",
+      path: "/"
+    });
+
 
     res.status(200).json({ message: "Logout successful" });
   } catch (error) {
@@ -99,7 +119,13 @@ async function refreshToken(req: Request, res: Response, next: NextFunction) {
   try {
     // console.log(req.cookies.refreshToken)
     const {accessToken, user} = await verifyRefreshToken(req.cookies.refreshToken);
-    res.status(200).json({ message: "Access token refreshed", accessToken, user });
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: process.env.ENV === "production",
+      sameSite: process.env.ENV === "production" ? "strict" : "lax",
+      maxAge: 7 * 24 * 3600000, // 7 days
+    })
+    res.status(200).json({ message: "Access token refreshed", user });
   } catch (error) {
     // console.log(error)
     next(error);
