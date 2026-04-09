@@ -75,7 +75,7 @@ export default function ArithmeticPuzzle() {
       );
       // Process the data and dispatch to the reducer
       const result: SessionsResponse = await response.json();
-      console.log("Fetched data:", result);
+      // console.log("Fetched data:", result);
       dispatch({
         type: "setAverages",
         payload: {
