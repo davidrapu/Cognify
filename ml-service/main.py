@@ -20,11 +20,11 @@ class GameData(BaseModel):
     memory_score: float
     attention_score: float
     problem_solving_score: float
+    quiz_score: float
 @app.post("/predict")
 def predict_cognitive_score(data: GameData):
-    print(f"Received data: {data}")
     try:
-        features = np.array([[data.reaction_score, data.game_score, data.accuracy, data.stroop_error_rate, data.stroop_accuracy, data.go_nogo_accuracy, data.go_nogo_error_rate, data.memory_score, data.attention_score, data.problem_solving_score]])
+        features = np.array([[data.reaction_score, data.game_score, data.accuracy, data.stroop_error_rate, data.stroop_accuracy, data.go_nogo_accuracy, data.go_nogo_error_rate, data.memory_score, data.attention_score, data.problem_solving_score, data.quiz_score]])
 
         predicted_score = int(model.predict(features)[0])
 

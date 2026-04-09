@@ -125,7 +125,7 @@ function getDailyRecommendations(
   const otherGameNames = domainRankings
     .slice(1, 3)
     .map((d) => domainToGames[d.domain][0]);
-  console.log("Other Game Names:",otherGameNames)
+  // console.log("Other Game Names:",otherGameNames)
   return {
     featured: featuredGameName,
     others: otherGameNames,
@@ -320,6 +320,7 @@ async function getAnalyticsData(userId: string) {
         memory_score: memoryScore,
         attention_score: attentionScore,
         problem_solving_score: problemSolvingScore,
+        quiz_score: bestQuizScore,
       }),
     },
   );
