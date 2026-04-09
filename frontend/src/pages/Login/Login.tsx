@@ -47,10 +47,6 @@ export default function Login() {
 
     return () => clearTimeout(timer);
   }, [error])
-
-  useEffect(() => {
-    console.log(acceptedCookies);
-  }, [])
   
   return (
     <>
