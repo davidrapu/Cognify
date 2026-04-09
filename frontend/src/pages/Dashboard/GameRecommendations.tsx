@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Play } from "@/components/icons";
 import { type LucideIcon } from "lucide-react";
 import ActivityCard from "./ActivityCard";
+import {useNavigate } from "react-router";
 
 type Game = {
   name: string;
@@ -19,6 +20,7 @@ type GameRecommendationProps = {
 }
 
 export default function GameRecommendations({ featuredGame, otherGames } : GameRecommendationProps) {
+  const navigate = useNavigate()
   return (
     <div className="flex gap-x-4 min-h-120 max-h-150">
       {/* main game */}
@@ -43,7 +45,7 @@ export default function GameRecommendations({ featuredGame, otherGames } : GameR
             </p>
           </div>
           <button
-            onClick={() => {}}
+            onClick={() => {navigate(featuredGame.location)}}
             className="bg-white text-primary w-16 h-16 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg shrink-0 cursor-pointer"
           >
             <Play className="w-8 h-8 fill-primary" />
