@@ -1,7 +1,8 @@
 import { type QuizSessionDataType } from "../types/dataTypes";
 const {createNewQuizSession} = require("../database/repositories/quizSession.repository");
+const {getUserById} = require("../database/repositories/user.repository");
 
-function generateQuiz() {
+async function generateQuiz(userId: string) {
   // pick random word set for registration/recall
   const wordSets = [
     ["Apple", "Chair", "River"],
@@ -47,6 +48,10 @@ function generateQuiz() {
       Math.floor(Math.random() * multipleChoiceOptions.length)
     ];
 
+    const user = await getUserById(userId);
+    const city = user?.city || "";
+    const country = user?.country || "";
+
   return {
     wordSet, // stored server side to validate recall later
     questions: [
@@ -58,6 +63,7 @@ function generateQuiz() {
         type: "year",
         inputType: "number",
         points: 1,
+        comment: "Type the current year in YYYY format e.g. 1990",
       },
       {
         id: 2,
@@ -66,6 +72,7 @@ function generateQuiz() {
         type: "month",
         inputType: "text",
         points: 1,
+        comment: "Type the full month name",
       },
       {
         id: 3,
@@ -74,6 +81,7 @@ function generateQuiz() {
         type: "day",
         inputType: "text",
         points: 1,
+        comment: "Type the full day name",
       },
       {
         id: 4,
@@ -82,6 +90,7 @@ function generateQuiz() {
         type: "date",
         inputType: "text",
         points: 1,
+        comment: "Type the date in DD/MM/YYYY format e.g. 07/04/1990",
       },
       {
         id: 5,
@@ -90,6 +99,7 @@ function generateQuiz() {
         type: "season",
         inputType: "text",
         points: 2,
+        comment: "Type the current season",
       },
       {
         id: 6,
@@ -98,6 +108,8 @@ function generateQuiz() {
         type: "country",
         inputType: "text",
         points: 2,
+        answer: country,
+        comment: "Type the full name of the country you are in",
       },
       {
         id: 7,
@@ -106,6 +118,8 @@ function generateQuiz() {
         type: "city",
         inputType: "text",
         points: 2,
+        answer: city,
+        comment: "Type the name of the city or town you are in",
       },
 
       // registration - randomised words
@@ -118,6 +132,7 @@ function generateQuiz() {
         inputType: "text",
         points: 3,
         answer: wordSet,
+        comment: "Type the three words separated by commas e.g. A, B, C",
       },
 
       // calculation - always same
@@ -128,6 +143,8 @@ function generateQuiz() {
         type: "subtraction",
         inputType: "text",
         points: 5,
+        comment:
+          "Type each result separated by a comma e.g. 15, 14, 13, 12, 11",
       },
 
       // language - randomised
@@ -138,6 +155,7 @@ function generateQuiz() {
         type: "object_naming",
         inputType: "text",
         points: 1,
+        comment: "Type the name of any everyday object",
       },
 
       // recall - same words as registration
@@ -149,6 +167,8 @@ function generateQuiz() {
         inputType: "text",
         points: 3,
         answer: wordSet,
+        comment:
+          "Type the three words in order separated by commas e.g. A, B, C",
       },
 
       {
@@ -158,6 +178,7 @@ function generateQuiz() {
         type: "object_naming",
         inputType: "text",
         points: 1,
+        comment: "Type any object different from your previous answer",
       },
       {
         id: 13,
@@ -167,6 +188,7 @@ function generateQuiz() {
         inputType: "text",
         points: 1,
         answer: sentence,
+        comment: "Type the sentence exactly as shown, including punctuation",
       },
       {
         id: 14,
@@ -176,6 +198,7 @@ function generateQuiz() {
         type: "action",
         inputType: "action",
         points: 3,
+        comment: "Click the button, wait two seconds, then click it again",
       },
       {
         id: 15,
@@ -184,6 +207,7 @@ function generateQuiz() {
         type: "sentence_generation",
         inputType: "textarea",
         points: 1,
+        comment: "Write any grammatically complete sentence of your choice",
       },
       {
         id: 16,
@@ -194,6 +218,7 @@ function generateQuiz() {
         options: mcq.options,
         points: 2,
         answer: mcq.answer,
+        comment: "Select the correct option from the choices below",
       },
     ],
   };

@@ -13,6 +13,7 @@ type Question = {
   question: string;
   type: string;
   answer?: string[];
+  comment: string;
 };
 
 export default function Quiz() {
@@ -27,9 +28,11 @@ export default function Quiz() {
       setIsLoading(true);
       try {
         const res = await apiFetch("/quiz");
+
         if (!res.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error("Failed to fetch quiz questions from server");
         }
+
         const data = await res.json();
         setQuizData(data.questions);
         setWordSet(data.wordSet);
@@ -51,7 +54,12 @@ export default function Quiz() {
             <Nav />
           </header>
           <main className="flex-1 flex items-center justify-center">
-            <QuizCard state={state} dispatch={dispatch} quizData={quizData} wordSet={wordSet} />
+            <QuizCard
+              state={state}
+              dispatch={dispatch}
+              quizData={quizData}
+              wordSet={wordSet}
+            />
           </main>
         </>
       )}

@@ -31,6 +31,7 @@ type Question = {
   question: string;
   type: string;
   answer?: string[]
+  comment: string;
 }
 interface QuizCardProps {
   quizData: Question[];
@@ -66,9 +67,9 @@ export default function QuizCard({ state, dispatch, quizData, wordSet }: QuizCar
       type: "increaseTotalPoints",
       payload: score,
     });
-    console.log(categoryScore);
-    // dispatch({ type: "next" });
-    // setUserInput("");
+    console.log("Score for this question:", score, "Total Score:", state.totalPoints + score, "Category Scores:", categoryScore);
+    dispatch({ type: "next" });
+    setUserInput("");
   };
 
   const endQuiz = () => {

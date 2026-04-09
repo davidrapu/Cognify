@@ -234,12 +234,22 @@ export function verifyAnswer(
       } else return 0;
     }
     case "country": {
-      increaseCategory("language", points);
-      return points;
+      if (!answer || typeof answer !== "string") return 0;
+      const correct = userInput.toLowerCase() === answer.toLowerCase();
+      if (correct) {
+        increaseCategory("language", points);
+        return points;
+      }
+      return 0;
     }
     case "city": {
-      increaseCategory("language", points);
-      return points;
+      if (!answer || typeof answer !== "string") return 0;
+      const correct = userInput.toLowerCase() === answer.toLowerCase();
+      if (correct) {
+        increaseCategory("language", points);
+        return points;
+      }
+      return 0;
     }
     case "object_naming": {
       increaseCategory("language", points);

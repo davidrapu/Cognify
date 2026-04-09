@@ -4,7 +4,7 @@ const {generateQuiz, createQuizSession} = require("../services/quiz.service")
 
 async function getQuizData(req: Request, res: Response, next: NextFunction) {
   try {
-    const quizData = generateQuiz();
+    const quizData = await generateQuiz(req.user);
     res.status(200).json(quizData);
   } catch (error) {
     next(error);
