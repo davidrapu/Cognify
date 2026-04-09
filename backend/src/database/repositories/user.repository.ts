@@ -7,12 +7,16 @@ async function createNewUser(
   lastName: string,
   email: string,
   hash: string,
+  city: string,
+  country: string
 ) {
   return prisma.user.create({
     data: {
       firstName,
       lastName,
       email,
+      city,
+      country,
       hash,
     },
     select: {
@@ -20,6 +24,8 @@ async function createNewUser(
       firstName: true,
       lastName: true,
       email: true,
+      city: true,
+      country: true,
     },
   });
 }
@@ -31,6 +37,8 @@ async function getUserByEmail(email: string) {
       id: true,
       firstName: true,
       lastName: true,
+      country: true,
+      city: true,
       email: true,
       hash: true,
     },
@@ -45,6 +53,8 @@ async function getUserById(id: string) {
       firstName: true,
       lastName: true,
       email: true,
+      country: true,
+      city: true,
     },
   });
 }
@@ -59,10 +69,11 @@ async function deleteUserByEmail(email: string) {
   });
 }
 
+
 module.exports = {
   createNewUser,
   getUserByEmail,
   getUserById,
   getUsers,
-  deleteUserByEmail,
+  deleteUserByEmail
 };
