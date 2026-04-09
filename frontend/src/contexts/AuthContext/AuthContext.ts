@@ -5,7 +5,7 @@ type AuthContextType = {
   loggedIn: boolean;
   login: (fetchedUser: User) => void;
   logout: () => void;
-  refresh: () => Promise<string | null>;
+  refresh: () => Promise<boolean>;
   user: User;
   setAcceptedCookies: (accepted: boolean) => void;
   acceptedCookies: boolean;
@@ -21,7 +21,7 @@ const defaultAuthContext: AuthContextType = {
   loggedIn: false,
   login: () => null,
   logout: () => null,
-  refresh: () => Promise.resolve(null),
+  refresh: () => Promise.resolve(false),
   setAcceptedCookies: () => null,
   acceptedCookies: false,
   user: {} as User,

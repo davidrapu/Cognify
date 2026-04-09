@@ -48,16 +48,16 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
         const data = await response.json();
         setUser(data.user);
         setLoggedIn(true);
-        return data.accessToken;
+        return true;
       } else {
         setUser({} as User);
         setLoggedIn(false);
-        return null
+        return false
       }
     } catch {
       setUser({} as User);
       setLoggedIn(false);
-      return null
+      return false
     }
   };
 
