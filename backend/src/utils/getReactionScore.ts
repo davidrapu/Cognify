@@ -27,10 +27,6 @@ export function getReactionScore(
 ): number {
   const bounds = reactionBoundsMap[gameName];
 
-  if (!bounds) {
-    throw new Error(`No reaction bounds defined for game ${gameName}`);
-  }
-
   const { min, max } = bounds;
 
   // Normalize and invert (lower RT is better)
