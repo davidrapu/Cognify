@@ -1,8 +1,10 @@
 import { type QuizSessionDataType } from "../types/dataTypes";
-const {createNewQuizSession} = require("../database/repositories/quizSession.repository");
-const {getUserById} = require("../database/repositories/user.repository");
+const {
+  createNewQuizSession,
+} = require("../database/repositories/quizSession.repository");
+const { getUserById } = require("../database/repositories/user.repository");
 
-async function generateQuiz(userId: string) {
+async function generateQuiz(city: string, country: string) {
   // pick random word set for registration/recall
   const wordSets = [
     ["Apple", "Chair", "River"],
@@ -48,9 +50,6 @@ async function generateQuiz(userId: string) {
       Math.floor(Math.random() * multipleChoiceOptions.length)
     ];
 
-    const user = await getUserById(userId);
-    const city = user?.city || "";
-    const country = user?.country || "";
 
   return {
     wordSet, // stored server side to validate recall later
@@ -227,7 +226,7 @@ async function generateQuiz(userId: string) {
 function createQuizSession(score: number, userId: string) {
   const sessionData: QuizSessionDataType = {
     userId,
-    score
+    score,
   };
   createNewQuizSession(sessionData, userId);
 }

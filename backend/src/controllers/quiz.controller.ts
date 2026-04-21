@@ -3,8 +3,15 @@ import {Request, Response, NextFunction} from "express";
 const {generateQuiz, createQuizSession} = require("../services/quiz.service")
 
 async function getQuizData(req: Request, res: Response, next: NextFunction) {
+  const {city, country} = req.query;
   try {
-    const quizData = await generateQuiz(req.user);
+    if (!city || !country) {
+      const err: HttpError = new Error("Invalid request query. 'city' and 'country' are required.");
+      err.status = 400;
+      throw err;
+    }
+
+    const quizData = await generateQuiz(city, country);
     res.status(200).json(quizData);
   } catch (error) {
     next(error);
