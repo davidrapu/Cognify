@@ -29,6 +29,7 @@ export default function Active({
   const [refreshConsecutiveCorrect, setRefreshConsecutiveCorrect] =
     useState<number>(0);
   const [consecutiveCorrect, setConsecutiveCorrectValue] = useState<number>(0);
+  const [consecutiveIncorrect, setConsecutiveIncorrect] = useState<number>(0);
   const [digitsToRemember, setDigitsToRemember] = useState<number>(3);
 
   const reset = () => {
@@ -51,6 +52,7 @@ export default function Active({
       const newRefreshConsecutiveCorrect = refreshConsecutiveCorrect + 1;
       const newConsecutiveCorrect = consecutiveCorrect + 1;
 
+
       // Update the highest consecutive correct count if the new consecutive correct count is greater and set the new consecutive correct count
       if (newConsecutiveCorrect > state.highestConsecutiveCorrect) {
         dispatch({
@@ -59,6 +61,7 @@ export default function Active({
         });
       }
       setConsecutiveCorrectValue(newConsecutiveCorrect);
+      setConsecutiveIncorrect(0);
 
       // If the user has reached 4 consecutive correct answers, increase the digits to remember by 1,
       // reset the refresh consecutive correct count, and generate new digits.
@@ -72,15 +75,22 @@ export default function Active({
         setRefreshConsecutiveCorrect(newRefreshConsecutiveCorrect);
         setCurrentDigits(generateRandomDigits(digitsToRemember));
       }
-      console.log("Correct!");
+      // console.log("Correct!");
     } else {
       // If the user is incorrect, reduce the total allowed tries by 1, increment total incorrect by 1, add the time taken for this attempt to the totalTime array with correct: false, reset the refresh consecutive correct count and consecutive correct count, and generate new digits.
       dispatch({ type: "incrementIncorrect" });
       dispatch({ type: "addTimeTaken", payload: { time: reaction, correct: false } }); // Add the time taken for this attempt to the totalTime array with correct: false
       setRefreshConsecutiveCorrect(0);
       setConsecutiveCorrectValue(0);
+      setConsecutiveIncorrect(prev => prev + 1);
+      if (consecutiveIncorrect + 1 >= 2) {
+        // If the user has 2 or more consecutive incorrect answers, decrease the digits to remember by 1 (but not below 3), and reset the consecutive incorrect count
+        const newDigits = Math.max(3, digitsToRemember - 1);
+        setDigitsToRemember(newDigits);
+        setConsecutiveIncorrect(0);
+      }
       setCurrentDigits(generateRandomDigits(digitsToRemember));
-      console.log("Incorrect!");
+      // console.log("Incorrect!");
     }
     reset();
   };
