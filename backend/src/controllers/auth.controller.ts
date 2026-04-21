@@ -3,6 +3,7 @@ const {
   userLogin,
   userRegister,
   verifyRefreshToken,
+  logoutUser
 } = require("../services/auth.service");
 import type { HttpError } from "../types/errorsType";
 const { configDotenv } = require("dotenv");
@@ -47,7 +48,8 @@ async function login(req: Request, res: Response, next: NextFunction) {
 }
 
 async function register(req: Request, res: Response, next: NextFunction) {
-  if (!req.body.firstName || !req.body.lastName || !req.body.email || !req.body.password || !req.body.latitude || !req.body.longitude) {
+//   console.log(req.ip);
+  if (!req.body.firstName || !req.body.lastName || !req.body.email || !req.body.password) {
     const err: HttpError = new Error("Missing required fields");
     err.status = 400;
     return next(err);
@@ -60,7 +62,8 @@ async function register(req: Request, res: Response, next: NextFunction) {
       req.body.email,
       req.body.password,
       req.body.latitude,
-      req.body.longitude
+      req.body.longitude,
+      req.ip
     );
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
@@ -93,7 +96,7 @@ async function logout(req: Request, res: Response, next: NextFunction) {
       throw err;
     }
     // Delete refresh token from db when db integrated
-
+    await logoutUser(refreshToken);
     // clear refresh token cookie and access token cookie
     res.clearCookie("refreshToken", {
       httpOnly: true,

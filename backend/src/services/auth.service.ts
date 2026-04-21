@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { createNewUser, getUserByEmail, getUserById } = require("../database/repositories/user.repository");
-const { createRefreshToken, getRefreshToken } = require("../database/repositories/refreshToken.repository");
+const { createRefreshToken, getRefreshToken, deleteRefreshToken} = require("../database/repositories/refreshToken.repository");
 const bcrypt = require("bcrypt");
 import type { HttpError } from "../types/errorsType";
 
@@ -42,19 +42,43 @@ async function getLocationFromLatLng(latitude: number, longitude: number) {
     console.error("Error fetching location:", err);
     return { city: null, country: null }; // fail gracefully
   }
-}
+};
+async function getLocationFromIP (ip:string){
+  const response = await fetch(`http://ip-api.com/json/${ip}`);
+  const data = await response.json();
+
+  return {
+    country: data.country,
+    city: data.city,
+  };
+};
 
 async function userRegister(
   firstName: string,
   lastName: string,
   email: string,
   password: string,
-  latitude: number,
-  longitude: number
+  latitude?: number,
+  longitude?: number,
+  ip?: string
 ) {
+
   // console.log(latitude, longitude);
   const encryptedPassword = await encryptPassword(password);
-  const { city, country } = await getLocationFromLatLng(latitude, longitude);
+  let city = null;
+  let country = null;
+  console.log("Latitude and Longitude:", latitude, longitude, "IP:", ip);
+
+  if (latitude && longitude) {
+    const location = await getLocationFromLatLng(latitude, longitude);
+    city = location.city;
+    country = location.country;
+  } else if (ip) {
+    const location = await getLocationFromIP(ip);
+    city = location.city;
+    country = location.country;
+  }
+
   // console.log(city, country);
   const existingUser = await getUserByEmail(email);
   if (existingUser) {
@@ -135,7 +159,9 @@ async function verifyRefreshToken(refreshToken: string, userId: string) {
   return { accessToken, user };
 }
 
-async function logout() {}
+async function logoutUser(refreshToken: string) {
+  await deleteRefreshToken(refreshToken);
+}
 
 module.exports = {
   generateToken,
@@ -143,4 +169,5 @@ module.exports = {
   userLogin,
   userRegister,
   verifyRefreshToken,
+  logoutUser
 };
