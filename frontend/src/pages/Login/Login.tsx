@@ -15,7 +15,7 @@ export default function Login() {
   const [error, setError] = useState<boolean>(false);
   const apiFetch = useApiFetch()
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     try{
       const res = await apiFetch("/auth/login", {

@@ -33,7 +33,7 @@ export default function Signup() {
     setConfirmPassword("");
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -64,7 +64,7 @@ export default function Signup() {
       login(data.user);
       navigate("/");
     } catch (error) {
-      console.error("Error during signup:", error);
+      console.error("Error during registration:", error);
       setError(true);
     }
   };
@@ -80,16 +80,10 @@ export default function Signup() {
     // setAcceptedLocation(false);
     if (err.code === err.PERMISSION_DENIED) {
       console.log("User denied the request for Geolocation.");
-      alert(
-        "Geolocation permission is required for certain features of this app. Please allow access to use them.",
-      );
       return;
     }
 
     console.error("An error occurred while fetching geolocation data.");
-    alert(
-      "An error occurred while fetching geolocation data.",
-    );
   };
 
   useEffect(() => {
