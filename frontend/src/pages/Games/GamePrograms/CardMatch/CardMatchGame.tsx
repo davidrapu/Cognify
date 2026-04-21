@@ -9,6 +9,7 @@ import type { SessionsResponse } from "@/types/session.fetched";
 import GameIntroPage from "@/components/GameIntroPage";
 import { useLeveledGameReducer } from "@/hooks/useLeveledGameReducer";
 import type { GameHistoryEntry } from "@/types/gameHistory";
+import PageLoader from "@/components/PageLoader";
 
 const difficultyConfig = {
   easy: { pairs: 8, cols: 4 },
@@ -22,48 +23,15 @@ export default function CardMatchGame() {
   const { pairs, cols } = difficultyConfig[s];
   const apiFetch = useApiFetch();
   const [history, setHistory] = useState<GameHistoryEntry>([] as GameHistoryEntry);
+  const [loading, setLoading] = useState(false);
 
   const playAgain = async () => {
-    // send data to db
-    const response = await apiFetch("/sessions", {
-      method: "POST",
-      body: JSON.stringify({
-        gameName: GameName.CARD_MATCH,
-        correct: state.totalCorrect,
-        incorrect: state.totalIncorrect,
-        totalTime: state.totalTime,
-        domain: Domain.MEMORY,
-      }),
-    });
-
-    if (!response.ok) {
-      console.error("Failed to save session data");
-      return;
-    }
-
     // reset game
     // start new game
     dispatch({ type: "resetGame" });
   };
 
   const home = async () => {
-    // send data to db
-    const response = await apiFetch("/sessions/", {
-      method: "POST",
-      body: JSON.stringify({
-        gameName: GameName.CARD_MATCH,
-        correct: state.totalCorrect,
-        incorrect: state.totalIncorrect,
-        totalTime: state.totalTime,
-        domain: Domain.MEMORY,
-      }),
-    });
-
-    if (!response.ok) {
-      console.error("Failed to save session data");
-      return;
-    }
-
     // reset game
     // start new game
     dispatch({ type: "home" });
@@ -74,36 +42,68 @@ export default function CardMatchGame() {
     if (state.gameState !== "home") return;
     // fetch user performance data from the API and dispatch to the reducer
     const fetchData = async () => {
-      const response = await apiFetch("/sessions/card-match/", {
-        method: "GET",
-      });
-      // Process the data and dispatch to the reducer
-      const result: SessionsResponse = await response.json();
-      // console.log("Fetched data:", result);
-      dispatch({
-        type: "setAverages",
-        payload: {
-          averageScore: result.data.stats.averageScore,
-          averageAccuracy: result.data.stats.accuracy,
-        },
-      });
-      dispatch({ type: "setHighScore", payload: result.data.stats.highscore });
-      const historyData = result.data.sessions.map((session) => ({
-        id: session.id,
-        date: new Date(session.createdAt),
-        score: session.correct,
-        accuracy:
-          session.correct + session.incorrect > 0
-            ? Math.round(
-                (session.correct / (session.correct + session.incorrect)) * 100,
-              )
-            : 0,
-        reaction: session.reactionTimeAvg,
-      }));
-      setHistory(historyData);
+      try{
+        setLoading(true);
+        const response = await apiFetch("/sessions/card-match/", {
+          method: "GET",
+        });
+        // Process the data and dispatch to the reducer
+        const result: SessionsResponse = await response.json();
+        // console.log("Fetched data:", result);
+        dispatch({
+          type: "setAverages",
+          payload: {
+            averageScore: result.data.stats.averageScore,
+            averageAccuracy: result.data.stats.accuracy,
+          },
+        });
+        dispatch({ type: "setHighScore", payload: result.data.stats.highscore });
+        const historyData = result.data.sessions.map((session) => ({
+          id: session.id,
+          date: new Date(session.createdAt),
+          score: session.correct,
+          accuracy:
+            session.correct + session.incorrect > 0
+              ? Math.round(
+                  (session.correct / (session.correct + session.incorrect)) * 100,
+                )
+              : 0,
+          reaction: session.reactionTimeAvg,
+        }));
+        setHistory(historyData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchData();
-  }, [state.gameState]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [state.gameState]); // eslint-disable-line
+
+  // send data to the db when the game is completed
+  useEffect(() => {
+    if (state.gameState !== "completed") return;
+
+    const sendData = async () => {
+      try{
+        setLoading(true);
+        await apiFetch("/sessions/", {
+          method: "POST",
+          body: JSON.stringify({
+            gameName: GameName.CARD_MATCH,
+            correct: state.totalCorrect,
+            incorrect: state.totalIncorrect,
+            totalTime: state.totalTime,
+            domain: Domain.MEMORY,
+          }),
+        });
+      } catch (error) {
+        console.error("Error sending data:", error);
+
+      } finally {setLoading(false);}
+    }
+    sendData();
+  }, [state.gameState]) // eslint-disable-line
 
   useEffect(() => {
     if (state.matchedCards === pairs) {
@@ -123,7 +123,7 @@ export default function CardMatchGame() {
     <>
       {/* Intro, Active, and Complete should all use the same box */}
       <main>
-        {state.gameState === "home" && (
+        {!loading && state.gameState === "home" && (
           <GameHomePage
             title="Card Match"
             averageAccuracy={state.averageAccuracy}
@@ -153,7 +153,7 @@ export default function CardMatchGame() {
             history={history}
           />
         )}
-        {state.gameState === "intro" && (
+        {!loading && state.gameState === "intro" && (
           <GameIntroPage
             includeLevelSelector
             setGameLevel={setGameLevel}
@@ -166,10 +166,10 @@ export default function CardMatchGame() {
             ]}
           />
         )}
-        {state.gameState === "active" && (
+        {!loading && state.gameState === "active" && (
           <Active state={state} pairs={pairs} cols={cols} dispatch={dispatch} />
         )}
-        {state.gameState === "completed" && (
+        {!loading && state.gameState === "completed" && (
           <Completed
             goHome={() => home()}
             highestConsecutiveCorrect={state.highestConsecutiveCorrect}
@@ -180,6 +180,7 @@ export default function CardMatchGame() {
             totalTime={state.totalTime}
           />
         )}
+        {loading && <PageLoader />}
       </main>
     </>
   );

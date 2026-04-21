@@ -9,52 +9,22 @@ import { useApiFetch } from "@/hooks/useApiFetch";
 import { GameName } from "@/enums/gameName";
 import { Domain } from "@/enums/domain";
 import type { SessionsResponse } from "@/types/session.fetched";
+import PageLoader from "@/components/PageLoader";
 
 export default function PatternPuzzle() {
   const [state, dispatch] = useGameReducer();
-  const [history, setHistory] = useState<GameHistoryEntry>([] as GameHistoryEntry);
-  const apiFetch = useApiFetch()
+  const [history, setHistory] = useState<GameHistoryEntry>(
+    [] as GameHistoryEntry,
+  );
+  const apiFetch = useApiFetch();
+  const [loading, setLoading] = useState(false);
 
   const playAgain = async () => {
-    // send data to db
-    const response = await apiFetch("/sessions", {
-      method: "POST",
-      body: JSON.stringify({
-        gameName: GameName.PATTERN_RECOGNITION,
-        correct: state.totalCorrect,
-        incorrect: state.totalIncorrect,
-        totalTime: state.totalTime,
-        domain: Domain.PROBLEM_SOLVING,
-      }),
-    });
-
-    if (!response.ok) {
-      console.error("Failed to save session data");
-      return;
-    }
-
     // reset game
     // start new game
     dispatch({ type: "resetGame" });
   };
   const returnHome = async () => {
-    // send data to db
-    const response = await apiFetch("/sessions", {
-      method: "POST",
-      body: JSON.stringify({
-        gameName: GameName.PATTERN_RECOGNITION,
-        correct: state.totalCorrect,
-        incorrect: state.totalIncorrect,
-        totalTime: state.totalTime,
-        domain: Domain.PROBLEM_SOLVING,
-      }),
-    });
-
-    if (!response.ok) {
-      console.error("Failed to save session data");
-      return;
-    }
-
     // go home
     dispatch({ type: "home" });
   };
@@ -65,40 +35,77 @@ export default function PatternPuzzle() {
 
     // fetch user performance data from the API and dispatch to the reducer
     const fetchData = async () => {
-      const response = await apiFetch("/sessions/pattern-recognition/", {
-        method: "GET",
-      });
-      // Process the data and dispatch to the reducer
-      const result: SessionsResponse = await response.json();
-      // console.log("Fetched data:", result);
-      dispatch({
-        type: "setAverages",
-        payload: {
-          averageScore: result.data.stats.averageScore,
-          averageAccuracy: result.data.stats.accuracy,
-        },
-      });
-      dispatch({ type: "setHighScore", payload: result.data.stats.highscore });
-      const historyData = result.data.sessions.map((session) => ({
-        id: session.id,
-        date: new Date(session.createdAt),
-        score: session.correct,
-        accuracy:
-          session.correct + session.incorrect > 0
-            ? Math.round(
-                (session.correct / (session.correct + session.incorrect)) * 100,
-              )
-            : 0,
-        reaction: session.reactionTimeAvg,
-      }));
-      setHistory(historyData);
+      try {
+        setLoading(true);
+        const response = await apiFetch("/sessions/pattern-recognition/", {
+          method: "GET",
+        });
+        // Process the data and dispatch to the reducer
+        const result: SessionsResponse = await response.json();
+        // console.log("Fetched data:", result);
+        dispatch({
+          type: "setAverages",
+          payload: {
+            averageScore: result.data.stats.averageScore,
+            averageAccuracy: result.data.stats.accuracy,
+          },
+        });
+        dispatch({
+          type: "setHighScore",
+          payload: result.data.stats.highscore,
+        });
+        const historyData = result.data.sessions.map((session) => ({
+          id: session.id,
+          date: new Date(session.createdAt),
+          score: session.correct,
+          accuracy:
+            session.correct + session.incorrect > 0
+              ? Math.round(
+                  (session.correct / (session.correct + session.incorrect)) *
+                    100,
+                )
+              : 0,
+          reaction: session.reactionTimeAvg,
+        }));
+        setHistory(historyData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchData();
-  }, [state.gameState]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [state.gameState]); // eslint-disable-line
+
+  // send data to db when game is completed
+  useEffect(() => {
+    if (state.gameState !== "completed") return;
+
+    const sendData = async () => {
+      try {
+        setLoading(true);
+        await apiFetch("/sessions", {
+          method: "POST",
+          body: JSON.stringify({
+            gameName: GameName.PATTERN_RECOGNITION,
+            correct: state.totalCorrect,
+            incorrect: state.totalIncorrect,
+            totalTime: state.totalTime,
+            domain: Domain.PROBLEM_SOLVING,
+          }),
+        });
+      } catch (error) {
+        console.error("Error sending data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    sendData();
+  }, [state.gameState]); // eslint-disable-line
 
   return (
     <>
-      {state.gameState === "home" && (
+      {!loading && state.gameState === "home" && (
         <GameHomePage
           averageAccuracy={state.averageAccuracy}
           averageScore={state.averageScore}
@@ -136,7 +143,7 @@ export default function PatternPuzzle() {
           title="Pattern Puzzle"
         />
       )}
-      {state.gameState === "intro" && (
+      {!loading && state.gameState === "intro" && (
         <GameIntroPage
           instructions={[
             "A sequence of colors will be displayed with one missing element marked by a question mark.",
@@ -148,10 +155,21 @@ export default function PatternPuzzle() {
           }}
         />
       )}
-      {state.gameState === "active" && (
+      {!loading && state.gameState === "active" && (
         <Active state={state} dispatch={dispatch} />
       )}
-      {state.gameState === "completed" && <Completed goHome={returnHome} highestConsecutiveCorrect={state.highestConsecutiveCorrect} playAgain={playAgain} totalAttempts={state.totalAttempts} totalCorrect={state.totalCorrect} totalIncorrect={state.totalIncorrect} totalTime={state.totalTime} />}
+      {!loading && state.gameState === "completed" && (
+        <Completed
+          goHome={returnHome}
+          highestConsecutiveCorrect={state.highestConsecutiveCorrect}
+          playAgain={playAgain}
+          totalAttempts={state.totalAttempts}
+          totalCorrect={state.totalCorrect}
+          totalIncorrect={state.totalIncorrect}
+          totalTime={state.totalTime}
+        />
+      )}
+      {loading && <PageLoader />}
     </>
   );
 }

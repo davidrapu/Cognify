@@ -9,6 +9,7 @@ import { Domain } from "@/enums/domain";
 import { GameName } from "@/enums/gameName";
 import type { SessionsResponse } from "@/types/session.fetched";
 import Completed from "@/components/CompletedGameSession";
+import PageLoader from "@/components/PageLoader";
 
 export default function ArithmeticPuzzle() {
   const [state, dispatch] = useGameReducer();
@@ -16,47 +17,13 @@ export default function ArithmeticPuzzle() {
     [] as GameHistoryEntry,
   );
   const apiFetch = useApiFetch();
+  const [loading, setLoading] = useState(false);
 
-  const playAgain = async () => {
-    // send data to db
-    const response = await apiFetch("/sessions", {
-      method: "POST",
-      body: JSON.stringify({
-        gameName: GameName.ARITHMETIC_PATTERN_RECOGNITION,
-        correct: state.totalCorrect,
-        incorrect: state.totalIncorrect,
-        totalTime: state.totalTime,
-        domain: Domain.PROBLEM_SOLVING,
-      }),
-    });
-
-    if (!response.ok) {
-      console.error("Failed to save session data");
-      return;
-    }
-
-    // reset game
+  const playAgain = () => {
     // start new game
     dispatch({ type: "resetGame" });
   };
-  const returnHome = async () => {
-    // send data to db
-    const response = await apiFetch("/sessions", {
-      method: "POST",
-      body: JSON.stringify({
-        gameName: GameName.ARITHMETIC_PATTERN_RECOGNITION,
-        correct: state.totalCorrect,
-        incorrect: state.totalIncorrect,
-        totalTime: state.totalTime,
-        domain: Domain.PROBLEM_SOLVING,
-      }),
-    });
-
-    if (!response.ok) {
-      console.error("Failed to save session data");
-      return;
-    }
-
+  const returnHome = () => {
     // go home
     dispatch({ type: "home" });
   };
@@ -67,43 +34,76 @@ export default function ArithmeticPuzzle() {
 
     // fetch user performance data from the API and dispatch to the reducer
     const fetchData = async () => {
-      const response = await apiFetch(
-        "/sessions/arithmetic-pattern-recognition/",
-        {
-          method: "GET",
-        },
-      );
-      // Process the data and dispatch to the reducer
-      const result: SessionsResponse = await response.json();
-      // console.log("Fetched data:", result);
-      dispatch({
-        type: "setAverages",
-        payload: {
-          averageScore: result.data.stats.averageScore,
-          averageAccuracy: result.data.stats.accuracy,
-        },
-      });
-      dispatch({ type: "setHighScore", payload: result.data.stats.highscore });
-      const historyData = result.data.sessions.map((session) => ({
-        id: session.id,
-        date: new Date(session.createdAt),
-        score: session.correct,
-        accuracy:
-          session.correct + session.incorrect > 0
-            ? Math.round(
-                (session.correct / (session.correct + session.incorrect)) * 100,
-              )
-            : 0,
-        reaction: session.reactionTimeAvg,
-      }));
-      setHistory(historyData);
+      try {
+        setLoading(true);
+        const response = await apiFetch(
+          "/sessions/arithmetic-pattern-recognition/",
+          {
+            method: "GET",
+          },
+        );
+        // Process the data and dispatch to the reducer
+        const result: SessionsResponse = await response.json();
+        // console.log("Fetched data:", result);
+        dispatch({
+          type: "setAverages",
+          payload: {
+            averageScore: result.data.stats.averageScore,
+            averageAccuracy: result.data.stats.accuracy,
+          },
+        });
+        dispatch({ type: "setHighScore", payload: result.data.stats.highscore });
+        const historyData = result.data.sessions.map((session) => ({
+          id: session.id,
+          date: new Date(session.createdAt),
+          score: session.correct,
+          accuracy:
+            session.correct + session.incorrect > 0
+              ? Math.round(
+                  (session.correct / (session.correct + session.incorrect)) * 100,
+                )
+              : 0,
+          reaction: session.reactionTimeAvg,
+        }));
+        setHistory(historyData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchData();
   }, [state.gameState]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // sending data to db when game ends
+  useEffect(() => {
+    if (state.gameState !== "completed") return;
+
+    const sendData = async () => {
+      try {
+        setLoading(true);
+        await apiFetch("/sessions", {
+          method: "POST",
+          body: JSON.stringify({
+            gameName: GameName.ARITHMETIC_PATTERN_RECOGNITION,
+            correct: state.totalCorrect,
+            incorrect: state.totalIncorrect,
+            totalTime: state.totalTime,
+            domain: Domain.PROBLEM_SOLVING,
+          }),
+        });
+      } catch (error) {
+        console.error("Error sending data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    sendData();
+  }, [state.gameState]); // eslint-disable-line
+
   return (
     <>
-      {state.gameState === "home" && (
+      {!loading && state.gameState === "home" && (
         <GameHomePage
           averageAccuracy={state.averageAccuracy}
           averageScore={state.averageScore}
@@ -141,7 +141,7 @@ export default function ArithmeticPuzzle() {
           title="Arithmetic Pattern Puzzle"
         />
       )}
-      {state.gameState === "intro" && (
+      {!loading && state.gameState === "intro" && (
         <GameIntroPage
           instructions={[
             "A sequence of numbers will be displayed with one missing value marked by a question mark.",
@@ -153,10 +153,10 @@ export default function ArithmeticPuzzle() {
           }}
         />
       )}
-      {state.gameState === "active" && (
+      {!loading && state.gameState === "active" && (
         <Active state={state} dispatch={dispatch} />
       )}
-      {state.gameState === "completed" && (
+      {!loading && state.gameState === "completed" && (
         <Completed
           goHome={returnHome}
           highestConsecutiveCorrect={state.highestConsecutiveCorrect}
@@ -167,6 +167,7 @@ export default function ArithmeticPuzzle() {
           totalTime={state.totalTime}
         />
       )}
+      {loading && <PageLoader />}
     </>
   );
 }
