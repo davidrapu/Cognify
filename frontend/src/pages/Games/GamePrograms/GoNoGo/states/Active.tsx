@@ -41,7 +41,10 @@ export default function Active({ state, dispatch } : {state: GameState, dispatch
         dispatch({type: "incrementCorrect"})
         setStreak((prev) => prev + 1);
         if (streak + 1 > gameStateRef.current.highestConsecutiveCorrect) {
-          dispatch({type: "setHighScore", payload: streak + 1})
+          dispatch({
+            type: "setHighestConsecutiveCorrect",
+            payload: streak + 1,
+          });
         }
         setSelectionState("wait");
       } else if (stateRef.current === "noGo") {
@@ -71,11 +74,13 @@ export default function Active({ state, dispatch } : {state: GameState, dispatch
 
       const timer = setTimeout(() => {
         setSelectionState("wait");
+        setStreak(prev => prev + 1) // awarding the user for waiting through a no-go
+        dispatch({ type: "incrementCorrect" });
       }, Math.random() * 2000 + 1000); // Random delay between 1-3 seconds
 
       return () => clearTimeout(timer);
     }
-  }, [selectionState]);
+  }, [selectionState, dispatch]);
 
   useEffect(() => {
     if (state.totalIncorrect >= state.totalAllowedTries) {
