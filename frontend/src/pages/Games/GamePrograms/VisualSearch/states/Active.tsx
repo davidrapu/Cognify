@@ -45,10 +45,12 @@ export default function Active({ state, dispatch }: ActiveProps) {
   const [colorData, setColorData] = useState(generateNewColors());
   const [failed, setFailed] = useState<boolean>(false);
   const [streak, setStreak] = useState<number>(0);
+  const [totalTries, setTotalTries] = useState<number>(0);
   const reactonTimeRef = useRef<number>(0);
 
   const handleClick = (index: number) => {
     dispatch({ type: "increaseAttempts" });
+    setTotalTries((prev) => prev + 1);
     const reactionTime = Date.now() - reactonTimeRef.current; // eslint-disable-line
     // set reaction time for current round and reset timer
     dispatch({
@@ -82,6 +84,12 @@ export default function Active({ state, dispatch }: ActiveProps) {
       }
     }
   };
+
+  useEffect(() => { // end game after 30 total tries to prevent infinite play
+    if (totalTries >= 30) {
+      dispatch({ type: "endGame" });
+    }
+  }, [totalTries, dispatch]);
 
   useEffect(() => {
     // Reset failed state and generate new colors after a short delay when user clicks the wrong one

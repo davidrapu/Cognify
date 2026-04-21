@@ -24,7 +24,14 @@ export default function Active({
   const streakRef = useRef<number>(0);
   const startTimeRef = useRef<number>(0);
   const gameStateRef = useRef<GameState>(state);
+  const [totalTries, setTotalTries] = useState<number>(0);
 
+  useEffect(() => {
+    // end game after 50 total tries to prevent infinite play
+    if (totalTries >= 50) {
+      dispatch({ type: "endGame" });
+    }
+  }, [totalTries, dispatch]);
   useEffect(() => {
     gameStateRef.current = state;
   }, [state]);
@@ -40,6 +47,7 @@ export default function Active({
       
 
       dispatch({ type: "increaseAttempts" });
+      setTotalTries((prev) => prev + 1);
       const reaction = Date.now() - startTimeRef.current;
 
       if (displayedState === "left") {
