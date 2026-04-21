@@ -189,7 +189,7 @@ async function getAnalyticsData(userId: string) {
         featured: 'CARD_MATCH',
         others: ['STROOP_TEST', 'CHOICE_REACTION_TIME']
       }, 
-      quizScore: 0,
+      quizScore: bestQuizScore,
     }}
 
   //   "reaction_score","game_score","accuracy","stroop_error_rate","stroop_accuracy","go_nogo_accuracy","go_nogo_error_rate","memory_score","attention_score","problem_solving_score"
@@ -287,9 +287,9 @@ async function getAnalyticsData(userId: string) {
       : 0; // default to mid range if no data
 
   const cognitiveScore =
-    memoryScore * 0.3 +
-    attentionScore * 0.3 +
-    problemSolvingScore * 0.25 +
+    memoryScore * 0.4 +
+    attentionScore * 0.25 +
+    problemSolvingScore * 0.2 +
     reactionScore * 0.15;
   // Setting users daily goal progress - the goal is to complete 2 sessions in each domain per day (8 total)
 
