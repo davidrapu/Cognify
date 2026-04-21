@@ -43,15 +43,27 @@ async function getLocationFromLatLng(latitude: number, longitude: number) {
     return { city: null, country: null }; // fail gracefully
   }
 };
-async function getLocationFromIP (ip:string){
-  const response = await fetch(`http://ip-api.com/json/${ip}`);
-  const data = await response.json();
+async function getLocationFromIP(ip: string) {
+  try {
+    const response = await fetch(`http://ip-api.com/json/${ip}`);
+    const data = await response.json();
 
-  return {
-    country: data.country,
-    city: data.city,
-  };
-};
+    console.log("ip-api response:", data);
+
+    if (data.status === "fail") {
+      console.warn("ip-api failed for IP:", ip, "Reason:", data.message);
+      return { country: null, city: null };
+    }
+
+    return {
+      country: data.country ?? null,
+      city: data.city ?? null,
+    };
+  } catch (error) {
+    console.error("getLocationFromIP error:", error);
+    return { country: null, city: null };
+  }
+}
 
 async function userRegister(
   firstName: string,
@@ -67,7 +79,7 @@ async function userRegister(
   const encryptedPassword = await encryptPassword(password);
   let city = null;
   let country = null;
-  console.log("Latitude and Longitude:", latitude, longitude, "IP:", ip);
+  // console.log("Latitude and Longitude:", latitude, longitude, "IP:", ip);
 
   if (latitude && longitude) {
     const location = await getLocationFromLatLng(latitude, longitude);
@@ -75,6 +87,7 @@ async function userRegister(
     country = location.country;
   } else if (ip) {
     const location = await getLocationFromIP(ip);
+    console.log("Location from IP:", location);
     city = location.city;
     country = location.country;
   }
