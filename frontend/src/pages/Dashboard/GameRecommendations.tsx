@@ -62,6 +62,7 @@ export default function GameRecommendations({ featuredGame, otherGames } : GameR
             description={game.description}
             time={game.time}
             colorClass={game.colorClass}
+            location={game.location}
           />
         ))}
       </div>
