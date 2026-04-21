@@ -20,7 +20,7 @@ export default function CognitiveScore({
     <Card className="flex-1 rounded-sm border-none gap-3">
       <CardHeader className="text-primary text-lg font-bold">
         <div className="flex w-full justify-between items-center">
-          <h3 className="text-md">{level} Cognitive Level Risk</h3>
+          <h3 className="text-md">{level} Cognitive Risk</h3>
           <BrainCog className="size-5" />
         </div>
       </CardHeader>
@@ -40,7 +40,7 @@ export default function CognitiveScore({
                 ) : (
                   <TrendingDown size={12} strokeWidth={2} />
                 )}
-                <p>12%</p>
+                <p>{Math.abs(Math.round(trend * 100) / 100)}%</p>
               </div>
             )}
           </div>
