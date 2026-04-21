@@ -4,6 +4,7 @@ import { useQuizReducer } from "../../hooks/useQuizReducer";
 import { useEffect, useState } from "react";
 import { useApiFetch } from "@/hooks/useApiFetch";
 import PageLoader from "@/components/PageLoader";
+import { getQuizLocation } from "@/utils/getQuizLocation";
 
 type Question = {
   category: string;
@@ -16,6 +17,8 @@ type Question = {
   comment: string;
 };
 
+
+
 export default function Quiz() {
   const [state, dispatch] = useQuizReducer();
   const apiFetch = useApiFetch();
@@ -27,7 +30,11 @@ export default function Quiz() {
     const fetchQuiz = async () => {
       setIsLoading(true);
       try {
-        const res = await apiFetch("/quiz");
+        const location = await getQuizLocation();
+        const res = await apiFetch(
+          `/quiz?city=${location.city}&country=${location.country}`,
+          { method: "GET" },
+        );;
 
         if (!res.ok) {
           throw new Error("Failed to fetch quiz questions from server");
