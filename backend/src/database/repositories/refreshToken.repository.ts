@@ -20,7 +20,16 @@ const getRefreshToken = async (token: string) => {
     })
 }
 
+const deleteRefreshToken = async (token: string) => {
+    return prisma.refreshToken.delete({
+        where: {
+            token
+        }
+    })
+}
+
 module.exports = {
     createRefreshToken,
-    getRefreshToken
+    getRefreshToken,
+    deleteRefreshToken
 }
