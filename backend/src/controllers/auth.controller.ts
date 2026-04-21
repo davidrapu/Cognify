@@ -3,7 +3,7 @@ const {
   userLogin,
   userRegister,
   verifyRefreshToken,
-  logoutUser
+  logoutUser,
 } = require("../services/auth.service");
 import type { HttpError } from "../types/errorsType";
 const { configDotenv } = require("dotenv");
@@ -12,16 +12,12 @@ if (process.env.ENV !== "production") {
 }
 
 async function login(req: Request, res: Response, next: NextFunction) {
-    if (
-      !req.body ||
-      !req.body.email ||
-      !req.body.password
-    ) {
-      const err: HttpError = new Error("Missing required fields");
-      err.status = 400;
-      return next(err);
-    }
-    
+  if (!req.body || !req.body.email || !req.body.password) {
+    const err: HttpError = new Error("Missing required fields");
+    err.status = 400;
+    return next(err);
+  }
+
   try {
     const { accessToken, refreshToken, user } = await userLogin(
       req.body.email,
@@ -33,14 +29,14 @@ async function login(req: Request, res: Response, next: NextFunction) {
       secure: process.env.ENV === "production",
       sameSite: process.env.ENV === "production" ? "strict" : "lax",
       maxAge: 7 * 24 * 3600000, // 7 days
-      path: "/"
+      path: "/",
     });
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       secure: process.env.ENV === "production",
       sameSite: process.env.ENV === "production" ? "strict" : "lax",
       maxAge: 7 * 24 * 3600000, // 7 days
-    })
+    });
     res.status(200).json({ message: "Login successful", user });
   } catch (error: any) {
     next(error);
@@ -48,12 +44,26 @@ async function login(req: Request, res: Response, next: NextFunction) {
 }
 
 async function register(req: Request, res: Response, next: NextFunction) {
-//   console.log(req.ip);
-  if (!req.body.firstName || !req.body.lastName || !req.body.email || !req.body.password) {
+  //   console.log(req.ip);
+  if (
+    !req.body.firstName ||
+    !req.body.lastName ||
+    !req.body.email ||
+    !req.body.password
+  ) {
     const err: HttpError = new Error("Missing required fields");
     err.status = 400;
     return next(err);
   }
+  const rawIp =
+    (req.headers["x-forwarded-for"] as string)?.split(",")[0].trim() ||
+    req.socket.remoteAddress;
+
+  const ip = rawIp?.replace(/^::ffff:/, "");
+
+  console.log("X-Forwarded-For:", req.headers["x-forwarded-for"]);
+  console.log("req.ip:", req.ip);
+  console.log("Resolved IP:", ip);
 
   try {
     const { accessToken, refreshToken, user } = await userRegister(
@@ -63,21 +73,21 @@ async function register(req: Request, res: Response, next: NextFunction) {
       req.body.password,
       req.body.latitude,
       req.body.longitude,
-      req.ip
+      ip,
     );
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.ENV === "production",
       sameSite: process.env.ENV === "production" ? "strict" : "lax",
       maxAge: 7 * 24 * 3600000, // 7 days
-      path: "/"
+      path: "/",
     });
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       secure: process.env.ENV === "production",
       sameSite: process.env.ENV === "production" ? "strict" : "lax",
       maxAge: 7 * 24 * 3600000, // 7 days
-      path: "/"
+      path: "/",
     });
     return res
       .status(201)
@@ -102,15 +112,14 @@ async function logout(req: Request, res: Response, next: NextFunction) {
       httpOnly: true,
       secure: process.env.ENV === "production",
       sameSite: process.env.ENV === "production" ? "strict" : "lax",
-      path: "/"
+      path: "/",
     });
     res.clearCookie("accessToken", {
       httpOnly: true,
       secure: process.env.ENV === "production",
       sameSite: process.env.ENV === "production" ? "strict" : "lax",
-      path: "/"
+      path: "/",
     });
-
 
     res.status(200).json({ message: "Logout successful" });
   } catch (error) {
@@ -121,13 +130,15 @@ async function logout(req: Request, res: Response, next: NextFunction) {
 async function refreshToken(req: Request, res: Response, next: NextFunction) {
   try {
     // console.log(req.cookies.refreshToken)
-    const {accessToken, user} = await verifyRefreshToken(req.cookies.refreshToken);
+    const { accessToken, user } = await verifyRefreshToken(
+      req.cookies.refreshToken,
+    );
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       secure: process.env.ENV === "production",
       sameSite: process.env.ENV === "production" ? "strict" : "lax",
       maxAge: 7 * 24 * 3600000, // 7 days
-    })
+    });
     res.status(200).json({ message: "Access token refreshed", user });
   } catch (error) {
     // console.log(error)
