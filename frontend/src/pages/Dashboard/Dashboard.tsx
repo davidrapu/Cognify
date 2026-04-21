@@ -34,7 +34,7 @@ const games = [
       "Hold sequences of numbers in mind and recall them in order — tests your working memory capacity.",
     icon: Binary,
     location: "/games/digital-span",
-    time: "12 MIN",
+    time: "3 MIN",
     colorClass: "bg-[#a3ecef] text-[#006778]",
   },
   {
@@ -43,7 +43,7 @@ const games = [
       "Flip cards and find matching pairs — challenges your short-term visual memory and concentration.",
     icon: LayoutGrid,
     location: "/games/card-match",
-    time: "10 MIN",
+    time: "5 MIN",
     colorClass: "bg-[#ffd6a5] text-[#7c4a00]",
   },
   {
@@ -52,7 +52,7 @@ const games = [
       "Watch a sequence of highlighted tiles and reproduce it exactly — measures sequential memory and processing speed.",
     icon: ListOrdered,
     location: "/games/sequence-recall",
-    time: "10 MIN",
+    time: "5 MIN",
     colorClass: "bg-[#c8f7c5] text-[#1a6b16]",
   },
   {
@@ -61,7 +61,7 @@ const games = [
       "Spot a target hidden among distractors as quickly as possible — trains selective attention and visual scanning.",
     icon: Search,
     location: "/games/visual-search",
-    time: "8 MIN",
+    time: "3 MIN",
     colorClass: "bg-[#d4c5f9] text-[#3d1a8e]",
   },
   {
@@ -70,7 +70,7 @@ const games = [
       "Read the colour of a word, not what it says — measures cognitive control and your ability to suppress automatic responses.",
     icon: Palette,
     location: "/games/stroop-test",
-    time: "8 MIN",
+    time: "1 MIN",
     colorClass: "bg-[#ffc8c8] text-[#7a0000]",
   },
   {
@@ -79,7 +79,7 @@ const games = [
       "Press for targets, hold back for distractors — assesses impulse control and sustained attention under pressure.",
     icon: Play,
     location: "/games/go-no-go",
-    time: "10 MIN",
+    time: "5 MIN",
     colorClass: "bg-[#ffe5a0] text-[#6b4800]",
   },
   {
@@ -88,7 +88,7 @@ const games = [
       "Match each stimulus to the correct response as fast as you can — evaluates decision speed and mental agility.",
     icon: GitBranch,
     location: "/games/choice-reaction-time",
-    time: "8 MIN",
+    time: "3 MIN",
     colorClass: "bg-[#b8e8ff] text-[#004f7c]",
   },
   {
@@ -97,7 +97,7 @@ const games = [
       "Decode visual patterns and predict what comes next — tests abstract reasoning and problem solving ability.",
     icon: Puzzle,
     location: "/games/pattern-puzzle",
-    time: "12 MIN",
+    time: "10 MIN",
     colorClass: "bg-[#ffd7f0] text-[#7a0057]",
   },
   {
@@ -106,7 +106,7 @@ const games = [
       "Solve mental arithmetic problems against the clock — builds numerical processing speed and working memory.",
     icon: Calculator,
     location: "/games/arithmetic-puzzle",
-    time: "12 MIN",
+    time: "8 MIN",
     colorClass: "bg-[#d9f0b0] text-[#3a5c00]",
   },
 ];
