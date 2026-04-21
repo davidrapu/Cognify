@@ -43,7 +43,7 @@ export default function Quiz() {
         const data = await res.json();
         setQuizData(data.questions);
         setWordSet(data.wordSet);
-        console.log(data);
+        // console.log(data);
       } catch (error) {
         console.error("Failed to fetch quiz questions:", error);
       } finally {
