@@ -2,7 +2,7 @@ import { ChevronRight } from "@/components/icons";
 import type { LucideIcon } from "lucide-react";
 import { useNavigate } from "react-router";
 
-export default function ActivityCard({ Icon, title, description, time, colorClass } : {Icon: LucideIcon, title: string, description: string, time: string, colorClass: string}) {
+export default function ActivityCard({ Icon, title, description, time, colorClass, location } : {Icon: LucideIcon, title: string, description: string, time: string, colorClass: string, location: string}) {
   const navigate = useNavigate()
   return (
   <div
@@ -18,7 +18,7 @@ export default function ActivityCard({ Icon, title, description, time, colorClas
     <p className="text-sm text-muted-foreground mb-6 text-wrap max-w-sm">{description}</p>
     <div
       className="flex items-center gap-2 text-primary text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity"
-      onClick={() => navigate("/games/pattern-puzzle")}
+      onClick={() => navigate(location)}
     >
       View Game <ChevronRight className="w-4 h-4" />
     </div>
