@@ -34,7 +34,7 @@ export default function Active({
     if (correct) {
       dispatch({ type: "incrementCorrect" });
       setStreak((prev) => prev + 1);
-      console.log(`Current streak: ${streak + 1}, Difficulty: ${difficulty}`); // For debugging: logs the current streak and difficulty
+      // console.log(`Current streak: ${streak + 1}, Difficulty: ${difficulty}`); // For debugging: logs the current streak and difficulty
       if ((streak + 1) % 4 === 0) {
         setDifficulty((prev) => Math.min(prev + 1, 20)); // Increase difficulty, max 20
       }
@@ -64,7 +64,7 @@ export default function Active({
 
   useEffect(() => {
     inputRef.current?.focus();
-    console.log(patternData); // For debugging: shows the full pattern in the console
+    // console.log(patternData); // For debugging: shows the full pattern in the console
     reactionTimeRef.current = Date.now(); // reset reaction time on new pattern
   }, [patternData]);
 
