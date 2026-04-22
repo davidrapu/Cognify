@@ -55,6 +55,11 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 }
+@layer utilities {
+  .hero-gradient {
+    background-image: var(--hero-gradient);
+  }
+}
 
 :root {
   /* Smoothing */
@@ -72,6 +77,11 @@
   --pub-sans: "Public Sans", sans-serif;
 
   /* Light theme — clean warm slate with teal accents */
+  /* --hero-gradient: linear-gradient(135deg, #004d5b 0%, #006778 100%); */
+  /* --hero-gradient: linear-gradient(135deg, #004d5b 0%, #00525f 50%, #005f6e 100%); */
+  /* --hero-gradient: linear-gradient(135deg, #006778 0%, #005a70 50%, #004e6b 100%); */
+  /* --hero-gradient: linear-gradient(135deg, #006778 0%, #004e6a 50%, #003a5c 100%); */
+  --hero-gradient: linear-gradient(135deg, #007a6e 0%, #006778 50%, #005a6b 100%);
   --background: oklch(0.98 0.004 250);
   --foreground: oklch(0.15 0.015 255);
   --card: oklch(1 0 0);
