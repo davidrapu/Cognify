@@ -1,35 +1,47 @@
-import { AnimatedButton } from "@/components/Button";
-import { useAuth } from "../../contexts/AuthContext/AuthContext";
+import { ArrowRight } from "@/components/icons";
+import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
 
-export default function Hero() {
-  const { loggedIn } = useAuth();
-  const navigate = useNavigate();
-
+export default function Hero({loggedIn} : {loggedIn: boolean}) {
+    const navigate = useNavigate()
   return (
-    <section className="flex flex-col w-full items-center justify-center gap-y-6 animate-in slide-in-from-bottom-20 fade-in duration-500">
-      <div className="flex flex-col items-center w-fit z-20">
-          <h1 className="text-8xl font-family-heading tracking-[0.2em] text-foreground leading-[0.9] m-0">
-            WELCOME
-          </h1>
-          <p className="pt-2 text-center text-lg text-secondary-text tracking-widest leading-[1.4]">
-            Hi, welcome to Cognify. Helping you think sharper, every day.
-          </p>
+    <section className="max-w-7xl mx-auto px-8 py-20 lg:py-32 grid lg:grid-cols-12 gap-12 items-center">
+      <div className="lg:col-span-7 animate-in slide-in-from-bottom-20 fade-in duration-1000">
+        <span className="inline-block py-1 px-4 rounded-full bg-secondary text-secondary-foreground text-xs font-bold tracking-widest uppercase mb-6">
+          BUILT FOR YOUR BRAIN
+        </span>
+        <h1 className="font-family-pub-sans text-5xl lg:text-7xl font-extrabold tracking-tight text-primary leading-[1.1] mb-8">
+          Stay ahead of <br />
+          <span className="text-secondary italic">cognitive decline.</span>
+        </h1>
+        <p className="text-on-surface-variant text-lg lg:text-xl max-w-xl leading-relaxed mb-10">
+          Ten minutes of play. A lifetime of insight. Cognify's science-backed
+          games detect early signs of cognitive change before they become a
+          concern.
+        </p>
+        <div className="flex flex-wrap gap-4">
+          <Button
+            onClick={() => navigate(loggedIn ? "/quiz" : "/signup")}
+            className="px-8 hero-gradient py-5 rounded-full text-primary-foreground font-bold text-base transition-transform active:scale-95 shadow-lg flex items-center gap-2 hover:scale-103 duration-300 ease-in-out"
+          >
+            Get Started
+            <span className="material-symbols-outlined">
+              <ArrowRight />
+            </span>
+          </Button>
+        </div>
       </div>
-        <AnimatedButton
-          onClick={() => navigate(loggedIn ? "/quiz" : "/signup")}
-          className="
-          self-center
-          text-xl
-          py-[0.3em] px-[1em]
-          rounded-[0.5em]
-          border-2
-          transition-shadow duration-200 ease-out
-          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60
-        "
-        >
-          Get Started
-        </AnimatedButton>
+      <div className="lg:col-span-5 relative">
+        <div className="aspect-square rounded-3xl bg-surface-container overflow-hidden relative shadow-2xl">
+          <img
+            alt="Abstract neural network visualization"
+            className="w-full h-full object-cover"
+            data-alt="Abstract glowing blue neural network connections"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAa2ElBFBYweG42IRtreXe0n_pYLoQkyJFizGwI_4ZZPLSbOGxmbPrFJa8z2CKOEXQgn4FFrOXw0eZBFCw7EX7EqknZSbN1avy2Gh0G-T9ixj-cEd2PyLM4X4LiFfLDrJgK-2hiIsyZtid120r6nqhTAem6lvQ9pzoDcfbck5ZQLK30Ve3t3_VZ8U7GiGMRLWBcPXG9S6uEPZ65aSj-sOMo22El3xxc0TgAIq4KyaWLLWgVNfaXuvwZ-COfSOtCNm9mDw0wzAG3YCi0"
+          />
+          <div className="absolute inset-0 bg-primary/10 mix-blend-multiply"></div>
+        </div>
+      </div>
     </section>
   );
 }
