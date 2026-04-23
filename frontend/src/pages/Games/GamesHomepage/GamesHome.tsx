@@ -14,7 +14,7 @@ type GameInfo = {
 export default function GamesHome2() {
   const isMobile = useIsMobile();
   return (
-    <main className=" ml-2 min-h-full min-w-0 space-y-20">
+    <main className=" ml-2 min-h-full space-y-20">
       <div className="pr-2">
         <Badge
           variant="default"

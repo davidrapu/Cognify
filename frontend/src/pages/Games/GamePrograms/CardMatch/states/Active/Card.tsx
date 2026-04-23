@@ -22,11 +22,11 @@ export default function ObjectCard({
   return (
     <div
       className={cn(
-        "w-30 h-20 m-1 aspect-auto transform-3d cursor-pointer perspective-[1000px] transition-transform duration-300",
+        "size-20 lg:size-25  m-1 aspect-auto transform-3d cursor-pointer perspective-[1000px] transition-transform duration-300",
         flipped && "cursor-default",
         !flipped && 'hover:scale-[1.1]',
-        cols === 6 && "w-25 h-22",
-        cols === 8 && "w-23 h-22",
+        cols === 6 && "w-12 h-12 md:size-20 lg:size-25",
+        cols === 8 && "w-10 h-12 md:size-15 lg:size-20",
       )}
       onClick={flipped ? undefined : () => handleFlip(cardObj.id)}
     >

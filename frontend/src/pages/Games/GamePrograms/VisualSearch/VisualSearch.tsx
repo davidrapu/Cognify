@@ -10,11 +10,13 @@ import { GameName } from "@/enums/gameName";
 import type { SessionsResponse } from "@/types/session.fetched";
 import { type GameHistoryEntry } from "@/types/gameHistory";
 import PageLoader from "@/components/PageLoader";
+import { useIsMobile } from "@/hooks/use-mobile";
 export default function VisualSearch() {
   const [state, dispatch] = useLeveledGameReducer();
   const apiFetch = useApiFetch();
   const [history, setHistory] = useState<GameHistoryEntry>([] as GameHistoryEntry);
   const [loading, setLoading] = useState(false);
+  const isMobile = useIsMobile();
 
   const setGameLevel = (level: "easy" | "medium" | "hard") => {
     dispatch({ type: "setGameLevel", payload: level });
@@ -140,6 +142,7 @@ export default function VisualSearch() {
       {!loading && state.gameState === "intro" && (
         <GameIntroPage
           playGame={() => dispatch({ type: "playGame" })}
+          isMobile={isMobile}
           gameLevel={state.gameLevel}
           includeLevelSelector
           setGameLevel={setGameLevel}
