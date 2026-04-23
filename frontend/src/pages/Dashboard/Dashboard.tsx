@@ -212,7 +212,7 @@ export default function Dashboard() {
     <div className="min-h-screen relative">
       <SidebarProvider>
         <AppBar />
-        <SidebarInset className="flex flex-col border max-w-full min-h-screen min-w-0 ">
+        <SidebarInset className="flex flex-col max-w-full min-h-screen min-w-0 ">
           <div className="flex justify-between pr-2 pt-2 mb-2">
             <SidebarTrigger className="m-1 text-foreground" />
             <UserAvatar size={9} />
