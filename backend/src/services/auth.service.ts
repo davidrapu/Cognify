@@ -48,10 +48,10 @@ async function getLocationFromIP(ip: string) {
     const response = await fetch(`http://ip-api.com/json/${ip}`);
     const data = await response.json();
 
-    console.log("ip-api response:", data);
+    // console.log("ip-api response:", data);
 
     if (data.status === "fail") {
-      console.warn("ip-api failed for IP:", ip, "Reason:", data.message);
+      // console.warn("ip-api failed for IP:", ip, "Reason:", data.message);
       return { country: null, city: null };
     }
 

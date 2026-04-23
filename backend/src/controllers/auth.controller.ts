@@ -61,9 +61,9 @@ async function register(req: Request, res: Response, next: NextFunction) {
 
   const ip = rawIp?.replace(/^::ffff:/, "");
 
-  console.log("X-Forwarded-For:", req.headers["x-forwarded-for"]);
-  console.log("req.ip:", req.ip);
-  console.log("Resolved IP:", ip);
+  // console.log("X-Forwarded-For:", req.headers["x-forwarded-for"]);
+  // console.log("req.ip:", req.ip);
+  // console.log("Resolved IP:", ip);
 
   try {
     const { accessToken, refreshToken, user } = await userRegister(

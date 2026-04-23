@@ -2,7 +2,6 @@ import { type QuizSessionDataType } from "../types/dataTypes";
 const {
   createNewQuizSession,
 } = require("../database/repositories/quizSession.repository");
-const { getUserById } = require("../database/repositories/user.repository");
 
 async function generateQuiz(city: string, country: string) {
   // pick random word set for registration/recall
