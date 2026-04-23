@@ -32,7 +32,7 @@ export default function ClusteredNumbers({
             onClick={() => handleButtonClick(num)}
             variant="outline"
             className={cn(
-              "p-6 md:p-7 bg-primary/20 rounded-lg flex items-center justify-center cursor-pointer aspect-video",
+              "p-5 md:p-6 bg-primary/20 rounded-lg flex items-center justify-center cursor-pointer aspect-video",
             )}
             key={num}
           >
@@ -45,7 +45,7 @@ export default function ClusteredNumbers({
           onClick={() => setUserInput && setUserInput(null)}
           variant="outline"
           className={cn(
-            "p-6 md:p-7 bg-primary/20 rounded-lg flex items-center justify-center cursor-pointer aspect-video",
+            "p-5 md:p-6 bg-primary/20 rounded-lg flex items-center justify-center cursor-pointer aspect-video",
           )}
         >
           <Eraser size={27} />
@@ -56,7 +56,7 @@ export default function ClusteredNumbers({
           onClick={() => handleDelete()}
           variant="outline"
           className={cn(
-            "p-6 md:p-7 bg-primary/20 rounded-lg flex items-center justify-center cursor-pointer aspect-video",
+            "p-5 md:p-6 bg-primary/20 rounded-lg flex items-center justify-center cursor-pointer aspect-video",
           )}
         >
           <Delete size={40} />

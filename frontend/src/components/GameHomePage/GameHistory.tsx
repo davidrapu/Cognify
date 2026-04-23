@@ -21,8 +21,8 @@ export default function GameHistory({ history }: GameHistoryProps) {
           Recent Games
         </CardTitle>
       </CardHeader>
-      <CardContent className="px-0 pb-2">
-        <Table>
+      <CardContent className="px-0 pb-2 overflow-x-auto">
+        <Table className="min-w-full">
           <TableHeader>
             <TableRow className="border-border/50 hover:bg-transparent">
               <TableHead className="pl-6 text-xs uppercase tracking-wider text-muted-foreground">
@@ -34,8 +34,8 @@ export default function GameHistory({ history }: GameHistoryProps) {
               <TableHead className="text-right text-xs uppercase tracking-wider text-muted-foreground">
                 Accuracy
               </TableHead>
-              <TableHead className="pr-6 text-right text-xs uppercase tracking-wider text-muted-foreground">
-                Avg Reaction Time <span className="lowercase">(s)</span>
+              <TableHead className="md:pr-6 hidden md:table-cell text-right text-xs uppercase tracking-wider text-muted-foreground">
+                Avg Reaction Time
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -54,7 +54,7 @@ export default function GameHistory({ history }: GameHistoryProps) {
                 <TableCell className="text-right text-muted-foreground">
                   {game.accuracy}%
                 </TableCell>
-                <TableCell className="text-right text-muted-foreground pr-6">
+                <TableCell className="text-right text-muted-foreground pr-6 hidden md:table-cell">
                   {Math.round(game.reaction / 1000 * 100) / 100}
                 </TableCell>
               </TableRow>

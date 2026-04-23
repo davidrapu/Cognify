@@ -4,41 +4,41 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const buttonStyles = "duration-300 ease-in-out";
+const buttonStyles = "duration-300 ease-in-out bg-primary/70";
 
 export default function GameIntroPage({
   includeLevelSelector = false,
   gameLevel,
+  isMobile,
   setGameLevel,
   playGame,
-  instructions = []
+  instructions = [],
 }: {
   includeLevelSelector?: boolean;
   gameLevel?: "easy" | "medium" | "hard";
+  isMobile?: boolean;
   setGameLevel?: (level: "easy" | "medium" | "hard") => void;
   playGame: () => void;
-  instructions?: string[]
+  instructions?: string[];
 }) {
   return (
-    <GameLayout>
-      <div className="flex-2 bg-primary rounded-2xl flex items-center justify-center">
-        <h1 className="md:text-6xl font-bold text-primary-foreground font-family-heading tracking-widest">
+    <GameLayout className="flex flex-col justify-around">
+      <Card className="p-2 h-fit w-fit gap-y-0">
+        <CardHeader>
+          <CardTitle className="flex flex-col text-xl md:text-2xl text-primary font-family-heading tracking-wider">
           Instructions
-        </h1>
-      </div>
-      <div className="grid grid-cols-4 gap-x-4">
-        {instructions.map((instruction: string, index: number) => (
-          <Card key={index} className="p-2 gap-y-0">
-            <CardHeader>
-              <CardTitle className="flex flex-col text-xl text-primary font-family-heading tracking-wider">
-                {index + 1}.
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>{instruction}</p>
-            </CardContent>
-          </Card>
-        ))}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <ul className="list-disc space-y-1 pl-2">
+            {instructions.map((instruction: string, index: number) => (
+              <li key={index} className="text-sm md:text-lg">
+                {instruction}
+              </li>
+            ))}
+          </ul>
+        </CardContent>
+      </Card>
         <div className="flex gap-y-4 flex-col items-center justify-around">
           <span
             onClick={playGame}
@@ -50,13 +50,13 @@ export default function GameIntroPage({
               className="text-primary-foreground"
             />
           </span>
-          {includeLevelSelector && setGameLevel && gameLevel && (
+          {!isMobile && includeLevelSelector && setGameLevel && gameLevel && (
             <div className="flex gap-x-4">
               <Button
                 onClick={() => setGameLevel && setGameLevel("easy")}
                 className={cn(
                   buttonStyles,
-                  gameLevel === "easy" && "scale-120",
+                  gameLevel === "easy" && "scale-120 bg-primary",
                 )}
               >
                 Easy
@@ -65,7 +65,7 @@ export default function GameIntroPage({
                 onClick={() => setGameLevel("medium")}
                 className={cn(
                   buttonStyles,
-                  gameLevel === "medium" && "scale-120",
+                  gameLevel === "medium" && "scale-120 bg-primary",
                 )}
               >
                 Medium
@@ -74,7 +74,7 @@ export default function GameIntroPage({
                 onClick={() => setGameLevel("hard")}
                 className={cn(
                   buttonStyles,
-                  gameLevel === "hard" && "scale-120",
+                  gameLevel === "hard" && "scale-120 bg-primary",
                 )}
               >
                 Hard
@@ -82,7 +82,6 @@ export default function GameIntroPage({
             </div>
           )}
         </div>
-      </div>
     </GameLayout>
   );
 }
