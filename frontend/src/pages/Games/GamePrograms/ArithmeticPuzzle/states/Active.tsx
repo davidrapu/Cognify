@@ -70,8 +70,8 @@ export default function Active({
 
   return (
     <>
-      <GameLayout>
-        <div className="flex flex-col flex-2 rounded-lg bg-primary p-3 gap-y-8">
+      <GameLayout className="gap-6">
+        <div className="flex flex-col flex-2 rounded-lg bg-primary p-3 gap-y-8 max-w-220">
           <div className="">
             <HeartDisplay
               numberOfFilledHearts={
@@ -82,12 +82,12 @@ export default function Active({
               length={state.totalAllowedTries}
             />
           </div>
-          <div className="flex flex-1 flex-wrap justify-center items-center gap-x-4">
+          <div className="flex flex-1 flex-wrap justify-center items-center gap-4 mb-3">
             {patternData.pattern.map((number, index) => (
               <div
                 key={index}
                 className={
-                  "w-20 h-30 px-15 rounded-2xl shadow-lg/20 bg-muted flex flex-wrap items-center justify-center text-2xl font-semibold text-muted-foreground" 
+                  "min-w-15 min-h-15 md:min-w-20 md:min-h-20 lg:min-w-30 lg:min-h-30  rounded-2xl shadow-lg/20 bg-muted flex flex-wrap items-center justify-center text-2xl font-semibold text-muted-foreground"
                 }
               >
                 {number === -1 ? "?" : number}
@@ -102,7 +102,7 @@ export default function Active({
               onKeyDown={handleEnter}
               type="number"
               placeholder="Enter the missing number"
-              className=" h-12 w-150 bg-muted border-primary border-2 "
+              className=" w-80 h-12 bg-muted border-primary border-2 "
               value={userInput || ""}
               onChange={(e) => setUserInput(e.target.value)}
             />
