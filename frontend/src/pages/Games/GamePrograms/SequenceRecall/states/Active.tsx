@@ -114,10 +114,10 @@ export default function Active({
 
   return (
     <GameLayout>
-      <div className="h-fit p-2 flex flex-col-reverse font-(family-name: --headings) rounded-lg text-primary-foreground bg-primary">
+      <div className="h-fit p-2 lg:min-h-60 flex flex-col-reverse font-(family-name: --headings) rounded-lg text-primary-foreground bg-primary">
         <div className="flex flex-col justify-center items-center">
           {displayedNumberIndex < numberList.length ? (
-            <p className="text-[60px]">{numberList[displayedNumberIndex]}</p>
+            <p className="text-[60px] min-h-full w-full flex items-center justify-center">{numberList[displayedNumberIndex]}</p>
           ) : (
             <div className="w-full">
               <FieldGroup onKeyDown={handleEnter} className="flex">

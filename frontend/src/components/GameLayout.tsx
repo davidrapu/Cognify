@@ -6,7 +6,7 @@ export default function GameLayout({children, animateIn = true, className}: {chi
       <div
         className={cn(
           // md:w-285 md:aspect-video
-          " min-w-[60%] md:max-w-[80%] min-h-100  flex flex-col self-center drop-shadow-xl/30 bg-secondary rounded-2xl p-5 gap-y-3 mx-2",
+          " min-w-[60%] md:max-w-[80%] lg:min-h-150 min-h-100  flex flex-col self-center drop-shadow-xl/30 bg-secondary rounded-2xl p-5 gap-y-3 mx-2",
           animateIn && "animate-in zoom-in-0 duration-300",
           className
         )}
