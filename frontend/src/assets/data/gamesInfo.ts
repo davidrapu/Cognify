@@ -13,6 +13,7 @@ export const gamesInfo = [
     title: "Card Match",
     description:
       "A game designed to enhance working memory and attention by challenging players to remember and match pairs of cards.",
+    mobileDescription: "Match pairs of cards to train working memory.",
     domain: "Memory",
     imgLink: card_match,
     gameLocation: "/games/card-match",
@@ -21,6 +22,7 @@ export const gamesInfo = [
     title: "Digital Span",
     description:
       "A game that tests and improves verbal working memory by requiring players to recall sequences of numbers.",
+    mobileDescription: "Recall number sequences to test working memory.",
     domain: "Memory",
     imgLink: digital_span,
     gameLocation: "/games/digital-span",
@@ -29,6 +31,7 @@ export const gamesInfo = [
     title: "Sequence Recall",
     description:
       "A game focused on enhancing sequential memory and processing speed by having players remember and reproduce sequences of numbers.",
+    mobileDescription: "Reproduce tile sequences to challenge your memory.",
     domain: "Memory",
     imgLink: sequence_recall,
     gameLocation: "/games/sequence-recall",
@@ -37,6 +40,7 @@ export const gamesInfo = [
     title: "Visual Search",
     description:
       "A game that improves visual attention and processing speed by challenging players to find specific targets among distractors.",
+    mobileDescription: "Spot targets among distractors as fast as you can.",
     domain: "Attention",
     imgLink: visual_search,
     gameLocation: "/games/visual-search",
@@ -45,45 +49,45 @@ export const gamesInfo = [
     title: "Stroop Test",
     description:
       "A game designed to enhance cognitive control and executive function by requiring players to identify the color of words while ignoring their meaning.",
+    mobileDescription: "Name the ink colour, not the word — tests focus.",
     domain: "Attention",
-    imgLink:
-    stroop_test,
+    imgLink: stroop_test,
     gameLocation: "/games/stroop-test",
   },
   {
     title: "Go/No-Go Task",
     description:
       "A game that targets inhibitory control and attention by having players respond to certain stimuli while withholding responses to others.",
+    mobileDescription: "React to targets, hold back for distractors.",
     domain: "Reaction",
-    imgLink:
-      go_no_go,
+    imgLink: go_no_go,
     gameLocation: "/games/go-no-go",
   },
   {
     title: "Choice Reaction Time",
     description:
       "A game that measures and improves reaction time and decision-making by requiring players to quickly respond to different stimuli with specific actions.",
+    mobileDescription: "Match stimuli to responses as fast as possible.",
     domain: "Reaction",
-    imgLink:
-      choice_reaction,
+    imgLink: choice_reaction,
     gameLocation: "/games/choice-reaction",
   },
   {
     title: "Pattern Puzzle",
     description:
       "A game that enhances problem-solving skills and cognitive flexibility by challenging players to identify and complete patterns.",
+    mobileDescription: "Identify and complete visual patterns.",
     domain: "Problem Solving",
-    imgLink:
-    pattern_puzzle,
+    imgLink: pattern_puzzle,
     gameLocation: "/games/pattern-puzzle",
   },
   {
     title: "Arithmetic Puzzle",
     description:
       "A game designed to improve numerical reasoning and cognitive flexibility by requiring players to solve arithmetic problems under time constraints.",
+    mobileDescription: "Solve arithmetic problems against the clock.",
     domain: "Problem Solving",
-    imgLink:
-      arithmetic_puzzle,
+    imgLink: arithmetic_puzzle,
     gameLocation: "/games/arithmetic-puzzle",
   },
 ];
