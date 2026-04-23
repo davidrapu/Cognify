@@ -246,7 +246,7 @@ export function verifyAnswer(
     case "city": {
       if (!answer || typeof answer !== "string") return 0;
       const correct = userInput.toLocaleLowerCase() === answer.toLocaleLowerCase();
-      console.log('correct', correct);
+      // console.log('correct', correct);
       if (correct) {
         increaseCategory("language", points);
         return points;
