@@ -11,10 +11,10 @@ import { Outlet } from "react-router";
 
 export default function Games() {
   return (
-    <div className="w-full min-h-screen">
+    <div className="min-h-screen">
       <SidebarProvider>
         <AppBar />
-        <SidebarInset className="flex flex-col min-h-screen">
+        <SidebarInset className="flex flex-col min-w-0 min-h-screen">
           <div className="flex justify-between pr-2 pt-2 mb-2">
             <SidebarTrigger className="m-1 text-foreground" />
             <UserAvatar size={9} />
