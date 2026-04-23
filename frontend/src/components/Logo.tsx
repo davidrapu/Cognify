@@ -10,10 +10,10 @@ type LogoProps = {
 export function Logo({ className, size = "default" }: LogoProps) {
   return (
     <Link to="/" className={cn("flex flex-row items-center gap-x-2")}>
-      <BrainCircuit color="#0083a3" size={size === "small" ? 30 : 35} />
+      <BrainCircuit color="#0083a3" size={size === "small" ? 30 : 32} />
       <span
         className={cn(
-          "m-0 font-family-heading text-[1.8em] tracking-[0.3em]",
+          "m-0 font-family-heading text-2xl tracking-[0.3em]",
           className,
         )}
       >
