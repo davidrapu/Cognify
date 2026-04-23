@@ -71,7 +71,7 @@ export default function MiniGames({loggedIn} : {loggedIn: boolean}) {
           </ul>
           <Link
             className="text-primary font-bold border-b-2 border-primary/20 hover:border-primary transition-all duration-300 ease-in-out pb-1"
-            to={loggedIn ? "/quiz" : "/login"}
+            to={loggedIn ? "/games" : "/login"}
           >
             Explore the Games Library
           </Link>

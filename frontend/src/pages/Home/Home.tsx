@@ -23,7 +23,7 @@ export default function Home() {
   }, [sendAlert.show]);
 
   return (
-    <div className="relative flex flex-col gap-y-5 w-full">
+    <div className="relative flex flex-col gap-y-5 mx-auto">
       {sendAlert.show && <AlertUser message={sendAlert.message} title={sendAlert.title} />}
       <header>
         <Nav />
@@ -49,7 +49,7 @@ function AlertUser({
   title: string | null;
 }) {
   return (
-    <Alert className="max-w-md fixed bottom-4 left-4 z-50 animate-in slide-in-from-bottom-100 duration-300">
+    <Alert className="max-w-2xs fixed bottom-2 left-2 z-50 animate-in slide-in-from-bottom-100 duration-300">
       <CheckCircle2Icon />
       {title && <AlertTitle>{title}</AlertTitle>}
       <AlertDescription>{message}</AlertDescription>
