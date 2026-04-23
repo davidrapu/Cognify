@@ -9,11 +9,58 @@ const {
   getQuizSessionsByUserId,
 } = require("../database/repositories/quizSession.repository");
 
-const commentMap: Record<string, string> = {
-  Low: "Your cognitive performance is strong across all domains.",
-  Moderate: "Your cognitive performance shows some areas for improvement.",
-  High: "Your cognitive performance indicates significant challenges across multiple domains.",
-};
+
+function getCommentForScores( // for now we will use this but in future we use AI API to generate more personalized comments based on the scores and trends
+  MCILevel: string,
+  memoryScore: number,
+  attentionScore: number,
+  problemSolvingScore: number,
+  reactionScore: number,
+): string {
+  const weakDomains: string[] = [];
+  const strongDomains: string[] = [];
+
+  if (memoryScore < 0.4) weakDomains.push("memory");
+  else if (memoryScore >= 0.7) strongDomains.push("memory");
+
+  if (attentionScore < 0.4) weakDomains.push("attention");
+  else if (attentionScore >= 0.7) strongDomains.push("attention");
+
+  if (problemSolvingScore < 0.4) weakDomains.push("problem solving");
+  else if (problemSolvingScore >= 0.7) strongDomains.push("problem solving");
+
+  if (reactionScore < 0.4) weakDomains.push("reaction speed");
+  else if (reactionScore >= 0.7) strongDomains.push("reaction speed");
+
+  if (MCILevel === "High") {
+    if (weakDomains.length > 0) {
+      return `Significant challenges detected in ${weakDomains.join(" and ")}. We recommend speaking with a healthcare professional.`;
+    }
+    return "Your scores suggest a high level of cognitive risk. Consider consulting a healthcare professional.";
+  }
+
+  if (MCILevel === "Moderate") {
+    if (weakDomains.length > 0) {
+      return `Some difficulty noted in ${weakDomains.join(" and ")}. Regular exercise and consistent play may help improve these areas.`;
+    }
+    return "Your cognitive performance is showing some variability. Keep playing regularly to track changes over time.";
+  }
+
+  // Low risk
+  if (weakDomains.length > 0 && strongDomains.length > 0) {
+    return `Strong performance in ${strongDomains.join(" and ")}, with some room to improve in ${weakDomains.join(" and ")}.`;
+  }
+
+  if (weakDomains.length > 0) {
+    return `Focus on improving your ${weakDomains.join(" and ")}. Try the recommended featured game below.`;
+  }
+
+  if (strongDomains.length === 4) {
+    return "Your cognitive performance is strong across all domains. Keep it up!";
+  }
+
+  return "Your cognitive performance is on track. Keep playing to build a clearer picture over time.";
+}
 
 function calculateTrend(gameSessions: SessionDataTypeWithDate[]) {
   const now = new Date();
@@ -339,7 +386,7 @@ async function getAnalyticsData(userId: string) {
   return {
     cognitiveScore: cognitiveScore,
     riskLevel: predictions.predicted_cognitive_level,
-    comment: commentMap[predictions.predicted_cognitive_level], // This is a placeholder comment. In a real application, you would generate this comment based on the predictions and the user's data.
+    comment: getCommentForScores(predictions, memoryScore, attentionScore, problemSolvingScore, reactionScore),
     domainScores: {
       memory: memoryScore,
       attention: attentionScore,
