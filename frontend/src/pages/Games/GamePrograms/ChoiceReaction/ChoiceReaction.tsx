@@ -10,12 +10,16 @@ import { useApiFetch } from "@/hooks/useApiFetch";
 import type { GameHistoryEntry } from "@/types/gameHistory";
 import type { SessionsResponse } from "@/types/session.fetched";
 import PageLoader from "@/components/PageLoader";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle} from "@/components/ui/alert-dialog";
 
 export default function ChoiceReaction() {
   const [state, dispatch] = useGameReducer();
   const [history, setHistory] = useState<GameHistoryEntry>([]);
   const apiFetch = useApiFetch();
   const [loading, setLoading] = useState(false);
+  const isMobile = useIsMobile()
+  const [displayMobileWarning, setDisplayMobileWarning] = useState(false);
 
   const playAgain = async () => {
     // reset game
@@ -26,6 +30,18 @@ export default function ChoiceReaction() {
     // go home
     dispatch({ type: "home" });
   };
+  const verifyDeviceType = () => {
+    if (isMobile) {
+      setDisplayMobileWarning(true);
+      return;
+    }
+
+    dispatch({ type: "startGame" });
+  }
+  const closeMobileWarning = () => {
+    setDisplayMobileWarning(false);
+  }
+
 
   // loading all data upon home page render
   useEffect(() => {
@@ -100,6 +116,7 @@ export default function ChoiceReaction() {
     sendData();
   }, [state.gameState]); // eslint-disable-line
 
+
   return (
     <>
       {!loading && state.gameState === "home" && (
@@ -136,10 +153,11 @@ export default function ChoiceReaction() {
               desc: "Respond quickly and accurately as different signals appear.",
             },
           ]}
-          onStartGame={() => dispatch({ type: "startGame" })}
+          onStartGame={verifyDeviceType}
           title="Choice Reaction Time Test"
         />
       )}
+      {!loading && displayMobileWarning && <MobileWarning open={displayMobileWarning} close={closeMobileWarning} /> }
       {!loading && state.gameState === "intro" && (
         <GameIntroPage
           playGame={() => {
@@ -168,5 +186,24 @@ export default function ChoiceReaction() {
       )}
       {loading && <PageLoader />}
     </>
+  );
+}
+
+function MobileWarning({ open, close }: { open: boolean; close: () => void }) {
+  return (
+    <AlertDialog open={open}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>This game works best on a desktop</AlertDialogTitle>
+          <AlertDialogDescription>
+            Choice Reaction Time requires keyboard inputs (Q and R keys) which
+            aren't available on mobile.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogAction onClick={close}>Continue</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

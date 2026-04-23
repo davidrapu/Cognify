@@ -19,7 +19,7 @@ export default function Games() {
             <SidebarTrigger className="m-1 text-foreground" />
             <UserAvatar size={9} />
           </div>
-          <div className="flex-1">
+          <div className="flex-1 relative">
             <Suspense fallback={<PageLoader />}>
               <Outlet />
             </Suspense>

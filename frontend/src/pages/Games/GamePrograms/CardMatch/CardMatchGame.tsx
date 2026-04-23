@@ -10,6 +10,7 @@ import GameIntroPage from "@/components/GameIntroPage";
 import { useLeveledGameReducer } from "@/hooks/useLeveledGameReducer";
 import type { GameHistoryEntry } from "@/types/gameHistory";
 import PageLoader from "@/components/PageLoader";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const difficultyConfig = {
   easy: { pairs: 8, cols: 4 },
@@ -24,6 +25,7 @@ export default function CardMatchGame() {
   const apiFetch = useApiFetch();
   const [history, setHistory] = useState<GameHistoryEntry>([] as GameHistoryEntry);
   const [loading, setLoading] = useState(false);
+  const isMobile = useIsMobile()
 
   const playAgain = async () => {
     // reset game
@@ -156,6 +158,7 @@ export default function CardMatchGame() {
         {!loading && state.gameState === "intro" && (
           <GameIntroPage
             includeLevelSelector
+            isMobile={isMobile}
             setGameLevel={setGameLevel}
             gameLevel={state.gameLevel}
             playGame={() => dispatch({ type: "playGame" })}
