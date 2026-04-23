@@ -45,16 +45,16 @@ export default function Active({
       tabIndex={0}
     >
       <div className="flex flex-col gap-y-1">
-        <h1 className="text-2xl tracking-wide font-black m-0 leading-tight">
+        <h1 className="text-2xl md:text-4xl tracking-wide font-black m-0 leading-tight">
           Cognitive Screening Test
         </h1>
-        <p className="text-secondary-text font-medium">
+        <p className="text-secondary-text md:text-xl font-medium">
           MMSE-inspired, non-clinical assessment
         </p>
       </div>
       <div className="flex flex-col gap-y-2">
         <Progress value={state.currentQuestion} max={16} />
-        <div className="flex justify-between font-normal">
+        <div className="flex justify-between font-normal md:text-xl">
           <span>
             Question{" "}
             <span className="text-primary font-bold">{state.currentQuestion}</span> of{" "}

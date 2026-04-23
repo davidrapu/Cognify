@@ -67,7 +67,7 @@ export default function QuizCard({ state, dispatch, quizData, wordSet }: QuizCar
       type: "increaseTotalPoints",
       payload: score,
     });
-    console.log("Score for this question:", score, "Total Score:", state.totalPoints + score, "Category Scores:", categoryScore);
+    // console.log("Score for this question:", score, "Total Score:", state.totalPoints + score, "Category Scores:", categoryScore);
     dispatch({ type: "next" });
     setUserInput("");
   };
@@ -146,8 +146,10 @@ export default function QuizCard({ state, dispatch, quizData, wordSet }: QuizCar
   if (!questionObj) return null;
 
   return (
-    <div className="container bg-card text-card-foreground w-210 p-10 rounded-4xl font-black border border-border ">
-      {!isLoading && state.quizState === "intro" && <Intro dispatch={dispatch} />}
+    <div className="container min-w-[70%] md:w-210 bg-card text-card-foreground w-fit py-8 px-5 rounded-4xl font-black border border-border mx-2">
+      {!isLoading && state.quizState === "intro" && (
+        <Intro dispatch={dispatch} />
+      )}
 
       {!isLoading && state.quizState === "active" && (
         <Active
@@ -169,7 +171,7 @@ export default function QuizCard({ state, dispatch, quizData, wordSet }: QuizCar
           categoryScore={categoryScore}
         />
       )}
-      {isLoading && <PageLoader /> }
+      {isLoading && <PageLoader />}
     </div>
   );
 }

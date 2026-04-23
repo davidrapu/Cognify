@@ -53,14 +53,14 @@ export default function Quiz() {
     fetchQuiz();
   }, []); // eslint-disable-line
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col gap-y-4">
       {isLoading && <PageLoader />}
       {!isLoading && (
         <>
           <header>
             <Nav />
           </header>
-          <main className="flex-1 flex items-center justify-center">
+          <main className="flex-1 flex justify-center items-center">
             <QuizCard
               state={state}
               dispatch={dispatch}

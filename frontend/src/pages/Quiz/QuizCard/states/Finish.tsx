@@ -37,18 +37,18 @@ export default function Finish({
   const navigate = useNavigate();
   const [interpretation, context] = getScoreInterpretation(score);
   return (
-    <div className="flex flex-col items-center gap-y-3">
+    <div className="flex flex-col items-center gap-y-2">
       <div className="w-full">
-        <p className="underline decoration-primary text-2xl">
+        <p className="underline decoration-primary text-xl md:text-3xl">
           Assessment Complete
         </p>
-        <p className="font-medium text-xl text-primary">
+        <p className="font-medium text-md md:text-xl text-primary">
           Thank you for completing the cognitive screening.
         </p>
       </div>
-      <div className="w-full flex flex-col gap-y-4">
-        <p className=" underline decoration-primary text-xl ">Results</p>
-        <p className="text-destructive font-semibold text-sm">
+      <div className="w-full flex flex-col gap-y-3">
+        <p className=" underline decoration-primary text-md md:text-xl ">Results</p>
+        <p className="text-destructive font-semibold text-xs md:text-lg">
           This screening provides a general snapshot of cognitive performance at
           one point in time. Results should be interpreted cautiously and in
           context.
@@ -63,18 +63,18 @@ export default function Finish({
           <ul className="space-y-3 tracking-wide">
             {(Object.keys(categoryScore) as (keyof CategoryScore)[]).map(
               (category) => (
-                <li className="font-semibold text-sm flex gap-x-3 items-center">
+                <li className="font-semibold text-sm md:text-lg flex gap-x-3 items-center">
                   {category.charAt(0).toUpperCase() + category.slice(1)}{" "}
                   <span className="font-normal space-x-2">
                     {" "}
-                    <ScoreMeter score={categoryScore[category]} max={categorySize[category]} className="size-3.5 rounded-[50%] " />{" "}
+                    <ScoreMeter score={categoryScore[category]} max={categorySize[category]} className="size-2.5 md:size-3.5 rounded-[50%] " />{" "}
                   </span>
                 </li>
               ),
             )}
           </ul>
         </div>
-        <ul className="font-medium list-decimal pl-4 text-muted-foreground space-y-2 ">
+        <ul className="font-medium list-decimal pl-4 text-sm md:text-lg text-muted-foreground space-y-2 ">
           <li>{interpretation}</li>
           <li>{context}</li>
         </ul>
