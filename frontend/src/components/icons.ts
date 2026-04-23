@@ -17,6 +17,7 @@ export {
   Route,
   CircleGauge,
   Gauge,
+  Menu,
   BadgeCheck,
   Home,
   Gamepad2,
