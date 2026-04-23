@@ -209,7 +209,7 @@ export default function Dashboard() {
   }, []); // eslint-disable-line
 
   return (
-    <div className="min-h-screen relative border">
+    <div className="min-h-screen relative">
       <SidebarProvider>
         <AppBar />
         <SidebarInset className="flex flex-col border max-w-full min-h-screen min-w-0 ">
