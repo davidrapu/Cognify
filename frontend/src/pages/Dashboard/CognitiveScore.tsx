@@ -17,7 +17,7 @@ export default function CognitiveScore({
 }) {
   const trendPositive = trend !== null && trend >= 0;
   return (
-    <Card className="flex-1 rounded-sm border-none gap-3">
+    <Card className="flex-1 rounded-sm border-none gap-3 h-fit">
       <CardHeader className="text-primary text-lg font-bold">
         <div className="flex w-full justify-between items-center">
           <h3 className="text-md">{level} Cognitive Risk</h3>

@@ -18,14 +18,20 @@ export default function DomainScores({scores}: {scores: DomainScores}) {
       {/* Head */}
       <h3 className="text-primary font-bold text-xl">Neurological Domains</h3>
       {/* The domains */}
-      <div className="flex items-center gap-x-5 justify-center w-full ">
+      <div className="grid grid-cols-2 gap-2 md:grid-cols-[repeat(4,minmax(20px,1fr))] md:gap-0 ">
         {domains.map((domain) => (
-          <div key={domain.name} className="space-y-2">
-            <div className="h-60 w-35 bg-muted-foreground/20 border rounded-sm flex flex-col-reverse px-4">
-              <div style={{height: domain.value}} className={` rounded-full ${domain.color}`} />
+          <div
+            key={domain.name}
+            className="space-y-2 flex flex-col items-center"
+          >
+            <div className="h-45 w-25 md:w-30 bg-muted-foreground/20 border rounded-sm flex flex-col-reverse px-4">
+              <div
+                style={{ height: domain.value }}
+                className={` rounded-full ${domain.color}`}
+              />
             </div>
             <p className="text-[11px] uppercase font-bold text-center tracking-widest">
-                {domain.name}
+              {domain.name}
             </p>
           </div>
         ))}

@@ -169,7 +169,7 @@ export default function Dashboard() {
         const res = await apiFetch("/analytics");
         const data = await res.json();
         // console.log(data);
-        
+
         setCognitiveScore(data.data.cognitiveScore);
         setLevel(data.data.riskLevel);
         setDomainScores(data.data.domainScores);
@@ -209,10 +209,10 @@ export default function Dashboard() {
   }, []); // eslint-disable-line
 
   return (
-    <div className="w-full min-h-screen">
+    <div className="min-h-screen relative border">
       <SidebarProvider>
         <AppBar />
-        <SidebarInset className="flex flex-col min-h-screen">
+        <SidebarInset className="flex flex-col border max-w-full min-h-screen min-w-0 ">
           <div className="flex justify-between pr-2 pt-2 mb-2">
             <SidebarTrigger className="m-1 text-foreground" />
             <UserAvatar size={9} />
@@ -222,13 +222,13 @@ export default function Dashboard() {
               {isLoading ? (
                 <PageLoader />
               ) : (
-                <main className="flex-1 space-y-10 mx-10 min-h-full pt-2 mb-15 font-family-manrope ">
+                <main className="flex-1 space-y-10 mx-5 min-h-full pt-2 mb-15 font-family-manrope ">
                   {/* Header */}
                   <div className="flex flex-col gap-y-3 mb-8">
                     <p className="uppercase font-family-manrope text-xs -tracking-tighter text-primary font-medium">
                       dashboard overview
                     </p>
-                    <div className="w-full flex justify-between items-center h-max-content">
+                    <div className="w-full flex flex-col h-max-content">
                       {user && (
                         <h1 className="text-[32px] font-family-pub-sans font-bold text-primary">
                           Good {determineSectionOfDay()},{" "}
@@ -237,19 +237,20 @@ export default function Dashboard() {
                           .
                         </h1>
                       )}
-                      <div className="text-right">
-                      <p className="text-xs font-medium text-muted-foreground">
-                        Cognitive MMSE Score
-                      </p>
-                      <p className="text-base font-extrabold text-primary ">
-                        {determineMMSEScoreLevel(quizScore)} &bull; {quizScore} / 30
-                      </p>
-                    </div>
+                      <div className="text-right flex-2">
+                        <p className="text-[10px] font-medium text-muted-foreground">
+                          Cognitive MMSE Score
+                        </p>
+                        <p className="text-sm font-extrabold text-primary ">
+                          {determineMMSEScoreLevel(quizScore)} &bull;{" "}
+                          {quizScore} / 30
+                        </p>
+                      </div>
                     </div>
                   </div>
                   <section>
                     {/* Cognitive Scores */}
-                    <div className="flex gap-x-3">
+                    <div className="flex flex-col gap-y-3 md:gap-x-6 flex-wrap lg:flex-row ">
                       <CognitiveScore
                         comment={comment}
                         score={cognitiveScore * 1000}
@@ -268,7 +269,7 @@ export default function Dashboard() {
                   <section>
                     <div>
                       <div className="flex gap-x-3 items-center mb-6">
-                        <h2 className="w-fit text-2xl font-extrabold text-primary">
+                        <h2 className="w-fit text-md md:text-xl font-extrabold text-primary">
                           Daily Recommendations
                         </h2>
                         <div className="h-0 border-2 flex-1" />

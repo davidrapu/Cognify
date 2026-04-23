@@ -32,11 +32,11 @@ export default function DomainPerformanceChart({ domainTrends }: Props) {
   return (
     <div className="space-y-3">
       <div className="flex gap-x-3 items-center mb-6">
-        <h2 className="w-fit text-xl font-extrabold text-primary">
+        <h2 className="text-md md:text-xl text-nowrap font-extrabold text-primary">
           Domain Performance (Last 10 Sessions)
         </h2>
       </div>
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
         {domainConfig.map((domain) => {
           const sessions = domainTrends[domain.key as keyof DomainTrends] ?? [];
           const data = sessions
