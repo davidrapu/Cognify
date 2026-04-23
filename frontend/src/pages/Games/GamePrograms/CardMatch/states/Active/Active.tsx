@@ -6,8 +6,6 @@ import {
 } from "@/hooks/useLeveledGameReducer";
 import { generateCards, type CardType } from "@/utils/generateCards";
 import { cn } from "@/lib/utils";
-import { AnimatedButton } from "@/components/Button";
-import { ChevronRight } from "@/components/icons";
 import { Card } from "@/components/ui/card";
 
 type CardMatchProps = {
@@ -131,7 +129,7 @@ export default function Active({
   };
 
   return (
-    <div className="flex flex-col items-center gap-y-5 p-3">
+    <div className="flex flex-col min-h-full items-center gap-y-5 p-3">
       <div className="flex flex-col">
         <h1 className="text-4xl font-bold leading-normal tracking-[0.2em] font-family-heading">
           Card Matching
@@ -164,7 +162,7 @@ export default function Active({
             />
           ))}
         </div>
-        {state.matchedCards === pairs && (
+        {/* {state.matchedCards === pairs && (
           <AnimatedButton
             onClick={() =>
               dispatch({
@@ -180,7 +178,7 @@ export default function Active({
               strokeWidth={3}
             />
           </AnimatedButton>
-        )}
+        )} */}
       </Card>
     </div>
   );

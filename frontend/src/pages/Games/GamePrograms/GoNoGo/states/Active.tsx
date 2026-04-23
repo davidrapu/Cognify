@@ -1,5 +1,6 @@
 import GameLayout from "@/components/GameLayout";
 import HeartDisplay from "@/components/HeartDisplay";
+import { useIsMobile } from "@/hooks/use-mobile";
 import type { GameAction, GameState } from "@/hooks/useGameReducer";
 import { useEffect, useRef, useState } from "react";
 
@@ -17,6 +18,7 @@ export default function Active({ state, dispatch } : {state: GameState, dispatch
   
   const gameStateRef = useRef(state)
   const stateRef = useRef(selectionState)
+  const isMobile = useIsMobile();
   
   useEffect(() => {
     gameStateRef.current = state
@@ -25,6 +27,34 @@ export default function Active({ state, dispatch } : {state: GameState, dispatch
   useEffect(() => {
     stateRef.current = selectionState;
   })
+  // for mobile users
+      const handleScreenTap = () => {
+        const reaction = Date.now() - reactionTimeRef.current;
+        dispatch({ type: "increaseAttempts" });
+        dispatch({
+          type: "addTimeTaken",
+          payload: { time: reaction, correct: stateRef.current === "go" },
+        });
+
+        if (stateRef.current === "go") {
+          dispatch({ type: "incrementCorrect" });
+          setStreak((prev) => prev + 1);
+          if (streak + 1 > gameStateRef.current.highestConsecutiveCorrect) {
+            dispatch({
+              type: "setHighestConsecutiveCorrect",
+              payload: streak + 1,
+            });
+          }
+          setSelectionState("wait");
+        } else if (stateRef.current === "noGo") {
+          dispatch({ type: "incrementIncorrect" });
+          setStreak(0);
+          setSelectionState("wait");
+        } else if (stateRef.current === "wait") {
+          dispatch({ type: "incrementIncorrect" });
+          setStreak(0);
+        }
+      };
 
   // Window-level spacebar listener
   useEffect(() => {
@@ -96,19 +126,19 @@ export default function Active({ state, dispatch } : {state: GameState, dispatch
   }, [selectionState])
 
   return (
-    <GameLayout>
-      <div className="relative flex-1 border-2 border-primary rounded-2xl bg-card flex items-center justify-center">
+    <GameLayout className='w-[95%]'>
+      <div onClick={handleScreenTap} className="relative flex-1 border-2 border-primary rounded-2xl bg-card flex items-center justify-center">
         <div className="absolute right-5 top-5 text-center space-y-3">
           <HeartDisplay numberOfFilledHearts={state.totalAllowedTries - state.totalIncorrect} innerColor="var(--destructive)" outerColor="var(--destructive)" length={state.totalAllowedTries} />
         </div>
         {selectionState === "go" && (
-          <div className="h-50 aspect-video bg-acceptive rounded-2xl flex items-center justify-center flex-col text-acceptive-foreground">
+          <div className="h-30 w-50 bg-acceptive rounded-2xl flex items-center justify-center flex-col text-acceptive-foreground">
             <p className="text-4xl font-family-heading">Go</p>
-            <p className="text-muted">Click Spacebar</p>
+            <p className="text-muted">{isMobile ? "Touch" : "Click Spacebar"}</p>
           </div>
         )}
         {selectionState === "noGo" && (
-          <div className="h-50 aspect-video bg-destructive rounded-2xl flex items-center justify-center flex-col text-destructive-foreground">
+          <div className="h-30 w-50 bg-destructive rounded-2xl flex items-center justify-center flex-col text-destructive-foreground">
             <p className="text-4xl font-family-heading">No Go</p>
             <p className="text-muted">Do nothing...</p>
           </div>

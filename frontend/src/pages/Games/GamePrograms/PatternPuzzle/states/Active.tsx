@@ -17,7 +17,7 @@ export default function Active({
   const [userInput, setUserInput] = useState<string | null>(null);
   const [difficulty, setDifficulty] = useState<number>(12); // 6 - 12 decreasing the number will increase the difficulty, as there will be more colors in the pattern and more possible answers for the missing color
   const [patternData, SetPatternData] = useState(() =>
-    generatePatternQuestion(difficulty)
+    generatePatternQuestion(difficulty),
   );
   const reactionTimeRef = useRef<number>(0);
   const [streak, setStreak] = useState<number>(0);
@@ -70,54 +70,54 @@ export default function Active({
 
   return (
     <>
-      <GameLayout>
-        <div className="flex flex-col flex-2 rounded-lg bg-primary p-3 gap-y-8">
-          <div className="">
-            <HeartDisplay
-              numberOfFilledHearts={
-                state.totalAllowedTries - state.totalIncorrect
-              }
-              innerColor="var(--destructive)"
-              outerColor="var(--destructive)"
-              length={state.totalAllowedTries}
-            />
+      <GameLayout className="gap-6">
+          <div className="flex flex-col flex-2 rounded-lg bg-primary p-3 gap-y-8 max-w-220">
+            <div className="">
+              <HeartDisplay
+                numberOfFilledHearts={
+                  state.totalAllowedTries - state.totalIncorrect
+                }
+                innerColor="var(--destructive)"
+                outerColor="var(--destructive)"
+                length={state.totalAllowedTries}
+              />
+            </div>
+            <div className="flex flex-1 flex-wrap justify-center items-center gap-4 mb-3">
+              {patternData.pattern.map((color, index) => (
+                <div
+                  key={index}
+                  className={cn(
+                    "size-15 md:size-20 lg:size-30 rounded-2xl shadow-lg/20",
+                    color === "?"
+                      ? "bg-muted/90 flex items-center justify-center"
+                      : patternData.COLOR_CLASSES[color],
+                  )}
+                >
+                  {color === "?" && (
+                    <span className="text-muted-foreground text-2xl font-bold">
+                      ?
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="flex flex-1 flex-wrap justify-center items-center gap-x-4">
-            {patternData.pattern.map((color, index) => (
-              <div
-                key={index}
-                className={cn(
-                  "w-20 h-30 rounded-2xl shadow-lg/20",
-                  color === "?"
-                    ? "bg-muted/90 flex items-center justify-center"
-                    : patternData.COLOR_CLASSES[color],
-                )}
-              >
-                {color === "?" && (
-                  <span className="text-muted-foreground text-2xl font-bold">
-                    ?
-                  </span>
-                )}
-              </div>
-            ))}
+          <div className="flex-1 bg-secondary rounded-2xl flex items-center justify-center">
+            <div className="flex flex-col gap-4">
+              <Input
+                ref={inputRef}
+                onKeyDown={handleEnter}
+                type="text"
+                placeholder="Enter the missing color"
+                className=" w-80 h-12 bg-muted border-primary border-2 "
+                value={userInput || ""}
+                onChange={(e) => setUserInput(e.target.value)}
+              />
+              <Button className="self-end" onClick={handleSubmit}>
+                Submit
+              </Button>
+            </div>
           </div>
-        </div>
-        <div className="flex-1 bg-secondary rounded-2xl flex items-center justify-center">
-          <div className="flex flex-col gap-4">
-            <Input
-              ref={inputRef}
-              onKeyDown={handleEnter}
-              type="text"
-              placeholder="Enter the missing color"
-              className=" h-12 w-150 bg-muted border-primary border-2 "
-              value={userInput || ""}
-              onChange={(e) => setUserInput(e.target.value)}
-            />
-            <Button className="self-end" onClick={handleSubmit}>
-              Submit
-            </Button>
-          </div>
-        </div>
       </GameLayout>
     </>
   );

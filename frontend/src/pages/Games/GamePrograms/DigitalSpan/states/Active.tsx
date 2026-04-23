@@ -132,9 +132,8 @@ export default function Active({
 
   return (
     <GameLayout animateIn={false}>
-      <div className=" md:p-4 flex-1 flex rounded-lg min-h-fit text-primary-foreground bg-primary">
-        <div className="flex-1"></div>
-        <div className="flex-1 flex flex-col justify-center items-center">
+      <div className=" p-2 flex-1 flex flex-col-reverse  gap-y-3 rounded-lg text-primary-foreground bg-primary">
+        <div className="flex-1 flex flex-col justify-center items-center mb-4 ">
           {countDownTimeSpent < 101 ? (
             <>
               <p className="text-[60px] font-family-heading">{currentDigits}</p>
@@ -165,24 +164,30 @@ export default function Active({
                     ref={inputRef}
                   />
                 </Field>
-                {userInput && (
                   <Field className="w-fit self-end">
                     <Button
                       type="button"
                       variant="secondary"
                       className="self-end cursor-pointer animate-in fade-in duration-300"
                       onClick={submit}
+                      disabled={!userInput}
                     >
                       Submit
                     </Button>
                   </Field>
-                )}
               </FieldGroup>
             </>
           )}
         </div>
-        <div className="flex-1 flex justify-end ">
-          <HeartDisplay numberOfFilledHearts={state.totalAllowedTries - state.totalIncorrect} innerColor="var(--destructive)" outerColor="var(--destructive)" length={state.totalAllowedTries} />
+        <div className="flex-1 flex justify-end">
+          <HeartDisplay
+            numberOfFilledHearts={
+              state.totalAllowedTries - state.totalIncorrect
+            }
+            innerColor="var(--destructive)"
+            outerColor="var(--destructive)"
+            length={state.totalAllowedTries}
+          />
         </div>
       </div>
       <div className="flex-1 flex items-center justify-center">

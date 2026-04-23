@@ -2,13 +2,14 @@ import GameLayout from "@/components/GameLayout";
 import { Button } from "@/components/Button";
 import { useEffect, useRef, useState } from "react";
 import type { GameAction, GameState } from "@/hooks/useGameReducer";
+import { cn } from "@/lib/utils";
 
 const statsContainerStyle =
   "bg-card p-2 rounded-2xl flex flex-col items-center justify-center gap-y-1 shadow-md";
 
-const statsHeaderStyle = "text-2xl text-card-foreground font-semibold";
+const statsHeaderStyle = "text-xl text-card-foreground font-semibold";
 
-const statsStyle = "text-xl text-primary";
+const statsStyle = "text-lg text-primary";
 
 const buttons = [
   {
@@ -96,7 +97,7 @@ export default function Active({ state, dispatch }: ActiveProps) {
   }, [timeLeft, dispatch])
 
   return (
-    <GameLayout>
+    <GameLayout className="gap-y-5 md:w-200 lg:aspect-video">
       {/* <div className="flex-1 bg-card">
 
         </div> */}
@@ -114,17 +115,21 @@ export default function Active({ state, dispatch }: ActiveProps) {
           <p className={statsStyle}>{accuracy.toFixed(0)}%</p>
         </div>
       </div>
-      <div className="flex-2 flex items-center justify-center text-6xl font-semibold font-family-heading tracking-widest">
+      <div className="flex-2 flex items-center justify-center text-5xl md:text-6xl font-semibold font-family-heading tracking-widest">
         <p className={`${buttons[colorObject.colorId - 1].textColor}`}>
           {buttons[colorObject.textColorId - 1].text}
         </p>
       </div>
-      <div className="flex-1 w-full gap-x-6 flex justify-center ">
-        {buttons.map((button) => (
+      <div className="flex-1 w-full gap-x-2 gap-y-3 grid grid-cols-2 md:flex md:items-center md:justify-center md:gap-x-5">
+        {buttons.map((button, index) => (
           <Button
             key={button.id}
             onClick={() => handleButtonClick(button.id)}
-            className={`${button.color} text-white rounded-full size-30 text-xl font-semibold hover:scale-105 transition-transform duration-300 disabled:bg-secondary-foreground/50 disabled:hover:scale-100 disabled:hover:shadow-none hover:shadow-lg disabled:hover:border-none hover:border-2`}
+            className={cn(
+              "text-white rounded-full w-full md:size-22 lg:size-30 text-lg md:text-xl font-semibold -py-1 hover:scale-105 transition-transform duration-300 disabled:bg-secondary-foreground/50 disabled:hover:scale-100 disabled:hover:shadow-none hover:shadow-lg disabled:hover:border-none hover:border-2",
+              button.color,
+              index === 4 && "col-span-2",
+            )}
             disabled={timeLeft === 0}
           >
             {button.text}

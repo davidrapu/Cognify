@@ -108,14 +108,14 @@ export default function Active({ state, dispatch }: ActiveProps) {
   }, [colorData]);
 
   return (
-    <GameLayout>
-      <div className="relative border-2 border-primary rounded-3xl bg-card flex-1 flex items-center justify-center">
+    <GameLayout className="h-125">
+      <div className="relative border-2 w-80 -m-1 border-primary rounded-3xl bg-card flex-1 flex items-center justify-center">
         <div className={cn("grid gap-0.5", config.cols)}>
           {colorData.colors.map((color, i) => (
             <Button
               key={i}
               className={cn(
-                "size-10 rounded-md transition-transform active:scale-95",
+                "size-9 rounded-md transition-transform active:scale-95",
               )}
               style={
                 !failed

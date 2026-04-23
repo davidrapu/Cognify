@@ -114,9 +114,8 @@ export default function Active({
 
   return (
     <GameLayout>
-      <div className=" flex-1 p-2 flex font-(family-name: --headings) rounded-lg text-primary-foreground bg-primary">
-        <div className="flex-1"></div>
-        <div className="flex-1 flex flex-col justify-center items-center">
+      <div className="h-fit p-2 flex flex-col-reverse font-(family-name: --headings) rounded-lg text-primary-foreground bg-primary">
+        <div className="flex flex-col justify-center items-center">
           {displayedNumberIndex < numberList.length ? (
             <p className="text-[60px]">{numberList[displayedNumberIndex]}</p>
           ) : (
@@ -139,18 +138,17 @@ export default function Active({
                     ref={inputRef}
                   />
                 </Field>
-                {userInput && (
                   <Field className="w-fit self-end">
                     <Button
                       type="button"
                       variant="secondary"
                       className="self-end cursor-pointer animate-in fade-in duration-300"
                       onClick={submit}
+                      disabled={!userInput}
                     >
                       Submit
                     </Button>
                   </Field>
-                )}
               </FieldGroup>
             </div>
           )}
