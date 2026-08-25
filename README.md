@@ -86,4 +86,4 @@ The app should now be running locally at
 
 ---
 
-Made with ❤️ by David Rapu
+Made by David Rapu
